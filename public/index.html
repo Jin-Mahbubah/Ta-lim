@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ta-lim: Desafio de Conhecimentos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <div id="home-view">
+            <header>
+                <h1>Bem-vindo ao Ta-lim</h1>
+                <p>Teste as suas habilidades com os nossos exercícios interativos.</p>
+            </header>
+            <button id="start-button">Iniciar Teste!</button>
+        </div>
+        <div id="quiz-container" class="hidden">
+            <h2 id="question-text">A carregar pergunta...</h2>
+            <div id="fill-in-blank-container">
+                <input type="text" id="user-answer" placeholder="Escreva a sua resposta">
+                <button id="submit-button">Verificar</button>
+            </div>
+            <div id="multiple-choice-container"></div>
+            <div id="construct-sentence-container">
+                <div id="sentence-area"></div>
+                <div id="word-bank"></div>
+                <button id="check-sentence-button">Verificar</button>
+                <button id="reset-sentence-button">Limpar</button>
+            </div>
+            <p id="feedback"></p>
+        </div>
+    </div>
+    <script src="client.js" defer></script>
+</body>
+</html>
