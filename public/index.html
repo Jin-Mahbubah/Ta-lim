@@ -3,37 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ta-lim: Desafio de Conhecimentos</title>
+    <title>Ta-lim</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-container">
-        <div id="home-view">
-            <header>
-                <h1>Bem-vindo ao Ta-lim</h1>
-                <p>Teste as suas habilidades com os nossos exercícios interativos.</p>
-            </header>
-            <button id="start-button">Iniciar Teste!</button>
-        </div>
-        <div id="quiz-container" class="hidden">
-            <h2 id="question-text">A carregar pergunta...</h2>
-            <div id="fill-in-blank-container">
-                <input type="text" id="user-answer" placeholder="Escreva a sua resposta">
-                <button id="submit-button">Verificar</button>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-text">
+                <p>Salam, Líria</p>
             </div>
-            <div id="multiple-choice-container"></div>
-            <div id="construct-sentence-container">
-                <div id="sentence-area"></div>
-                <div id="word-bank"></div>
-                <button id="check-sentence-button">Verificar</button>
-                <button id="reset-sentence-button">Limpar</button>
-            </div>
-            <p id="feedback"></p>
-        </div>
+            <button class="notification-button"><i class="fas fa-bell"></i></button>
+        </header>
+
+        <div class="content-wrapper">
+            <section class="time-card">
+                <div class="time-info">
+                    <h2>Dhuhr</h2>
+                    <h1>12:45 <span class="am-pm">PM</span></h1>
+                    <p>2 Horas e 15 min para o Asr</p>
+                </div>
+                <div class="time-icon">
+                    <i class="fas fa-moon"></i>
+                </div>
+            </section>
+
+            <section class="icon-grid">
+                <div class="grid-item">
+                    <div class="icon-background"><i class="fas fa-book-quran"></i></div>
+                    <span>Al-Quran</span>
+                </div>
+                <div class="grid-item">
+                    <div class="icon-background"><i class="fas fa-mosque"></i></div>
+                    <span>Orações</span>
+                </div>
+                <div class="grid-item">
+                    <div class="icon-background"><i class="fas fa-book-open"></i></div>
+                    <span>Hadith</span>
+                </div>
+            </section>
+
+            <section class="recent-lessons">
+                <h3>Lições Recentes</h3>
+                <div class="lesson-card">
+                    <div class="lesson-icon">
+                        <i class="fas fa-pen-nib"></i>
+                    </div>
+                    <div class="lesson-info">
+                        <h4>As Letras Solares e Lunares</h4>
+                        <p>Gramática Essencial</p>
+                    </div>
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="lesson-card">
+                    <div class="lesson-icon">
+                        <i class="fas fa-kaaba"></i>
+                    </div>
+                    <div class="lesson-info">
+                        <h4>A História de Meca</h4>
+                        <p>Cultura Islâmica</p>
+                    </div>
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            </section>
+        </div> <nav class="bottom-nav">
+            <a href="#" class="nav-item active"><i class="fas fa-home"></i></a>
+            <a href="#" class="nav-item"><i class="fas fa-book-open"></i></a>
+            <a href="#" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+            <a href="#" class="nav-item"><i class="far fa-user-circle"></i></a>
+        </nav>
     </div>
-    <script src="client.js" defer></script>
 </body>
 </html>
