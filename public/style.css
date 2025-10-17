@@ -82,18 +82,18 @@ body {
     box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-/* MELHORIA: Adicionado um padrão subtil */
 .time-card {
-    background: var(--card-bg);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23f0f5f3' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20-5-5-5 5L11 0zM21 15l5 20-5-5-5 5L21 15zm20 15l5 20-5-5-5 5L41 30zm20 15l5 20-5-5-5 5L61 45zm-40-30l5 20-5-5-5 5L21 15zM15 45l5 20-5-5-5 5L15 45zm20 15l5 20-5-5-5 5L35 60zm20-15l5 20-5-5-5 5L55 45zM8 60l5 20-5-5-5 5L8 60zm40 15l5 20-5-5-5 5L48 75z'/%3E%3C/g%3E%3C/svg%3E");
+    /* MELHORIA FINAL: Fundo branco com um gradiente radial suave no canto */
+    background: var(--card-bg) radial-gradient(circle at 90% 10%, #E8F8F5 0%, transparent 40%);
+    
     border-radius: 25px;
-    padding: 20px;
+    padding: 25px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     color: var(--dark-text);
     margin-bottom: 25px;
-    box-shadow: 0 8px 25px var(--shadow-color);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
     position: relative;
     overflow: hidden;
 }
@@ -117,10 +117,10 @@ body {
 
 .icon-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* Mudar de 3 para 4 */
     gap: 15px;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .grid-item { cursor: pointer; }
@@ -155,11 +155,11 @@ body {
     color: var(--light-text);
 }
 
-/* MELHORIA: Cores aplicadas aos ícones */
+/* Cores aplicadas aos ícones */
+.icon-background.color-green i { color: #2ECC71; } /* ✨ ADICIONE ESTA LINHA ✨ */
 .icon-background.color-blue i { color: #3498DB; }
 .icon-background.color-purple i { color: #9B59B6; }
 .icon-background.color-orange i { color: #F39C12; }
-
 .recent-lessons h3 {
     font-size: 1.2rem;
     font-weight: 700;
