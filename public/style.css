@@ -4,17 +4,17 @@
     --primary-color: #61C5A8;
     --light-bg: #F0F5F3;
     --card-bg: #FFFFFF;
-    --shadow-color: rgba(0, 0, 0, 0.08);
+    --shadow-color: rgba(97, 197, 168, 0.1); /* Sombra com a cor primária */
     --dark-text: #3D4A55;
     --light-text: #A0A9B0;
     --white: #FFFFFF;
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Poppins', sans-serif; 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -23,11 +23,8 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 20px 0;
 }
-
-/* ======================================= */
-/* ESTRUTURA FINAL DO LAYOUT FIXO          */
-/* ======================================= */
 
 .app-container {
     width: 100%;
@@ -35,179 +32,193 @@ body {
     height: 812px;
     background-color: var(--light-bg);
     border-radius: 30px;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
+    /* MELHORIA: Layout flex para empurrar a nav para baixo */
     display: flex;
     flex-direction: column;
 }
 
 .app-header {
-    flex-shrink: 0;
     padding: 25px 25px 0 25px;
-    background-color: var(--light-bg);
-}
-
-.content-wrapper {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 20px 25px;
-}
-
-.bottom-nav {
-    flex-shrink: 0;
-    background-color: var(--card-bg);
-    display: flex;
-    justify-content: space-around;
-    padding: 20px 0;
-    border-top: 1px solid #f0f0f0;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-}
-
-/* ======================================= */
-/* RESTO DO ESTILO                         */
-/* ======================================= */
-
-.app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.header-text p { 
-    font-size: 1.5rem; 
-    font-weight: 600; 
-    color: var(--dark-text); 
+
+/* MELHORIA: Wrapper para o conteúdo que pode rolar */
+.content-wrapper {
+    flex-grow: 1; /* Faz esta área crescer e empurrar a nav para baixo */
+    overflow-y: auto; /* Permite rolar se o conteúdo for maior */
+    padding: 20px 25px;
 }
 
-.notification-button { 
-    background: var(--card-bg); 
-    border: 1px solid #EAEDED; 
-    font-size: 1.2rem; 
-    color: var(--light-text); 
-    cursor: pointer; 
-    width: 45px; 
-    height: 45px; 
-    border-radius: 50%; 
-    box-shadow: 0 4px 10px var(--shadow-color); 
+.bottom-nav {
+    flex-shrink: 0; /* Impede que a nav encolha */
+    background-color: var(--card-bg);
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0 20px 0; /* Mais padding em baixo */
+    border-top: 1px solid #f0f0f0;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
 }
 
-.time-card { 
-    background: var(--card-bg) radial-gradient(circle at 90% 10%, #d4fce1, transparent 50%);
-    border-radius: 25px; 
+.header-text p {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark-text);
+}
+
+.notification-button {
+    background: var(--card-bg);
+    border: 1px solid #EAEDED;
+    font-size: 1.2rem;
+    color: var(--light-text);
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+/* MELHORIA: Adicionado um padrão subtil */
+.time-card {
+    background: var(--card-bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23f0f5f3' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20-5-5-5 5L11 0zM21 15l5 20-5-5-5 5L21 15zm20 15l5 20-5-5-5 5L41 30zm20 15l5 20-5-5-5 5L61 45zm-40-30l5 20-5-5-5 5L21 15zM15 45l5 20-5-5-5 5L15 45zm20 15l5 20-5-5-5 5L35 60zm20-15l5 20-5-5-5 5L55 45zM8 60l5 20-5-5-5 5L8 60zm40 15l5 20-5-5-5 5L48 75z'/%3E%3C/g%3E%3C/svg%3E");
+    border-radius: 25px;
     padding: 20px;
-    display: flex; 
-    justify-content: space-between; 
-    align-items: flex-start; 
-    color: var(--dark-text); 
-    margin-bottom: 25px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: var(--dark-text);
+    margin-bottom: 25px;
     box-shadow: 0 8px 25px var(--shadow-color);
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .time-info h2 { font-size: 1.1rem; font-weight: 500; }
 .time-info h1 { font-size: 2.2rem; font-weight: 700; }
 .time-info h1 .am-pm { font-size: 1.3rem; }
 .time-info p { font-size: 0.8rem; color: var(--light-text); }
-.time-icon { 
-    background: linear-gradient(135deg, var(--primary-color), #4db396); 
-    color: var(--white); 
-    width: 45px; 
-    height: 45px; 
-    border-radius: 15px; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    font-size: 1.4rem; 
+
+.time-icon {
+    background: linear-gradient(135deg, var(--primary-color), #4db396);
+    color: var(--white);
+    width: 45px;
+    height: 45px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
 }
 
-.icon-grid { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    text-align: center; 
-    margin-bottom: 25px; 
+    text-align: center;
+    margin-bottom: 25px;
 }
+
 .grid-item { cursor: pointer; }
-.icon-background { 
-    width: 100%; 
-    padding-bottom: 100%; 
-    position: relative; 
-    background-color: var(--card-bg); 
-    border-radius: 25px; 
-    margin-bottom: 8px; 
-    box-shadow: 0 8px 25px var(--shadow-color); 
-    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+
+.icon-background {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* MELHORIA: Garante que é sempre um quadrado */
+    position: relative;
+    background-color: var(--card-bg);
+    border-radius: 25px;
+    margin-bottom: 8px;
+    box-shadow: 0 8px 25px var(--shadow-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.grid-item:hover .icon-background { 
-    transform: translateY(-5px); 
-    box-shadow: 0 12px 30px var(--shadow-color); 
+
+.grid-item:hover .icon-background {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px var(--shadow-color);
 }
-.icon-background i { 
-    position: absolute; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
+
+.icon-background i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 1.8rem;
 }
-.grid-item span { 
-    font-weight: 500; 
+
+.grid-item span {
+    font-weight: 500;
     font-size: 0.9rem;
-    color: var(--light-text); 
+    color: var(--light-text);
 }
 
-.icon-grid .grid-item:nth-child(1) .icon-background i { color: #3498DB; }
-.icon-grid .grid-item:nth-child(2) .icon-background i { color: #9B59B6; }
-.icon-grid .grid-item:nth-child(3) .icon-background i { color: #F39C12; }
+/* MELHORIA: Cores aplicadas aos ícones */
+.icon-background.color-blue i { color: #3498DB; }
+.icon-background.color-purple i { color: #9B59B6; }
+.icon-background.color-orange i { color: #F39C12; }
 
-.recent-lessons h3 { 
+.recent-lessons h3 {
     font-size: 1.2rem;
-    font-weight: 700; 
-    color: var(--dark-text); 
-    margin-bottom: 15px; 
-}
-.lesson-card { 
-    background-color: var(--white); 
-    border-radius: 20px; 
-    padding: 15px; 
-    display: flex; 
-    align-items: center; 
-    gap: 15px; 
-    margin-bottom: 15px; 
-    box-shadow: 0 5px 15px var(--shadow-color); 
-    cursor: pointer; 
-}
-.lesson-icon { 
-    width: 50px; 
-    height: 50px; 
-    background-color: #E8F8F5; 
-    color: var(--primary-color); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    border-radius: 15px; 
-    font-size: 1.5rem; 
-}
-.lesson-info { flex-grow: 1; }
-.lesson-info h4 { font-size: 1rem; font-weight: 700; color: var(--dark-text); }
-.lesson-info p { font-size: 0.9rem; color: var(--light-text); }
-.play-button { 
-    width: 40px; 
-    height: 40px; 
-    background-color: #E8F8F5; 
-    color: var(--primary-color); 
-    border-radius: 50%; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 15px;
 }
 
-.nav-item { 
-    text-decoration: none; 
-    color: var(--light-text); 
-    font-size: 1.5rem; 
-    padding: 5px 10px; 
-    border-radius: 15px; 
-    transition: color 0.3s ease; 
+.lesson-card {
+    background-color: var(--white);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
+.lesson-card:hover {
+    transform: translateX(5px);
+}
+
+.lesson-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #E8F8F5;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.lesson-info { flex-grow: 1; }
+.lesson-info h4 { font-size: 1rem; font-weight: 600; color: var(--dark-text); }
+.lesson-info p { font-size: 0.9rem; color: var(--light-text); }
+
+.play-button {
+    width: 40px;
+    height: 40px;
+    background-color: #E8F8F5;
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--light-text);
+    font-size: 1.5rem;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: color 0.3s ease;
+}
+
 .nav-item.active { color: var(--primary-color); }
