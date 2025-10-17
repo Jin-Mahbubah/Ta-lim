@@ -34,8 +34,8 @@ body {
 .app-container {
     width: 100%;
     max-width: 375px;
-    height: 100%; 
-    max-height: 812px;
+    height: 812px; /* Mantemos a altura para a proporção */
+    max-height: 90vh; /* ✨ Adicionado: Limita a altura a 90% da altura do ecrã */
     background-color: var(--light-bg);
     border-radius: 30px;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
@@ -44,7 +44,6 @@ body {
     display: flex;
     flex-direction: column;
 }
-
 .app-header {
     padding: 25px 25px 0 25px;
     display: flex;
