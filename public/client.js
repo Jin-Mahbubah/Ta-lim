@@ -1,109 +1,111 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const homeView = document.getElementById('home-view');
-    const quizContainer = document.getElementById('quiz-container');
-    const startButton = document.getElementById('start-button');
-    const questionTextElement = document.getElementById('question-text');
-    const fillInBlankContainer = document.getElementById('fill-in-blank-container');
-    const userAnswerElement = document.getElementById('user-answer');
-    const submitButton = document.getElementById('submit-button');
-    const multipleChoiceContainer = document.getElementById('multiple-choice-container');
-    const constructSentenceContainer = document.getElementById('construct-sentence-container');
-    const sentenceArea = document.getElementById('sentence-area');
-    const wordBank = document.getElementById('word-bank');
-    const checkSentenceButton = document.getElementById('check-sentence-button');
-    const resetSentenceButton = document.getElementById('reset-sentence-button');
-    const feedbackElement = document.getElementById('feedback');
+    
+    let countdownInterval = null;
 
-    let currentQuestion = null;
+    async function fetchPrayerTimes() {
+        const prayerNameEl = document.getElementById('prayer-name');
+        const prayerTimeEl = document.getElementById('prayer-time');
+        const timeToNextEl = document.getElementById('time-to-next');
+        const prayerIconEl = document.getElementById('prayer-icon');
 
-    startButton.addEventListener('click', () => {
-        homeView.classList.add('hidden');
-        quizContainer.classList.remove('hidden');
-        getNewQuestion();
-    });
-
-    async function getNewQuestion() {
         try {
-            const response = await fetch('/api/question');
-            if (!response.ok) throw new Error('Falha na resposta da rede');
-            currentQuestion = await response.json();
-            displayQuestion();
-        } catch (error) {
-            questionTextElement.textContent = 'Erro ao carregar a pergunta. Tente novamente mais tarde.';
-            console.error('Erro:', error);
-        }
-    }
-
-    function displayQuestion() {
-        questionTextElement.textContent = currentQuestion.text;
-        feedbackElement.textContent = '';
-        feedbackElement.className = '';
-        userAnswerElement.value = '';
-        
-        fillInBlankContainer.style.display = 'none';
-        multipleChoiceContainer.style.display = 'none';
-        constructSentenceContainer.style.display = 'none';
-        
-        multipleChoiceContainer.innerHTML = '';
-        sentenceArea.innerHTML = '';
-        wordBank.innerHTML = '';
-
-        if (currentQuestion.type === 'fill_in_blank') {
-            fillInBlankContainer.style.display = 'block';
-        } else if (currentQuestion.type === 'multiple_choice') {
-            multipleChoiceContainer.style.display = 'block';
-            currentQuestion.options.forEach(option => {
-                const button = document.createElement('button');
-                button.textContent = option;
-                button.addEventListener('click', () => checkAnswer(option));
-                multipleChoiceContainer.appendChild(button);
-            });
-        } else if (currentQuestion.type === 'construct_sentence') {
-            constructSentenceContainer.style.display = 'block';
-            currentQuestion.words.forEach(word => {
-                const button = document.createElement('button');
-                button.textContent = word;
-                button.addEventListener('click', () => {
-                    const wordSpan = document.createElement('span');
-                    wordSpan.textContent = word; // Correção: remover espaço extra aqui
-                    sentenceArea.appendChild(wordSpan);
-                    button.disabled = true;
-                });
-                wordBank.appendChild(button);
-            });
-        }
-    }
-    
-    function checkAnswer(userAnswer) {
-        if (!currentQuestion || userAnswer === null) return;
-        const cleanedCorrectAnswer = currentQuestion.answer.trim().toLowerCase();
-        const cleanedUserAnswer = userAnswer.trim().toLowerCase();
-
-        if (cleanedUserAnswer === cleanedCorrectAnswer) {
-            feedbackElement.textContent = 'Correto!';
-            feedbackElement.className = 'correct';
-            setTimeout(getNewQuestion, 1500);
-        } else {
-            feedbackElement.textContent = 'Incorreto, tente novamente.';
-            feedbackElement.className = 'incorrect';
-            if(currentQuestion.type === 'fill_in_blank') {
-                userAnswerElement.value = '';
+            const city = 'Madinah', country = 'Saudi Arabia', method = 4;
+            
+            async function getTimingsForDate(date) {
+                const day = date.getDate();
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+                const apiUrl = `https://api.aladhan.com/v1/timingsByCity/${day}-${month}-${year}?city=${city}&country=${country}&method=${method}`;
+                
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('Falha na resposta da rede para a data: ' + date);
+                
+                const data = await response.json();
+                return data.data.timings;
             }
+
+            const now = new Date();
+            const todayTimings = await getTimingsForDate(now);
+            
+            const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            let nextPrayerName = null;
+            let nextPrayerTime = null;
+            let currentPrayerName = 'Isha';
+
+            const todayPrayers = prayerOrder.map(prayer => {
+                const [hour, minute] = todayTimings[prayer].split(':');
+                const prayerDate = new Date();
+                prayerDate.setHours(parseInt(hour), parseInt(minute), 0, 0);
+                return { name: prayer, time: prayerDate };
+            });
+
+            for (let i = 0; i < todayPrayers.length; i++) {
+                if (todayPrayers[i].time > now) {
+                    nextPrayerName = todayPrayers[i].name;
+                    nextPrayerTime = todayPrayers[i].time;
+                    currentPrayerName = (i > 0) ? todayPrayers[i - 1].name : 'Isha';
+                    break;
+                }
+            }
+            
+            if (nextPrayerName === null) {
+                const tomorrow = new Date();
+                tomorrow.setDate(now.getDate() + 1);
+                const tomorrowTimings = await getTimingsForDate(tomorrow);
+                nextPrayerName = 'Fajr';
+                const [fajrHour, fajrMinute] = tomorrowTimings.Fajr.split(':');
+                const fajrDate = new Date(tomorrow);
+                fajrDate.setHours(parseInt(fajrHour), parseInt(fajrMinute), 0, 0);
+                nextPrayerTime = fajrDate;
+                currentPrayerName = 'Isha';
+            }
+            
+            const [currentHour, currentMinute] = todayTimings[currentPrayerName].split(':');
+            prayerNameEl.textContent = currentPrayerName;
+            prayerTimeEl.innerHTML = `${currentHour}:${currentMinute}`;
+
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            countdownInterval = setInterval(() => {
+                const nowForCountdown = new Date();
+                const diffMs = nextPrayerTime - nowForCountdown;
+
+                if (diffMs <= 0) {
+                    timeToNextEl.textContent = "Atualizando...";
+                    clearInterval(countdownInterval);
+                    fetchPrayerTimes();
+                    return;
+                }
+
+                let seconds = Math.floor(diffMs / 1000);
+                let minutes = Math.floor(seconds / 60);
+                let hours = Math.floor(minutes / 60);
+
+                seconds = seconds % 60;
+                minutes = minutes % 60;
+
+                const pad = (num) => num.toString().padStart(2, '0');
+                timeToNextEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)} para o ${nextPrayerName}`;
+            }, 1000);
+
+            // ✨ LÓGICA DOS ÍCONES MELHORADA ✨
+            const icons = {
+                'Fajr': 'fa-sun',        // Sol da manhã / Nascer do sol
+                'Dhuhr': 'fa-sun',       // Sol do meio-dia (forte)
+                'Asr': 'fa-cloud-sun',   // Sol da tarde (entre nuvens)
+                'Maghrib': 'fa-moon',      // Pôr do sol / Início da noite
+                'Isha': 'fa-moon'        // Noite
+            };
+            // Define a classe do ícone com base no nome da oração atual
+            prayerIconEl.className = `fas ${icons[currentPrayerName]}`;
+
+        } catch (error) {
+            console.error("Erro ao buscar horários das orações:", error);
+            prayerNameEl.textContent = 'Erro de Rede';
+            prayerTimeEl.innerHTML = '--:--';
+            prayerIconEl.className = 'fas fa-exclamation-circle';
         }
     }
 
-    submitButton.addEventListener('click', () => checkAnswer(userAnswerElement.value));
-    
-    checkSentenceButton.addEventListener('click', () => {
-        const words = Array.from(sentenceArea.children).map(span => span.textContent);
-        const constructedSentence = words.join(' '); // Adicionar espaços ao juntar
-        checkAnswer(constructedSentence);
-    });
-
-    resetSentenceButton.addEventListener('click', () => {
-        sentenceArea.innerHTML = '';
-        Array.from(wordBank.children).forEach(button => button.disabled = false);
-        feedbackElement.textContent = '';
-        feedbackElement.className = '';
-    });
+    fetchPrayerTimes();
 });

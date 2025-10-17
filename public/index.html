@@ -31,17 +31,16 @@
             <div class="content-wrapper">
                 
                 <div class="left-column">
-                    <section class="time-card">
-                        <div class="time-info">
-                            <h2>Dhuhr</h2>
-                            <h1>12:45 <span class="am-pm">PM</span></h1>
-                            <p>2 Horas e 15 min para o Asr</p>
-                        </div>
-                        <div class="time-icon">
-                            <i class="fas fa-moon"></i>
-                        </div>
-                    </section>
-
+                   <section class="time-card">
+    <div class="time-info">
+        <h2 id="prayer-name">Carregando...</h2>
+        <h1 id="prayer-time"><span class="am-pm">--:--</span></h1>
+        <p id="time-to-next"></p>
+    </div>
+    <div class="time-icon">
+        <i id="prayer-icon" class="fas fa-spinner fa-spin"></i>
+    </div>
+</section>
                     <section class="icon-grid">
                         <div class="grid-item">
                             <div class="icon-background color-green">
@@ -96,5 +95,6 @@
         </div>
 
     </div>
+    <script src="client.js" defer></script>
 </body>
 </html>

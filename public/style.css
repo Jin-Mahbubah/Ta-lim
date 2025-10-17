@@ -21,27 +21,35 @@
 body {
     background-color: #e4e9f0;
     color: var(--dark-text);
-    /* Removido display:flex para o scroll funcionar naturalmente em todas as vistas */
 }
 
 .app-container {
     width: 100%;
     max-width: 375px;
-    min-height: 100vh; /* ✨ MUDANÇA: Usar min-height para ser flexível */
+    min-height: 100vh;
     background-color: var(--light-bg);
     margin: auto;
     position: relative;
     display: flex;
     flex-direction: column;
-    /* As regras de altura fixa e sombra foram movidas para a media query */
+    padding-bottom: 80px;
+    padding-top: 90px; /* ✨ ADICIONADO: Espaço para o cabeçalho fixo */
 }
 
 .app-header {
-    padding: 25px 25px 0 25px;
+    padding: 25px 25px 20px 25px; /* Adicionado padding em baixo */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0; 
+    flex-shrink: 0;
+
+    /* ✨ REGRAS PARA FIXAR O CABEÇALHO ✨ */
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--light-bg); /* Fundo para não ser transparente */
+    z-index: 1000; /* Garante que fica por cima do conteúdo */
 }
 
 .content-wrapper {
@@ -55,7 +63,6 @@ body {
 
 /* ✨ MUDANÇA CRÍTICA para a vista de telemóvel */
 .bottom-nav {
-    flex-shrink: 0;
     background-color: var(--card-bg);
     display: flex;
     justify-content: space-around;
@@ -63,14 +70,20 @@ body {
     border-top: 1px solid #f0f0f0;
     box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
 
-    /* Força a barra a ficar em baixo na vista de telemóvel */
-    position: sticky;
+    /* Força a barra a ficar em baixo de forma mais robusta */
+    position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%;
+    right: 0;
+    max-width: 375px; /* Garante que não estica mais que o contentor */
+    margin: 0 auto; /* Centra a barra */
+    border-bottom-left-radius: 30px; /* Adiciona os cantos arredondados em baixo */
+    border-bottom-right-radius: 30px;
+    z-index: 1000; /* Garante que fica por cima de tudo */
 }
 
-/* O resto do código para telemóvel mantém-se igual */
+/* --- O resto do código para telemóvel mantém-se igual --- */
+
 .header-text p { font-size: 1.6rem; font-weight: 700; color: var(--dark-text); }
 .notification-button { background: var(--card-bg); border: 1px solid #EAEDED; font-size: 1.2rem; color: var(--light-text); cursor: pointer; width: 45px; height: 45px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 .time-card { background: var(--card-bg) radial-gradient(circle at 90% 10%, #E8F8F5 0%, transparent 40%); border-radius: 25px; padding: 25px; display: flex; justify-content: space-between; align-items: center; color: var(--dark-text); margin-bottom: 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
@@ -80,7 +93,13 @@ body {
 .time-info p { font-size: 0.8rem; color: var(--light-text); margin-top: 8px; }
 .time-icon { background: var(--primary-color); color: var(--white); width: 50px; height: 50px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; }
 .icon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center; margin-bottom: 30px; }
-.grid-item { cursor: pointer; }
+.grid-item { .grid-item {
+    cursor: pointer;
+    transition: transform 0.2s ease; /* ✨ ADICIONE ESTA LINHA ✨ */
+}/* ✨ ADICIONE ESTA NOVA REGRA ✨ */
+.grid-item:hover {
+    transform: scale(1.05); /* Faz o item aumentar ligeiramente de tamanho (5%) */
+} }
 .icon-background { width: 100%; aspect-ratio: 1 / 1; position: relative; background-color: var(--card-bg); border-radius: 25px; margin-bottom: 8px; box-shadow: 0 8px 25px var(--shadow-color); transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .grid-item:hover .icon-background { transform: translateY(-5px); box-shadow: 0 12px 30px var(--shadow-color); }
 .icon-background i { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; }
@@ -103,25 +122,25 @@ body {
 
 /* ======================================= */
 /* ESTILOS PARA ECRÃS GRANDES (COMPUTADOR) */
-/* ======================================= */
-
 @media (min-width: 1024px) {
 
     body {
-        display: block;
         padding: 0;
+        overflow: hidden; 
     }
 
     .app-container {
         max-width: none;
         width: 100%;
         height: 100vh;
+        min-height: auto;
         max-height: none;
         border-radius: 0;
         box-shadow: none;
         display: flex;
         flex-direction: row;
-        margin: 0; /* Remover a margem automática */
+        margin: 0;
+        padding: 0;
     }
 
     .bottom-nav {
@@ -139,15 +158,14 @@ body {
         background: var(--card-bg);
     }
 
-    /* ✨ CORREÇÃO PRINCIPAL ✨ */
-    /* Agora o scroll e o layout flex aplicam-se à área de conteúdo principal */
     .main-content-area {
-        display: flex;
-        flex-direction: column;
         width: 100%;
-        height: 100vh;
-        overflow-y: auto; /* O scroll principal fica aqui */
-        padding: 30px 40px; /* Adicionamos o padding aqui */
+        height: 100%;
+        overflow-y: auto;
+        padding: 30px 40px;
+    }
+    .main-content-area::-webkit-scrollbar {
+        display: none;
     }
     
     .app-header {
@@ -162,7 +180,7 @@ body {
         align-items: flex-start;
         overflow-y: visible; 
         width: 100%;
-        flex-grow: 1; /* Permite que cresça para preencher o espaço */
+        flex-grow: 1;
     }
     
     .left-column {
@@ -171,13 +189,16 @@ body {
         gap: 30px;
     }
     
+    /* ✨ REGRA CORRIGIDA ✨ */
     .icon-grid {
-    grid-template-columns: repeat(4, 1fr); /* ✨ MUDANÇA: 4 colunas no desktop */
-    gap: 20px;
-    margin-bottom: 0;
-}
-/* ✨ MUDANÇA: Ajustar o tamanho do fundo do ícone no desktop */
-.icon-background {
-    aspect-ratio: auto; /* Desativa o quadrado perfeito */
-    height: 80px; /* Define uma altura fixa mais baixa */
+        grid-template-columns: repeat(4, 1fr); /* 4 colunas para ser mais compacto */
+        gap: 15px; /* Menos espaço */
+        margin-bottom: 0;
+    }
+
+    /* ✨ NOVA REGRA ADICIONADA ✨ */
+    .icon-background {
+        height: 100px; /* Altura fixa para os ícones no desktop */
+        aspect-ratio: auto; /* Desliga o modo "quadrado perfeito" */
+    }
 }
