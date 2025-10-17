@@ -29,17 +29,14 @@ body {
 .app-container {
     width: 100%;
     max-width: 375px;
-    height: 812px;
+    min-height: 812px; /* Usamos min-height para garantir que ele tem pelo menos esta altura */
     background-color: var(--light-bg);
     border-radius: 30px;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
     position: relative;
-    overflow: hidden;
-    /* MELHORIA: Layout flex para empurrar a nav para baixo */
     display: flex;
     flex-direction: column;
 }
-
 .app-header {
     padding: 25px 25px 0 25px;
     display: flex;
@@ -49,9 +46,9 @@ body {
 
 /* MELHORIA: Wrapper para o conteúdo que pode rolar */
 .content-wrapper {
-    flex-grow: 1; /* Faz esta área crescer e empurrar a nav para baixo */
-    overflow-y: auto; /* Permite rolar se o conteúdo for maior */
+    flex-grow: 1;
     padding: 20px 25px;
+    /* A propriedade overflow-y foi removida daqui */
 }
 
 .bottom-nav {
@@ -221,4 +218,4 @@ body {
     transition: color 0.3s ease;
 }
 
-.nav-item.active { color: var(--primary-color); }
+.nav-item.active { color: var(--primary-color); } 
