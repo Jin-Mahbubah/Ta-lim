@@ -32,36 +32,37 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
+    padding-top: 90px;
     padding-bottom: 80px;
-    padding-top: 90px; /* ✨ ADICIONADO: Espaço para o cabeçalho fixo */
 }
 
 .app-header {
-    padding: 25px 25px 20px 25px; /* Adicionado padding em baixo */
+    padding: 25px 25px 20px 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-
-    /* ✨ REGRAS PARA FIXAR O CABEÇALHO ✨ */
-    position: sticky;
+    position: fixed; /* MUDANÇA PARA CORRIGIR O SCROLL NO MOBILE */
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--light-bg); /* Fundo para não ser transparente */
-    z-index: 1000; /* Garante que fica por cima do conteúdo */
+    background-color: var(--light-bg);
+    z-index: 1000;
+    max-width: 375px;
+    margin: 0 auto;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
 }
 
 .content-wrapper {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 20px 25px;
+    padding: 0 25px 20px 25px; /* Ajustado o padding */
 }
 .content-wrapper::-webkit-scrollbar {
     display: none;
 }
 
-/* ✨ MUDANÇA CRÍTICA para a vista de telemóvel */
 .bottom-nav {
     background-color: var(--card-bg);
     display: flex;
@@ -69,20 +70,16 @@ body {
     padding: 15px 0 20px 0;
     border-top: 1px solid #f0f0f0;
     box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-
-    /* Força a barra a ficar em baixo de forma mais robusta */
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    max-width: 375px; /* Garante que não estica mais que o contentor */
-    margin: 0 auto; /* Centra a barra */
-    border-bottom-left-radius: 30px; /* Adiciona os cantos arredondados em baixo */
+    max-width: 375px;
+    margin: 0 auto;
+    border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
-    z-index: 1000; /* Garante que fica por cima de tudo */
+    z-index: 1000;
 }
-
-/* --- O resto do código para telemóvel mantém-se igual --- */
 
 .header-text p { font-size: 1.6rem; font-weight: 700; color: var(--dark-text); }
 .notification-button { background: var(--card-bg); border: 1px solid #EAEDED; font-size: 1.2rem; color: var(--light-text); cursor: pointer; width: 45px; height: 45px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
@@ -93,13 +90,15 @@ body {
 .time-info p { font-size: 0.8rem; color: var(--light-text); margin-top: 8px; }
 .time-icon { background: var(--primary-color); color: var(--white); width: 50px; height: 50px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; }
 .icon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center; margin-bottom: 30px; }
-.grid-item { .grid-item {
+
+.grid-item { 
     cursor: pointer;
-    transition: transform 0.2s ease; /* ✨ ADICIONE ESTA LINHA ✨ */
-}/* ✨ ADICIONE ESTA NOVA REGRA ✨ */
+    transition: transform 0.2s ease;
+}
 .grid-item:hover {
-    transform: scale(1.05); /* Faz o item aumentar ligeiramente de tamanho (5%) */
-} }
+    transform: scale(1.05);
+}
+
 .icon-background { width: 100%; aspect-ratio: 1 / 1; position: relative; background-color: var(--card-bg); border-radius: 25px; margin-bottom: 8px; box-shadow: 0 8px 25px var(--shadow-color); transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .grid-item:hover .icon-background { transform: translateY(-5px); box-shadow: 0 12px 30px var(--shadow-color); }
 .icon-background i { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; }
@@ -122,11 +121,12 @@ body {
 
 /* ======================================= */
 /* ESTILOS PARA ECRÃS GRANDES (COMPUTADOR) */
+/* ======================================= */
 @media (min-width: 1024px) {
 
     body {
         padding: 0;
-        overflow: hidden; 
+        overflow: hidden;
     }
 
     .app-container {
@@ -141,6 +141,8 @@ body {
         flex-direction: row;
         margin: 0;
         padding: 0;
+        padding-bottom: 0; /* Reset */
+        padding-top: 0; /* Reset */
     }
 
     .bottom-nav {
@@ -156,6 +158,7 @@ body {
         height: 100%;
         border-right: 1px solid #e4e9f0;
         background: var(--card-bg);
+        border-radius: 0;
     }
 
     .main-content-area {
@@ -169,7 +172,10 @@ body {
     }
     
     .app-header {
+        position: static; /* Reset para o desktop */
         padding: 0 0 30px 0;
+        max-width: none; /* Reset */
+        border-radius: 0; /* Reset */
     }
 
     .content-wrapper {
@@ -178,7 +184,7 @@ body {
         grid-template-columns: 1fr 1fr;
         gap: 30px;
         align-items: flex-start;
-        overflow-y: visible; 
+        overflow-y: visible;
         width: 100%;
         flex-grow: 1;
     }
@@ -189,16 +195,14 @@ body {
         gap: 30px;
     }
     
-    /* ✨ REGRA CORRIGIDA ✨ */
     .icon-grid {
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas para ser mais compacto */
-        gap: 15px; /* Menos espaço */
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
         margin-bottom: 0;
     }
 
-    /* ✨ NOVA REGRA ADICIONADA ✨ */
     .icon-background {
-        height: 100px; /* Altura fixa para os ícones no desktop */
-        aspect-ratio: auto; /* Desliga o modo "quadrado perfeito" */
+        height: 100px;
+        aspect-ratio: auto;
     }
 }
