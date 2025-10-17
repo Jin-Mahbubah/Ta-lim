@@ -34,12 +34,12 @@ body {
 .app-container {
     width: 100%;
     max-width: 375px;
-    height: 100vh; /* ✨ A MUDANÇA PRINCIPAL ✨ */
+    height: 100vh; /* Correto: ocupa a altura do ecrã */
     background-color: var(--light-bg);
     border-radius: 30px;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */ /* <--- LINHA REMOVIDA/COMENTADA */
     display: flex;
     flex-direction: column;
 }
