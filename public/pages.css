@@ -1,0 +1,76 @@
+/* Estilos para páginas de conteúdo (Capítulos, Lições) */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+.page-header .back-button {
+    font-size: 1.5rem;
+    color: var(--dark-text);
+    text-decoration: none;
+}
+.page-header h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.chapters-title, .lessons-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.chapter-item, .lesson-item {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chapter-item:hover, .lesson-item:hover {
+    transform: translateY(-3px);
+}
+.lesson-item i {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+#lesson-content { 
+    background-color: var(--card-bg); 
+    padding: 20px; 
+    border-radius: 15px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+    text-align: left; 
+    font-size: 1.1rem; 
+    line-height: 1.8; 
+    white-space: pre-wrap;
+}
+#start-exercises-button { 
+    display: block; 
+    width: 100%; 
+    background-color: var(--primary-color); 
+    color: var(--white); 
+    border: none; 
+    padding: 18px; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    border-radius: 15px; 
+    cursor: pointer; 
+    margin-top: 30px; 
+    transition: background-color 0.3s ease; 
+}
+#start-exercises-button:hover { background-color: #4db396; }
+
+@media (min-width: 1024px) {
+    .content-wrapper {
+        display: block;
+    }
+}

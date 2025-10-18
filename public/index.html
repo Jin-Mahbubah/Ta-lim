@@ -8,7 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
     <div class="app-container">
@@ -29,25 +31,25 @@
             </header>
 
             <div class="content-wrapper">
-                
                 <div class="left-column">
-                   <section class="time-card">
-    <div class="time-info">
-        <h2 id="prayer-name">Carregando...</h2>
-        <h1 id="prayer-time"><span class="am-pm">--:--</span></h1>
-        <p id="time-to-next"></p>
-    </div>
-    <div class="time-icon">
-        <i id="prayer-icon" class="fas fa-spinner fa-spin"></i>
-    </div>
-</section>
+                    <section class="time-card">
+                        <div class="time-info">
+                            <h2 id="prayer-name">Carregando...</h2>
+                            <h1 id="prayer-time"><span class="am-pm">--:--</span></h1>
+                            <p id="time-to-next"></p>
+                        </div>
+                        <div class="time-icon">
+                            <i id="prayer-icon" class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </section>
+
                     <section class="icon-grid">
-                        <div class="grid-item">
+                        <a href="chapters.html" class="grid-item">
                             <div class="icon-background color-green">
                                 <i class="fas fa-language"></i>
                             </div>
                             <span>Árabe</span>
-                        </div>
+                        </a>
                         <div class="grid-item">
                             <div class="icon-background color-blue"><i class="fas fa-book-quran"></i></div>
                             <span>Al-Quran</span>
@@ -90,10 +92,8 @@
                         </div>
                     </div>
                 </section>
-                
             </div>
         </div>
-
     </div>
     <script src="client.js" defer></script>
 </body>

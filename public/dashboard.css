@@ -1,0 +1,53 @@
+/* Estilos específicos APENAS para o dashboard (index.html) */
+
+.header-text p { font-size: 1.6rem; font-weight: 700; color: var(--dark-text); }
+.notification-button { background: var(--card-bg); border: 1px solid #EAEDED; font-size: 1.2rem; color: var(--light-text); cursor: pointer; width: 45px; height: 45px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.time-card { background: var(--card-bg) radial-gradient(circle at 90% 10%, #E8F8F5 0%, transparent 40%); border-radius: 25px; padding: 25px; display: flex; justify-content: space-between; align-items: center; color: var(--dark-text); margin-bottom: 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.time-info h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; }
+.time-info h1 { font-size: 3rem; font-weight: 800; line-height: 1; }
+.time-info h1 .am-pm { font-size: 1.5rem; font-weight: 600; }
+.time-info p { font-size: 0.8rem; color: var(--light-text); margin-top: 8px; }
+.time-icon { background: var(--primary-color); color: var(--white); width: 50px; height: 50px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; }
+.icon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center; margin-bottom: 30px; }
+.grid-item { cursor: pointer; transition: transform 0.2s ease; text-decoration: none; }
+.grid-item:hover { transform: scale(1.05); }
+.icon-background { width: 100%; aspect-ratio: 1 / 1; position: relative; background-color: var(--card-bg); border-radius: 25px; margin-bottom: 8px; box-shadow: 0 8px 25px var(--shadow-color); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.grid-item:hover .icon-background { transform: translateY(-5px); box-shadow: 0 12px 30px var(--shadow-color); }
+.icon-background i { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; }
+.grid-item span { font-weight: 500; font-size: 0.9rem; color: var(--light-text); }
+.icon-background.color-green i { color: #2ECC71; }
+.icon-background.color-blue i { color: #3498DB; }
+.icon-background.color-purple i { color: #9B59B6; }
+.icon-background.color-orange i { color: #F39C12; }
+.recent-lessons h3 { font-size: 1.3rem; font-weight: 700; color: var(--dark-text); margin-bottom: 15px; text-align: left; }
+.lesson-card { background-color: var(--white); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 15px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-align: left; }
+.lesson-card:hover { transform: translateX(5px); box-shadow: 0 8px 20px rgba(0,0,0,0.07); }
+.lesson-icon { width: 50px; height: 50px; background-color: #E8F8F5; color: var(--primary-color); display: flex; align-items: center; justify-content: center; border-radius: 15px; font-size: 1.5rem; flex-shrink: 0; }
+.lesson-info { flex-grow: 1; }
+.lesson-info h4 { font-size: 1rem; font-weight: 600; color: var(--dark-text); }
+.lesson-info p { font-size: 0.9rem; color: var(--light-text); }
+.play-button { width: 40px; height: 40px; background-color: var(--accent-color); color: var(--white); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: transform 0.2s ease; }
+.play-button:hover { transform: scale(1.1); }
+
+@media (min-width: 1024px) {
+    .content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: flex-start;
+    }
+    .left-column {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    .icon-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 0;
+    }
+    .icon-background {
+        height: 100px;
+        aspect-ratio: auto;
+    }
+}

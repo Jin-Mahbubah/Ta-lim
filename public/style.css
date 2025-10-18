@@ -32,98 +32,72 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    padding-top: 90px;
-    padding-bottom: 80px;
+    padding-bottom: 80px; /* Espaço para a navegação fixa */
+}
+
+.main-content-area {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+.main-content-area::-webkit-scrollbar {
+    display: none;
 }
 
 .app-header {
-    padding: 25px 25px 20px 25px;
+    padding: 25px 25px 0 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0;
-    position: fixed; /* MUDANÇA PARA CORRIGIR O SCROLL NO MOBILE */
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--light-bg);
-    z-index: 1000;
-    max-width: 375px;
-    margin: 0 auto;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
+    flex-shrink: 0; 
 }
 
 .content-wrapper {
     flex-grow: 1;
-    overflow-y: auto;
-    padding: 0 25px 20px 25px; /* Ajustado o padding */
-}
-.content-wrapper::-webkit-scrollbar {
-    display: none;
+    padding: 20px 25px;
 }
 
+/* ✨ ESTILO CORRETO PARA A BARRA DE NAVEGAÇÃO NO TELEMÓVEL ✨ */
 .bottom-nav {
+    position: fixed; /* Fixa na tela */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    
+    /* Centraliza e aplica o estilo de telemóvel */
+    max-width: 375px; 
+    margin: 0 auto; 
+    border-radius: 30px 30px 0 0;
+
+    /* Estilos visuais */
     background-color: var(--card-bg);
     display: flex;
     justify-content: space-around;
     padding: 15px 0 20px 0;
     border-top: 1px solid #f0f0f0;
     box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 375px;
-    margin: 0 auto;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-    z-index: 1000;
 }
 
-.header-text p { font-size: 1.6rem; font-weight: 700; color: var(--dark-text); }
-.notification-button { background: var(--card-bg); border: 1px solid #EAEDED; font-size: 1.2rem; color: var(--light-text); cursor: pointer; width: 45px; height: 45px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-.time-card { background: var(--card-bg) radial-gradient(circle at 90% 10%, #E8F8F5 0%, transparent 40%); border-radius: 25px; padding: 25px; display: flex; justify-content: space-between; align-items: center; color: var(--dark-text); margin-bottom: 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
-.time-info h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; }
-.time-info h1 { font-size: 3rem; font-weight: 800; line-height: 1; }
-.time-info h1 .am-pm { font-size: 1.5rem; font-weight: 600; }
-.time-info p { font-size: 0.8rem; color: var(--light-text); margin-top: 8px; }
-.time-icon { background: var(--primary-color); color: var(--white); width: 50px; height: 50px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; }
-.icon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center; margin-bottom: 30px; }
-
-.grid-item { 
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-.grid-item:hover {
-    transform: scale(1.05);
+.nav-item {
+    text-decoration: none;
+    color: var(--light-text);
+    font-size: 1.5rem;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: color 0.3s ease;
 }
 
-.icon-background { width: 100%; aspect-ratio: 1 / 1; position: relative; background-color: var(--card-bg); border-radius: 25px; margin-bottom: 8px; box-shadow: 0 8px 25px var(--shadow-color); transition: transform 0.2s ease, box-shadow 0.2s ease; }
-.grid-item:hover .icon-background { transform: translateY(-5px); box-shadow: 0 12px 30px var(--shadow-color); }
-.icon-background i { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; }
-.grid-item span { font-weight: 500; font-size: 0.9rem; color: var(--light-text); }
-.icon-background.color-green i { color: #2ECC71; }
-.icon-background.color-blue i { color: #3498DB; }
-.icon-background.color-purple i { color: #9B59B6; }
-.icon-background.color-orange i { color: #F39C12; }
-.recent-lessons h3 { font-size: 1.3rem; font-weight: 700; color: var(--dark-text); margin-bottom: 15px; text-align: left; }
-.lesson-card { background-color: var(--white); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 15px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-align: left; }
-.lesson-card:hover { transform: translateX(5px); box-shadow: 0 8px 20px rgba(0,0,0,0.07); }
-.lesson-icon { width: 50px; height: 50px; background-color: #E8F8F5; color: var(--primary-color); display: flex; align-items: center; justify-content: center; border-radius: 15px; font-size: 1.5rem; flex-shrink: 0; }
-.lesson-info { flex-grow: 1; }
-.lesson-info h4 { font-size: 1rem; font-weight: 600; color: var(--dark-text); }
-.lesson-info p { font-size: 0.9rem; color: var(--light-text); }
-.play-button { width: 40px; height: 40px; background-color: var(--accent-color); color: var(--white); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: transform 0.2s ease; }
-.play-button:hover { transform: scale(1.1); }
-.nav-item { text-decoration: none; color: var(--light-text); font-size: 1.5rem; padding: 5px 10px; border-radius: 15px; transition: color 0.3s ease; }
 .nav-item.active { color: var(--primary-color); }
+.hidden { display: none; }
+
 
 /* ======================================= */
 /* ESTILOS PARA ECRÃS GRANDES (COMPUTADOR) */
 /* ======================================= */
 @media (min-width: 1024px) {
-
     body {
         padding: 0;
         overflow: hidden;
@@ -134,75 +108,40 @@ body {
         width: 100%;
         height: 100vh;
         min-height: auto;
-        max-height: none;
         border-radius: 0;
         box-shadow: none;
         display: flex;
         flex-direction: row;
-        margin: 0;
-        padding: 0;
-        padding-bottom: 0; /* Reset */
-        padding-top: 0; /* Reset */
+        padding-bottom: 0;
     }
 
+    /* ESTILO DA BARRA DE NAVEGAÇÃO PARA COMPUTADOR (SOBREPÕE O ESTILO DE TELEMÓVEL) */
     .bottom-nav {
-        position: static;
-        flex-direction: column;
+        position: static; /* Volta ao normal, deixa de ser fixa */
+        flex-direction: column; /* Fica na vertical */
         justify-content: flex-start;
         align-items: center;
-        padding: 40px 0;
-        gap: 25px;
-        border: none;
-        box-shadow: none;
         width: 100px;
         height: 100%;
-        border-right: 1px solid #e4e9f0;
-        background: var(--card-bg);
+        padding: 40px 0;
+        gap: 25px;
         border-radius: 0;
+        border-right: 1px solid #e4e9f0;
+        box-shadow: none;
+        max-width: none;
     }
-
+    
     .main-content-area {
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
         padding: 30px 40px;
-    }
-    .main-content-area::-webkit-scrollbar {
-        display: none;
     }
     
     .app-header {
-        position: static; /* Reset para o desktop */
         padding: 0 0 30px 0;
-        max-width: none; /* Reset */
-        border-radius: 0; /* Reset */
     }
 
     .content-wrapper {
         padding: 0;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        align-items: flex-start;
-        overflow-y: visible;
         width: 100%;
         flex-grow: 1;
-    }
-    
-    .left-column {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-    }
-    
-    .icon-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        margin-bottom: 0;
-    }
-
-    .icon-background {
-        height: 100px;
-        aspect-ratio: auto;
     }
 }
