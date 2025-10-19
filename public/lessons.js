@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentChapter) {
             chapterTitleEl.textContent = currentChapter.title;
         } else {
-            chapterTitleEl.textContent = `Capítulo ${chapterId}`;
+            chapterTitleEl.textContent = `Capítulo Desconhecido`;
         }
     } catch (error) {
         console.error('Erro ao buscar título do capítulo:', error);
@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             lessonItem.className = 'chapter-item'; // Reutiliza o estilo
             lessonItem.innerHTML = `<span>${lesson.lesson_number} - ${lesson.title}</span><i class="fas fa-chevron-right"></i>`;
             
-            // Adiciona evento de clique para ir para a página da lição individual
             lessonItem.addEventListener('click', () => {
                 window.location.href = `lesson.html?lesson_id=${lesson.id}&chapter_id=${chapterId}`;
             });

@@ -1,0 +1,117 @@
+/* Estilos para a página de exercícios */
+
+.progress-bar-container {
+    flex-grow: 1;
+    height: 15px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%; /* Será atualizado via JS */
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    transition: width 0.3s ease-in-out;
+}
+
+.exercise-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+#question-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+#options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-item {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid transparent;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.option-item:hover {
+    border-color: var(--primary-color);
+}
+
+/* Estilos para quando uma opção é selecionada */
+.option-item.selected {
+    border-color: #3498DB;
+    background-color: #EAF3FA;
+}
+
+.option-item.correct {
+    border-color: #2ECC71;
+    background-color: #E8F8F5;
+    color: #1E8449;
+    font-weight: 600;
+}
+
+.option-item.incorrect {
+    border-color: #E74C3C;
+    background-color: #FDEDEC;
+    color: #B03A2E;
+    font-weight: 600;
+}
+
+/* Desativa o clique depois da resposta */
+.options-disabled .option-item {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Área de Feedback */
+#feedback-area {
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+#feedback-area.correct-feedback {
+    background-color: #E8F8F5;
+}
+#feedback-area.incorrect-feedback {
+    background-color: #FDEDEC;
+}
+
+#feedback-title {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+#feedback-title.correct-feedback { color: #1E8449; }
+#feedback-title.incorrect-feedback { color: #B03A2E; }
+
+#next-question-button {
+    display: block;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 18px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}

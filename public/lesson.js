@@ -8,11 +8,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const lessonId = urlParams.get('lesson_id');
     const chapterId = urlParams.get('chapter_id');
 
-    // Configura o botão "voltar" para ir para a página de lições do capítulo certo
     if (chapterId) {
         backButton.href = `lessons.html?chapter_id=${chapterId}`;
     } else {
-        backButton.href = 'chapters.html'; // Fallback
+        backButton.href = 'chapters.html';
     }
 
     if (!lessonId) {
@@ -28,16 +27,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const lesson = await response.json();
 
         lessonTitleEl.textContent = lesson.title;
-        lessonContentEl.textContent = lesson.content;
 
-        if (lesson.type === 'exercise') {
-            lessonContentEl.classList.add('hidden');
-            startExercisesButton.classList.remove('hidden');
-            
-            startExercisesButton.addEventListener('click', () => {
-                alert(`Iniciar quiz para a lição ${lesson.id}`);
-            });
+        // Usa a biblioteca "marked" para converter o texto em HTML formatado
+        if (lesson.content) {
+            lessonContentEl.innerHTML = marked.parse(lesson.content);
         }
+        
+        startExercisesButton.classList.remove('hidden');
+        
+        startExercisesButton.addEventListener('click', () => {
+            window.location.href = `exercise.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
+        });
 
     } catch (error) {
         console.error('Erro ao buscar o conteúdo da lição:', error);

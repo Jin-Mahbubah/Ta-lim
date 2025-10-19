@@ -27,17 +27,15 @@ app.get('/api/chapters', async (req, res) => {
     }
 });
 
-// API PARA BUSCAR AS LIÇÕES DE UM CAPÍTULO
+// API para buscar as lições de um capítulo
 app.get('/api/lessons', async (req, res) => {
     const { chapter_id } = req.query;
-
     try {
         const { data, error } = await supabase
             .from('lessons')
             .select('*')
             .eq('chapter_id', chapter_id)
-            // ✨ CORREÇÃO ESTÁ AQUI ✨
-            .order('lesson_number', { ascending: true }); // Usar lesson_number
+            .order('lesson_number', { ascending: true });
 
         if (error) throw error;
         res.json(data);
@@ -47,17 +45,15 @@ app.get('/api/lessons', async (req, res) => {
     }
 });
 
-// ✨ NOVA ROTA DE API PARA BUSCAR UMA ÚNICA LIÇÃO ✨
+// API para buscar uma única lição
 app.get('/api/lesson/:id', async (req, res) => {
-    // Obter o ID da lição a partir do URL (ex: /api/lesson/1)
     const { id } = req.params;
-
     try {
         const { data, error } = await supabase
             .from('lessons')
             .select('*')
             .eq('id', id)
-            .single(); // .single() para obter apenas um resultado
+            .single();
 
         if (error) throw error;
         res.json(data);
@@ -66,29 +62,43 @@ app.get('/api/lesson/:id', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar a lição.' });
     }
 });
-// API de perguntas aleatórias (ainda aqui para o futuro)
-app.get('/api/question', async (req, res) => {
+
+
+// ==========================================================
+// ✨ NOVA ROTA DE API PARA BUSCAR OS EXERCÍCIOS DE UMA LIÇÃO ✨
+// ==========================================================
+app.get('/api/exercises', async (req, res) => {
+    // Pega o lesson_id da URL (ex: /api/exercises?lesson_id=1)
+    const { lesson_id } = req.query;
+
+    // Verifica se o ID foi fornecido
+    if (!lesson_id) {
+        return res.status(400).json({ error: 'O ID da lição é obrigatório.' });
+    }
+
     try {
-        const { count, error: countError } = await supabase
-            .from('questions')
-            .select('*', { count: 'exact', head: true });
-
-        if (countError) throw countError;
-        const randomIndex = Math.floor(Math.random() * count);
-
+        // Vai à tabela 'questions' no Supabase
         const { data, error } = await supabase
-            .from('questions')
-            .select('*')
-            .range(randomIndex, randomIndex)
-            .single();
+            .from('questions')      // O nome da nossa tabela
+            .select('*')            // Seleciona todas as colunas
+            .eq('lesson_id', lesson_id); // Filtra apenas pelas perguntas com o lesson_id correto
 
         if (error) throw error;
-        res.json(data);
+        
+        res.json(data); // Envia os dados encontrados como resposta
     } catch (error) {
-        console.error('Erro ao buscar pergunta do Supabase:', error);
-        res.status(500).json({ error: 'Erro interno do servidor.' });
+        console.error('Erro ao buscar exercícios:', error);
+        res.status(500).json({ error: 'Erro ao buscar exercícios.' });
     }
 });
+// ==========================================================
+
+
+// API de pergunta aleatória (vamos manter, pode ser útil no futuro)
+app.get('/api/question', async (req, res) => {
+    // ... (código antigo)
+});
+
 
 app.listen(PORT, () => {
     console.log(`Servidor a correr em http://localhost:${PORT}`);
