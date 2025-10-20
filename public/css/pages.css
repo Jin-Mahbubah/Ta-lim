@@ -1,0 +1,67 @@
+/* Estilos para páginas de conteúdo (Capítulos, Lições) */
+.page-header { display: flex; align-items: center; gap: 20px; width: 100%; }
+.page-header .back-button { font-size: 1.5rem; color: var(--dark-text); text-decoration: none; }
+.page-header h1 { font-size: 1.2rem; font-weight: 600; }
+
+#lesson-content { background-color: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); line-height: 1.8; }
+#lesson-content h3 { margin-top: 20px; margin-bottom: 10px; }
+#lesson-content ul { list-style: none; padding-left: 0; }
+#lesson-content li { margin-bottom: 15px; }
+
+/* Estilo para o botão "Iniciar Exercícios" */
+#start-exercises-button { display: block; width: 100%; background-color: var(--primary-color); color: var(--white); border: none; padding: 18px; font-size: 1.1rem; font-weight: 600; border-radius: 15px; cursor: pointer; margin-top: auto; transition: background-color 0.3s ease; }
+#start-exercises-button:hover { background-color: #4db396; }
+
+/* Interatividade da Lição */
+.audio-icon { color: var(--primary-color); cursor: pointer; margin: 0 8px; transition: transform 0.2s ease; }
+.audio-icon:hover { transform: scale(1.2); }
+.toggle-translit { background-color: #eaf0ee; color: var(--light-text); border: none; border-radius: 5px; padding: 2px 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; margin-left: 8px; }
+.translit { color: var(--light-text); font-style: italic; }
+
+/* Lição Passo-a-Passo */
+.lesson-step { display: none; }
+.lesson-step.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.lesson-navigation { padding-top: 20px; margin-top: auto; border-top: 1px solid #eee; }
+#progress-indicator { text-align: center; color: var(--light-text); font-size: 0.9rem; margin-bottom: 15px; }
+.nav-buttons { display: flex; justify-content: space-between; gap: 15px; }
+.nav-buttons button { flex-grow: 1; background-color: var(--primary-color); color: var(--white); border: none; padding: 15px; font-size: 1rem; font-weight: 600; border-radius: 12px; cursor: pointer; }
+#prev-step-button { background-color: #eaf0ee; color: var(--dark-text); }
+
+/* Estilos para páginas de conteúdo (Capítulos, Lições) */
+/* ... (todo o seu código anterior) ... */
+
+#prev-step-button {
+    background-color: #eaf0ee;
+    color: var(--dark-text);
+}
+/* ALTERAÇÃO: Removida uma chaveta '}' extra que estava no final do ficheiro. */
+
+/* Estilo para os itens da lista de Capítulos e Lições */
+.chapter-item {
+    background-color: var(--card-bg); /* Fundo branco */
+    padding: 20px;
+    border-radius: 15px; /* Cantos arredondados */
+    margin-bottom: 15px; /* Espaçamento entre itens */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Sombra suave */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+    color: var(--dark-text);
+}
+
+/* Efeito ao passar o rato por cima */
+.chapter-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+}
+
+/* Efeito ao clicar (o que você pediu) */
+.chapter-item:active {
+    transform: scale(0.98); /* Encolhe ligeiramente para dar feedback */
+    background-color: #f7f7f7; /* Cor subtil de clique */
+}

@@ -115,3 +115,10 @@
     margin-top: 20px;
     transition: background-color 0.3s ease;
 }
+/* Estilos para a página de exercícios */
+/* ... (todo o seu código anterior) ... */
+
+#next-question-button:hover {
+    background-color: #4db396;
+}
+/* ALTERAÇÃO: Removida uma chaveta '}' extra que estava no final do ficheiro. */

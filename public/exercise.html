@@ -9,11 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="pages.css">
-    <link rel="stylesheet" href="exercise.css"> </head>
-<body>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/exercise.css">
+</head>
+<body class="body-no-nav">
     <div class="app-container">
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i></a>
+            <a href="chapters.html" class="nav-item"><i class="fas fa-book-open"></i></a>
+            <a href="#" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+            <a href="#" class="nav-item"><i class="far fa-user-circle"></i></a>
+        </nav>
         <div class="main-content-area">
             <header class="app-header">
                 <div class="page-header">
@@ -26,9 +33,7 @@
             
             <div class="content-wrapper exercise-content">
                 <h2 id="question-title">Carregando pergunta...</h2>
-                <div id="options-container">
-                    </div>
-
+                <div id="options-container"></div>
                 <div id="feedback-area" class="hidden">
                     <h3 id="feedback-title"></h3>
                     <p id="feedback-text"></p>
@@ -37,5 +42,6 @@
             </div>
         </div>
     </div>
-    <script src="exercise.js" defer></script> </body>
+    <script src="js/exercise.js" defer></script>
+</body>
 </html>

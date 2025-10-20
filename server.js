@@ -1,15 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path'); // Módulo 'path' é essencial aqui
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ALTERAÇÃO CRÍTICA: Corrigido o caminho para a pasta 'public'
+// Isto garante que o servidor encontra sempre os seus ficheiros CSS e JS.
+app.use(express.static(path.join(__dirname, 'public')));
+
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-app.use(express.static('public'));
+
+// Rota para a página principal (login)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // API para buscar os capítulos
 app.get('/api/chapters', async (req, res) => {
@@ -63,42 +72,27 @@ app.get('/api/lesson/:id', async (req, res) => {
     }
 });
 
-
-// ==========================================================
-// ✨ NOVA ROTA DE API PARA BUSCAR OS EXERCÍCIOS DE UMA LIÇÃO ✨
-// ==========================================================
+// API para buscar os exercícios de uma lição
 app.get('/api/exercises', async (req, res) => {
-    // Pega o lesson_id da URL (ex: /api/exercises?lesson_id=1)
     const { lesson_id } = req.query;
 
-    // Verifica se o ID foi fornecido
     if (!lesson_id) {
         return res.status(400).json({ error: 'O ID da lição é obrigatório.' });
     }
 
     try {
-        // Vai à tabela 'questions' no Supabase
         const { data, error } = await supabase
-            .from('questions')      // O nome da nossa tabela
-            .select('*')            // Seleciona todas as colunas
-            .eq('lesson_id', lesson_id); // Filtra apenas pelas perguntas com o lesson_id correto
+            .from('questions')
+            .select('*')
+            .eq('lesson_id', lesson_id);
 
         if (error) throw error;
-        
-        res.json(data); // Envia os dados encontrados como resposta
+        res.json(data);
     } catch (error) {
         console.error('Erro ao buscar exercícios:', error);
         res.status(500).json({ error: 'Erro ao buscar exercícios.' });
     }
 });
-// ==========================================================
-
-
-// API de pergunta aleatória (vamos manter, pode ser útil no futuro)
-app.get('/api/question', async (req, res) => {
-    // ... (código antigo)
-});
-
 
 app.listen(PORT, () => {
     console.log(`Servidor a correr em http://localhost:${PORT}`);

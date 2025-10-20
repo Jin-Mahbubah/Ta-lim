@@ -25,7 +25,7 @@ body {
 
 .app-container {
     width: 100%;
-    max-width: 375px;
+    max-width: 375px; /* Padrão para vista de telemóvel */
     min-height: 100vh;
     background-color: var(--light-bg);
     margin: auto;
@@ -42,9 +42,7 @@ body {
     flex-grow: 1;
     overflow-y: auto;
 }
-.main-content-area::-webkit-scrollbar {
-    display: none;
-}
+.main-content-area::-webkit-scrollbar { display: none; }
 
 .app-header {
     padding: 25px 25px 0 25px;
@@ -57,22 +55,19 @@ body {
 .content-wrapper {
     flex-grow: 1;
     padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
 }
 
-/* ✨ ESTILO CORRETO PARA A BARRA DE NAVEGAÇÃO NO TELEMÓVEL ✨ */
 .bottom-nav {
-    position: fixed; /* Fixa na tela */
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    
-    /* Centraliza e aplica o estilo de telemóvel */
     max-width: 375px; 
     margin: 0 auto; 
     border-radius: 30px 30px 0 0;
-
-    /* Estilos visuais */
     background-color: var(--card-bg);
     display: flex;
     justify-content: space-around;
@@ -91,57 +86,26 @@ body {
 }
 
 .nav-item.active { color: var(--primary-color); }
-.hidden { display: none; }
+.hidden { display: none !important; }
 
+.body-no-nav .bottom-nav { display: none; }
+.body-no-nav .app-container { padding-bottom: 0; }
 
-/* ======================================= */
-/* ESTILOS PARA ECRÃS GRANDES (COMPUTADOR) */
-/* ======================================= */
 @media (min-width: 1024px) {
-    body {
-        padding: 0;
-        overflow: hidden;
-    }
+    body { padding: 0; overflow: hidden; }
+    .app-container { max-width: none; width: 100%; height: 100vh; min-height: auto; border-radius: 0; box-shadow: none; display: flex; flex-direction: row; padding-bottom: 0; }
+    .bottom-nav { position: static; flex-direction: column; justify-content: flex-start; align-items: center; width: 100px; height: 100%; padding: 40px 0; gap: 25px; border-radius: 0; border-right: 1px solid #e4e9f0; box-shadow: none; max-width: none; }
+    .main-content-area { padding: 30px 40px; }
+    .app-header { padding: 0 0 30px 0; }
+    .content-wrapper { padding: 0; width: 100%; flex-grow: 1; }
 
-    .app-container {
-        max-width: none;
-        width: 100%;
-        height: 100vh;
-        min-height: auto;
-        border-radius: 0;
-        box-shadow: none;
-        display: flex;
-        flex-direction: row;
-        padding-bottom: 0;
-    }
-
-    /* ESTILO DA BARRA DE NAVEGAÇÃO PARA COMPUTADOR (SOBREPÕE O ESTILO DE TELEMÓVEL) */
+    /* --- REGRAS CORRIGIDAS PARA MOVER A BARRA PARA A ESQUERDA --- */
     .bottom-nav {
-        position: static; /* Volta ao normal, deixa de ser fixa */
-        flex-direction: column; /* Fica na vertical */
-        justify-content: flex-start;
-        align-items: center;
-        width: 100px;
-        height: 100%;
-        padding: 40px 0;
-        gap: 25px;
-        border-radius: 0;
-        border-right: 1px solid #e4e9f0;
-        box-shadow: none;
-        max-width: none;
-    }
-    
-    .main-content-area {
-        padding: 30px 40px;
-    }
-    
-    .app-header {
-        padding: 0 0 30px 0;
+        order: 1;
     }
 
-    .content-wrapper {
-        padding: 0;
-        width: 100%;
-        flex-grow: 1;
+    .main-content-area {
+        order: 2;
     }
+    /* ----------------------------------------------------------- */
 }
