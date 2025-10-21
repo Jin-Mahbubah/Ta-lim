@@ -72,6 +72,24 @@ app.get('/api/lesson/:id', async (req, res) => {
     }
 });
 
+// NOVA ROTA - API PARA BUSCAR OS PASSOS DE UMA LIÇÃO
+app.get('/api/lesson-steps/:lesson_id', async (req, res) => {
+    const { lesson_id } = req.params;
+    try {
+        const { data, error } = await supabase
+            .from('lesson_steps')
+            .select('*')
+            .eq('lesson_id', lesson_id)
+            .order('step_order', { ascending: true }); // Garante que os passos vêm na ordem correta
+
+        if (error) throw error;
+        res.json(data);
+    } catch (error) {
+        console.error(`Erro ao buscar passos da lição ${lesson_id}:`, error);
+        res.status(500).json({ error: 'Erro ao buscar os passos da lição.' });
+    }
+});
+
 // API para buscar os exercícios de uma lição
 app.get('/api/exercises', async (req, res) => {
     const { lesson_id } = req.query;

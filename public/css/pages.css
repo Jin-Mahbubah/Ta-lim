@@ -65,3 +65,65 @@
     transform: scale(0.98); /* Encolhe ligeiramente para dar feedback */
     background-color: #f7f7f7; /* Cor subtil de clique */
 }
+
+/* Adiciona estilos para as caixas de introdução e gramática */
+.intro-box, .grammar-box {
+    background-color: #eef7f4; /* Um verde muito claro */
+    border-left: 4px solid var(--primary-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.grammar-box h3 {
+    margin-top: 0;
+}
+
+/* --- A CORREÇÃO PRINCIPAL ESTÁ AQUI --- */
+/* Garante que o conteúdo de texto dentro dos cartões se organize corretamente */
+.lesson-text {
+    display: flex;
+    flex-direction: column; /* Força os itens a empilharem-se na vertical */
+    gap: 15px; /* Adiciona um espaço entre as linhas do diálogo */
+    width: 100%;
+}
+
+.dialogue-line {
+    width: 100%;
+}
+
+/* Estilos para os balões de diálogo */
+.dialogue-line {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
+    cursor: pointer; /* Indica que a linha é clicável */
+}
+
+.dialogue-line .arabic-text {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.dialogue-line .translation-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+    border-top: 1px dashed #eee;
+    margin-top: 5px;
+    padding-top: 5px;
+}
+
+/* Estilo para a primeira pessoa (alinhado à esquerda) */
+.speaker-1 {
+    background-color: #e9ecef;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+/* Estilo para a segunda pessoa (alinhado à direita) */
+.speaker-2 {
+    background-color: #e2f5ee; /* Verde claro da nossa paleta */
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
