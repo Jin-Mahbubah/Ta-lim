@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ta-lim - Dashboard</title>
-    
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/dashboard.css">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,60 +15,32 @@
     <div class="app-container">
         <div class="main-content-area">
             <header class="app-header">
-                <div class="header-text">
-                    <p>Salam, Líria</p>
-                </div>
+                <div class="header-text"><p>Salam, Líria</p></div>
                 <button class="notification-button"><i class="fas fa-bell"></i></button>
             </header>
-
             <div class="content-wrapper">
                 <div class="left-column">
                     <section class="time-card">
                         <div class="time-info">
                             <h2 id="prayer-name">Carregando...</h2>
-                            <h1 id="prayer-time"><span class="am-pm">--:--</span></h1>
+                            <h1 id="prayer-time">--:--</h1>
                             <p id="time-to-next"></p>
                         </div>
-                        <div class="time-icon">
-                            <i id="prayer-icon" class="fas fa-spinner fa-spin"></i>
-                        </div>
+                        <div class="time-icon"><i id="prayer-icon" class="fas fa-spinner fa-spin"></i></div>
                     </section>
-
                     <section class="icon-grid">
-                        <a href="/chapters.html" class="grid-item">
-                            <div class="icon-background color-green">
-                                <i class="fas fa-language"></i>
-                            </div>
-                            <span>Árabe</span>
-                        </a>
-                        <div class="grid-item">
-                            <div class="icon-background color-blue"><i class="fas fa-book-quran"></i></div>
-                            <span>Al-Quran</span>
-                        </div>
-                        <div class="grid-item">
-                            <div class="icon-background color-purple"><i class="fas fa-mosque"></i></div>
-                            <span>Orações</span>
-                        </div>
-                        <div class="grid-item">
-                            <div class="icon-background color-orange"><i class="fas fa-book-open"></i></div>
-                            <span>Hadith</span>
-                        </div>
+                        <a href="/chapters.html" class="grid-item"><div class="icon-background color-green"><i class="fas fa-language"></i></div><span>Árabe</span></a>
+                        <div class="grid-item"><div class="icon-background color-blue"><i class="fas fa-book-quran"></i></div><span>Al-Quran</span></div>
+                        <div class="grid-item"><div class="icon-background color-purple"><i class="fas fa-mosque"></i></div><span>Orações</span></div>
+                        <div class="grid-item"><div class="icon-background color-orange"><i class="fas fa-book-open"></i></div><span>Hadith</span></div>
                     </section>
                 </div>
-
                 <section class="recent-lessons">
                     <h3>Lições Recentes</h3>
                     <div class="lesson-card">
-                        <div class="lesson-icon">
-                            <i class="fas fa-pen-nib"></i>
-                        </div>
-                        <div class="lesson-info">
-                            <h4>As Letras Solares e Lunares</h4>
-                            <p>Gramática Essencial</p>
-                        </div>
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
+                        <div class="lesson-icon"><i class="fas fa-pen-nib"></i></div>
+                        <div class="lesson-info"><h4>As Letras Solares e Lunares</h4><p>Gramática Essencial</p></div>
+                        <div class="play-button"><i class="fas fa-play"></i></div>
                     </div>
                 </section>
             </div>
@@ -81,8 +51,7 @@
             <a href="#" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
             <a href="#" class="nav-item"><i class="far fa-user-circle"></i></a>
         </nav>
-        </div>
-
+    </div>
     <script src="/js/client.js" defer></script>
     <script src="/js/nav.js" defer></script>
 </body>

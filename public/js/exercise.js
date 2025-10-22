@@ -11,117 +11,85 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let questions = [];
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const lessonId = urlParams.get('lesson_id');
+    const chapterId = urlParams.get('chapter_id');
+
     async function startQuiz() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const lessonId = urlParams.get('lesson_id');
-        const chapterId = urlParams.get('chapter_id');
-
-        backButton.href = `lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
-
-        if (!lessonId) {
-            questionTitleEl.textContent = "Erro: ID da lição não encontrado.";
-            return;
-        }
+        backButton.href = `/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
+        if (!lessonId) { return; }
 
         try {
             const response = await fetch(`/api/exercises?lesson_id=${lessonId}`);
-            if (!response.ok) throw new Error('Falha ao carregar exercícios.');
-            
             questions = await response.json();
-
             if (!questions || questions.length === 0) {
-                questionTitleEl.textContent = "Nenhum exercício encontrado para esta lição.";
-                optionsContainerEl.innerHTML = '';
+                questionTitleEl.textContent = "Nenhum exercício encontrado.";
                 return;
             }
-
             loadQuestion(currentQuestionIndex);
-
         } catch (error) {
             console.error("Erro ao buscar exercícios:", error);
-            questionTitleEl.textContent = "Não foi possível carregar os exercícios.";
         }
     }
 
-    function loadQuestion(questionIndex) {
-        optionsContainerEl.innerHTML = '';
+    function loadQuestion(index) {
         feedbackAreaEl.classList.add('hidden');
-        optionsContainerEl.classList.remove('options-disabled');
+        optionsContainerEl.innerHTML = '';
+        optionsContainerEl.style.pointerEvents = 'auto';
 
-        const question = questions[questionIndex];
+        const question = questions[index];
         questionTitleEl.textContent = question.text;
 
-        const progressPercentage = (questionIndex / questions.length) * 100;
-        progressBar.style.width = `${progressPercentage}%`;
+        progressBar.style.width = `${(index / questions.length) * 100}%`;
 
-        // ✨ A CORREÇÃO ESTÁ AQUI ✨
-        // Agora verificamos o tipo de pergunta antes de fazer qualquer coisa.
-        if (question.type === 'multiple_choice') {
-            // Verificamos também se as opções existem e não são nulas
-            if (question.options && question.options.length > 0) {
-                question.options.forEach((option, index) => {
-                    const optionElement = document.createElement('div');
-                    optionElement.className = 'option-item';
-                    optionElement.textContent = option;
-                    optionElement.addEventListener('click', () => selectAnswer(optionElement, index, question.correct_option_index));
-                    optionsContainerEl.appendChild(optionElement);
-                });
-            }
-        } else if (question.type === 'fill_in_blank') {
-            // No futuro, podemos adicionar aqui a lógica para este tipo de pergunta.
-            optionsContainerEl.innerHTML = "<p><i>(Tipo de pergunta 'Preencher o espaço' ainda não implementado.)</i></p>";
-            // Esconde o botão de feedback para este tipo
-            feedbackAreaEl.classList.remove('hidden');
-            feedbackAreaEl.innerHTML = '<button id="next-question-button">Continuar</button>';
-            document.getElementById('next-question-button').addEventListener('click', handleNextQuestion);
-        } else {
-            optionsContainerEl.innerHTML = "<p><i>Tipo de pergunta não reconhecido.</i></p>";
+        if (question.type === 'multiple_choice' && question.options) {
+            question.options.forEach((option, optionIndex) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'option-item';
+                optionEl.textContent = option;
+                optionEl.onclick = () => selectAnswer(optionEl, optionIndex, question.correct_option_index);
+                optionsContainerEl.appendChild(optionEl);
+            });
         }
     }
-    
-    // Função para tratar o clique no botão "Continuar"
-    function handleNextQuestion() {
+
+    function selectAnswer(selectedEl, selectedIndex, correctIndex) {
+        optionsContainerEl.style.pointerEvents = 'none';
+        const isCorrect = selectedIndex === correctIndex;
+
+        if (isCorrect) {
+            selectedEl.classList.add('correct');
+            feedbackTitleEl.textContent = "Correto!";
+            feedbackAreaEl.className = 'correct-feedback';
+            score++;
+        } else {
+            selectedEl.classList.add('incorrect');
+            optionsContainerEl.children[correctIndex]?.classList.add('correct');
+            feedbackTitleEl.textContent = "Incorreto!";
+            feedbackAreaEl.className = 'incorrect-feedback';
+        }
+        feedbackAreaEl.classList.remove('hidden');
+    }
+
+    function endQuiz() {
+        progressBar.style.width = `100%`;
+        document.getElementById('question-area').innerHTML = `
+            <h2>🎉 Quiz Completo!</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-top: 20px;">
+                Você acertou ${score} de ${questions.length} perguntas.
+            </p>
+        `;
+        feedbackAreaEl.classList.add('hidden');
+    }
+
+    nextQuestionButton.addEventListener('click', () => {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
             loadQuestion(currentQuestionIndex);
         } else {
             endQuiz();
         }
-    }
-
-    function selectAnswer(selectedElement, selectedOptionIndex, correctOptionIndex) {
-        optionsContainerEl.classList.add('options-disabled');
-        const isCorrect = selectedOptionIndex === correctOptionIndex;
-
-        if (isCorrect) {
-            selectedElement.classList.add('correct');
-            feedbackTitleEl.textContent = "Correto!";
-            feedbackTitleEl.className = 'correct-feedback';
-            feedbackAreaEl.className = 'correct-feedback';
-            score++;
-        } else {
-            selectedElement.classList.add('incorrect');
-            // Mostra qual era a correta
-            if (optionsContainerEl.children[correctOptionIndex]) {
-                 optionsContainerEl.children[correctOptionIndex].classList.add('correct');
-            }
-            feedbackTitleEl.textContent = "Incorreto!";
-            feedbackTitleEl.className = 'incorrect-feedback';
-            feedbackAreaEl.className = 'incorrect-feedback';
-        }
-        feedbackAreaEl.classList.remove('hidden');
-        // Adiciona o botão continuar no feedback
-        feedbackAreaEl.innerHTML += '<button id="next-question-button">Continuar</button>';
-        document.getElementById('next-question-button').addEventListener('click', handleNextQuestion);
-    }
-
-    // Função para terminar o quiz
-    function endQuiz() {
-        progressBar.style.width = `100%`;
-        questionTitleEl.textContent = `Quiz Completo!`;
-        optionsContainerEl.innerHTML = `<p style="text-align: center; font-size: 1.2rem;">Você acertou ${score} de ${questions.length} perguntas.</p>`;
-        feedbackAreaEl.classList.add('hidden');
-    }
+    });
 
     startQuiz();
 });

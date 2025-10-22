@@ -1,44 +1,13 @@
-/* Estilos para páginas de conteúdo (Capítulos, Lições) */
-.page-header { display: flex; align-items: center; gap: 20px; width: 100%; }
-.page-header .back-button { font-size: 1.5rem; color: var(--dark-text); text-decoration: none; }
-.page-header h1 { font-size: 1.2rem; font-weight: 600; }
-
-#lesson-content { background-color: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); line-height: 1.8; }
-#lesson-content h3 { margin-top: 20px; margin-bottom: 10px; }
-#lesson-content ul { list-style: none; padding-left: 0; }
-#lesson-content li { margin-bottom: 15px; }
-
-/* Estilo para o botão "Iniciar Exercícios" */
-#start-exercises-button { display: block; width: 100%; background-color: var(--primary-color); color: var(--white); border: none; padding: 18px; font-size: 1.1rem; font-weight: 600; border-radius: 15px; cursor: pointer; margin-top: auto; transition: background-color 0.3s ease; }
-#start-exercises-button:hover { background-color: #4db396; }
-
-/* Interatividade da Lição */
-.audio-icon { color: var(--primary-color); cursor: pointer; margin: 0 8px; transition: transform 0.2s ease; }
-.audio-icon:hover { transform: scale(1.2); }
-.toggle-translit { background-color: #eaf0ee; color: var(--light-text); border: none; border-radius: 5px; padding: 2px 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; margin-left: 8px; }
-.translit { color: var(--light-text); font-style: italic; }
-
-/* Lição Passo-a-Passo */
-.lesson-step { display: none; }
-.lesson-step.active { display: block; animation: fadeIn 0.5s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.lesson-navigation { padding-top: 20px; margin-top: auto; border-top: 1px solid #eee; }
-#progress-indicator { text-align: center; color: var(--light-text); font-size: 0.9rem; margin-bottom: 15px; }
-.nav-buttons { display: flex; justify-content: space-between; gap: 15px; }
-.nav-buttons button { flex-grow: 1; background-color: var(--primary-color); color: var(--white); border: none; padding: 15px; font-size: 1rem; font-weight: 600; border-radius: 12px; cursor: pointer; }
-#prev-step-button { background-color: #eaf0ee; color: var(--dark-text); }
-
-/* Estilos para páginas de conteúdo (Capítulos, Lições) */
-/* ... (todo o seu código anterior) ... */
-
-#prev-step-button {
-    background-color: #eaf0ee;
+/* Estilos para páginas de Capítulos e Lições */
+.chapters-title, .lessons-title {
+    font-size: 1.3rem;
+    font-weight: 700;
     color: var(--dark-text);
+    margin-bottom: 20px;
+    text-align: left;
 }
-/* ALTERAÇÃO: Removida uma chaveta '}' extra que estava no final do ficheiro. */
 
-/* Estilo para os itens da lista de Capítulos e Lições */
+/* Estilo para os itens da lista de Capítulos e Lições (agora cartões) */
 .chapter-item {
     background-color: var(--card-bg); /* Fundo branco */
     padding: 20px;
@@ -52,78 +21,253 @@
     transition: all 0.2s ease-in-out;
     font-weight: 500;
     color: var(--dark-text);
+    text-decoration: none; /* Remove sublinhado se for link */
 }
 
-/* Efeito ao passar o rato por cima */
 .chapter-item:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.07);
 }
 
-/* Efeito ao clicar (o que você pediu) */
-.chapter-item:active {
-    transform: scale(0.98); /* Encolhe ligeiramente para dar feedback */
-    background-color: #f7f7f7; /* Cor subtil de clique */
+.chapter-item span {
+    flex-grow: 1; /* Faz o texto ocupar o espaço disponível */
+    margin-right: 15px; /* Espaço antes do ícone */
 }
 
-/* Adiciona estilos para as caixas de introdução e gramática */
+.chapter-item i {
+    color: var(--light-text); /* Cor cinza clara para o ícone */
+    font-size: 0.9rem;
+}
+
+/* =================================================================== */
+/* --- ESTILOS DA PÁGINA DA LIÇÃO --- */
+/* =================================================================== */
+
+#lesson-content-area {
+    /* Esta área conterá o conteúdo ou a mensagem de conclusão */
+    position: relative;
+    min-height: 200px; /* Garante algum espaço mesmo antes do conteúdo carregar */
+}
+
+#lesson-content {
+    /* Este div receberá o HTML de cada passo */
+     margin-bottom: 20px; /* Espaço antes dos botões de navegação ou exercício */
+}
+
+/* Estilos para imagens na lição */
+.lesson-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: block; /* Garante que a imagem ocupe a linha */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Estilos para as caixas especiais */
 .intro-box, .grammar-box {
     background-color: #eef7f4; /* Um verde muito claro */
-    border-left: 4px solid var(--primary-color);
+    border-left: 5px solid var(--primary-color);
     padding: 20px;
     border-radius: 8px;
-    margin: 10px 0;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
-.grammar-box h3 {
+.intro-box h3, .grammar-box h3 {
     margin-top: 0;
+    color: var(--primary-color);
 }
 
-/* --- A CORREÇÃO PRINCIPAL ESTÁ AQUI --- */
-/* Garante que o conteúdo de texto dentro dos cartões se organize corretamente */
+.grammar-box code { /* Estilo para código dentro da caixa de gramática */
+    background-color: #e2e8e6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+/* Container principal do texto (para alinhar balões, etc.) */
 .lesson-text {
     display: flex;
-    flex-direction: column; /* Força os itens a empilharem-se na vertical */
-    gap: 15px; /* Adiciona um espaço entre as linhas do diálogo */
+    flex-direction: column; 
+    gap: 12px; /* Espaço entre balões de diálogo */
     width: 100%;
+    margin-bottom: 15px; /* Espaço antes do botão de tradução */
 }
 
+/* Estilos para linhas individuais (vocabulário ou diálogo) */
 .dialogue-line {
-    width: 100%;
+    padding: 12px 18px;
+    border-radius: 20px; /* Mais arredondado para balões */
+    max-width: 85%; /* Balões não ocupam a largura toda */
+    cursor: pointer; 
+    background-color: #f1f3f5; /* Fundo padrão */
+    transition: background-color 0.2s ease;
+}
+.dialogue-line:hover {
+    background-color: #e9ecef;
 }
 
-/* Estilos para os balões de diálogo */
-.dialogue-line {
-    padding: 10px 15px;
-    border-radius: 18px;
-    max-width: 80%;
-    cursor: pointer; /* Indica que a linha é clicável */
+.dialogue-line p {
+    margin: 0; /* Remove margens padrão dos parágrafos */
 }
 
 .dialogue-line .arabic-text {
-    margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.2rem; /* Texto árabe ligeiramente maior */
+    line-height: 1.7;
+    margin-bottom: 5px; /* Pequeno espaço antes da tradução */
 }
 
 .dialogue-line .translation-text {
     font-size: 0.9rem;
-    color: #6c757d;
-    border-top: 1px dashed #eee;
-    margin-top: 5px;
-    padding-top: 5px;
+    color: #555; /* Cor um pouco mais escura */
+    /* border-top: 1px dashed #ddd; */ /* Linha separadora opcional */
+    /* margin-top: 8px; */
+    /* padding-top: 8px; */
 }
 
-/* Estilo para a primeira pessoa (alinhado à esquerda) */
+/* Alinhamento dos balões */
 .speaker-1 {
-    background-color: #e9ecef;
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
+    background-color: #e9ecef; /* Cinza claro */
+    align-self: flex-start; /* Alinha à esquerda */
+    border-bottom-left-radius: 5px; /* Canto menos redondo */
 }
 
-/* Estilo para a segunda pessoa (alinhado à direita) */
 .speaker-2 {
-    background-color: #e2f5ee; /* Verde claro da nossa paleta */
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
+    background-color: #e2f5ee; /* Verde claro */
+    align-self: flex-end; /* Alinha à direita */
+    border-bottom-right-radius: 5px; /* Canto menos redondo */
 }
 
+/* Botão de Tradução (Ícone) */
+.translate-button-icon {
+    background-color: #e9ecef;
+    color: var(--dark-text);
+    border: none;
+    border-radius: 50%;
+    width: 40px; /* Ligeiramente menor */
+    height: 40px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto 0 auto; /* Menos margem superior */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.translate-button-icon:hover {
+    background-color: #dde2e7;
+    transform: translateY(-2px); /* Efeito suave ao passar o rato */
+}
+
+.translate-button-icon.active { /* Estado ativo (traduções visíveis) */
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 4px 8px rgba(97, 197, 168, 0.3);
+}
+
+.audio-icon {
+    color: var(--primary-color);
+    cursor: pointer;
+    margin-left: 8px; /* Espaço à esquerda do ícone */
+    transition: transform 0.2s ease;
+    font-size: 1rem; /* Tamanho do ícone de áudio */
+}
+
+.audio-icon:hover {
+    transform: scale(1.15);
+}
+
+/* Caixa de Conclusão da Lição */
+.completion-box {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.completion-box .completion-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.completion-box h3 {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.completion-box p {
+    color: var(--light-text);
+}
+
+
+/* Botão Iniciar Exercícios (já existia, talvez ajustar margem) */
+#start-exercises-button {
+    display: block;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 18px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 30px; /* Aumentar margem superior */
+    transition: background-color 0.3s ease;
+}
+
+#start-exercises-button:hover {
+    background-color: #4db396; /* Tom mais escuro */
+}
+
+/* Navegação da Lição */
+.lesson-navigation {
+    padding-top: 20px;
+    margin-top: auto; /* Empurra a navegação para baixo se houver espaço */
+    border-top: 1px solid #eee;
+}
+
+#progress-indicator {
+    text-align: center;
+    color: var(--light-text);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-buttons button {
+    flex-grow: 1;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background-color: #4db396; /* Tom mais escuro */
+}
+
+#prev-step-button {
+    background-color: #eaf0ee;
+    color: var(--dark-text);
+}
+
+#prev-step-button:hover {
+    background-color: #dde5e2;
+}
