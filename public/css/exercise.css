@@ -122,3 +122,17 @@
     background-color: #4db396;
 }
 /* ALTERAÇÃO: Removida uma chaveta '}' extra que estava no final do ficheiro. */
+
+/* Estilo para a imagem do exercício */
+#image-container {
+    margin-bottom: 20px;
+    text-align: center; /* Centra a imagem */
+}
+
+.exercise-image {
+    max-width: 80%; /* Limita a largura */
+    max-height: 200px; /* Limita a altura */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}

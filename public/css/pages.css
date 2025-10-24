@@ -55,13 +55,17 @@
 }
 
 /* Estilos para imagens na lição */
+/* Estilos para imagens na lição (VERSÃO CORRIGIDA) */
 .lesson-image {
-    max-width: 100%;
-    height: auto;
+    max-width: 100%; /* Garante que nunca ultrapasse o cartão */
+    height: auto;    /* Mantém a proporção */
     border-radius: 10px;
     margin-bottom: 20px;
-    display: block; /* Garante que a imagem ocupe a linha */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: block;
+    margin-left: auto;  /* Centra a imagem horizontalmente */
+    margin-right: auto; /* Centra a imagem horizontalmente */
+    max-height: 350px;  /* Limita a altura máxima em ecrãs grandes */
+    object-fit: contain; /* Garante que a imagem inteira apareça, sem distorção */
 }
 
 /* Estilos para as caixas especiais */
@@ -270,4 +274,71 @@
 
 #prev-step-button:hover {
     background-color: #dde5e2;
+}
+
+/* --- Estilos para Passos Interativos na Lição --- */
+
+.question-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.interactive-options {
+    display: flex;
+    flex-direction: column; /* Opções em coluna por padrão */
+    gap: 10px;
+    margin-top: 15px;
+    align-items: center; /* Centra os botões */
+}
+
+/* Botões Sim/Não */
+.yes-no-options button.interactive-option {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    min-width: 100px;
+}
+
+/* Opções de Múltipla Escolha (reutiliza estilo dos exercícios) */
+.mc-options button.interactive-option {
+    background-color: var(--card-bg);
+    padding: 15px 20px; /* Ajustar padding */
+    border-radius: 12px;
+    border: 1px solid #e0e0e0; /* Borda suave */
+    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center; /* Centrar texto */
+    width: 80%; /* Largura das opções */
+    cursor: pointer;
+}
+
+.mc-options button.interactive-option:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* Estilos de Feedback (Comum a Sim/Não e MC) */
+button.interactive-option.correct {
+    background-color: #d1f7e8; /* Verde muito claro */
+    color: #1a6a4a;
+    border-color: #28a745;
+    font-weight: 600;
+}
+
+button.interactive-option.incorrect {
+    background-color: #fde2e4; /* Vermelho muito claro */
+    color: #8f2a2f;
+    border-color: #dc3545;
+    font-weight: 600;
+}
+
+/* Desabilitado */
+button.interactive-option:disabled {
+    cursor: default;
+}
+button.interactive-option:disabled:not(.correct):not(.incorrect) {
+   opacity: 0.6; /* Esmaece os não selecionados */
 }
