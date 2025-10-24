@@ -342,3 +342,26 @@ button.interactive-option:disabled {
 button.interactive-option:disabled:not(.correct):not(.incorrect) {
    opacity: 0.6; /* Esmaece os não selecionados */
 }
+/* --- Estilos para Feedback de Áudio --- */
+
+.audio-icon.playing {
+    color: #FF8C66; /* Cor de destaque (accent-color) */
+    animation: pulse 0.5s infinite alternate; /* Animação de pulsar */
+}
+
+.audio-icon.no-audio {
+    color: #dc3545; /* Cor vermelha para indicar erro/falta */
+    animation: shake 0.3s; /* Animação de tremer */
+}
+
+/* Definições das animações */
+@keyframes pulse {
+    from { transform: scale(1.1); }
+    to { transform: scale(1.3); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
