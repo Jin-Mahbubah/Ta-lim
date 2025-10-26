@@ -8,8 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeToNextEl = document.getElementById('time-to-next');
         const prayerIconEl = document.getElementById('prayer-icon');
 
+        // Adiciona verificação de existência dos elementos
+        if (!prayerNameEl || !prayerTimeEl || !timeToNextEl || !prayerIconEl) {
+             console.error("Elementos do 'time-card' não encontrados no dashboard.html.");
+             return;
+        }
+
         try {
-            // Função interna para buscar horários para uma data específica via coordenadas
             async function getTimingsForDate(date, lat, lon) {
                 const day = date.getDate();
                 const month = date.getMonth() + 1;
@@ -47,21 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // ✨ CORREÇÃO PRINCIPAL ✨
-            // Se não encontrámos próxima oração para hoje...
             if (nextPrayerName === null) {
-                // ... significa que já passou o Isha. Vamos buscar o Fajr de amanhã.
                 const tomorrow = new Date();
                 tomorrow.setDate(now.getDate() + 1);
                 const tomorrowTimings = await getTimingsForDate(tomorrow, latitude, longitude);
 
                 nextPrayerName = 'Fajr';
                 const [fajrHour, fajrMinute] = tomorrowTimings.Fajr.split(':');
-                const fajrDate = new Date(tomorrow); // Usar a data de amanhã
+                const fajrDate = new Date(tomorrow); 
                 fajrDate.setHours(parseInt(fajrHour), parseInt(fajrMinute), 0, 0);
-                nextPrayerTime = fajrDate; // AGORA O nextPrayerTime é definido
-                
-                currentPrayerName = 'Isha'; // A oração "atual" continua a ser o Isha de hoje
+                nextPrayerTime = fajrDate; 
+                currentPrayerName = 'Isha'; 
             }
             
             const [currentHour, currentMinute] = todayTimings[currentPrayerName].split(':');
@@ -107,20 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    fetchPrayerTimes(lat, lon);
+                    fetchPrayerTimes(position.coords.latitude, position.coords.longitude);
                 },
                 () => {
-                    console.log("Utilizador não permitiu a localização. A usar Madinah como padrão.");
-                    fetchPrayerTimes(24.4686, 39.6142); // Coordenadas de Madinah
+                    console.log("Localização não permitida. Usando Madinah.");
+                    fetchPrayerTimes(24.4686, 39.6142); // Madinah
                 }
             );
         } else {
-            console.log("Geolocalização não é suportada. A usar Madinah como padrão.");
-            fetchPrayerTimes(24.4686, 39.6142); // Coordenadas de Madinah
+            console.log("Geolocalização não suportada. Usando Madinah.");
+            fetchPrayerTimes(24.4686, 39.6142); // Madinah
         }
     }
-
     getLocation();
 });

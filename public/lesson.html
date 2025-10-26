@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" dir="ltr"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/pages.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<body class="body-no-nav">
+<body class="body-no-nav"> 
     <div class="app-container">
         <div class="main-content-area">
             <header class="app-header">
@@ -20,11 +20,13 @@
             </header>
             <div class="content-wrapper">
                 <div id="lesson-content-area">
-                    <div id="lesson-content"></div>
+                    <div id="lesson-content">
+                        </div>
                 </div>
                 <button id="start-exercises-button" class="hidden">Iniciar Exercícios</button>
+                
                 <div class="lesson-navigation hidden">
-                    <div id="progress-indicator"></div>
+                    <div id="progress-indicator">Passo X de Y</div>
                     <div class="nav-buttons">
                         <button id="prev-step-button">Anterior</button>
                         <button id="next-step-button">Continuar</button>
@@ -32,7 +34,7 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
     <script src="/js/lesson.js" defer></script>
 </body>
 </html>

@@ -109,3 +109,32 @@ body {
     }
     /* ----------------------------------------------------------- */
 }
+
+ /* --- ESTILOS PARA TABLETS E ECRÃS INTERMÉDIOS (FULL WIDTH) --- */
+@media (min-width: 376px) and (max-width: 1023px) { 
+    /* Esta regra aplica-se a ecrãs maiores que 375px até 1023px */
+
+    .app-container {
+        max-width: none;  /* Remove o limite de 375px */
+        width: 100%;     /* Garante largura total */
+        margin: 0;       /* Remove a margem automática (não centra mais) */
+        min-height: 100vh;/* Ocupa a altura toda */
+        border-radius: 0; /* Remove cantos arredondados (opcional) */
+        box-shadow: none; /* Remove sombra (opcional) */
+        /* padding-bottom: 80px; continua herdado, correto */
+    }
+
+    .bottom-nav {
+        max-width: none; /* Permite que a nav ocupe a largura total */
+        border-radius: 0;/* Remove cantos arredondados */
+        left: 0; /* Garante alinhamento à esquerda */
+        right: 0; /* Garante alinhamento à direita */
+        margin: 0; /* Remove margem automática */
+        /* position: fixed; continua herdado, correto */
+    }
+
+    /* Opcional: Aumentar um pouco o padding interno se necessário */
+    /* .main-content-area { padding: 25px 30px; } */
+    /* .content-wrapper { padding: 20px 30px; } */
+}
+/* --- FIM DOS ESTILOS PARA TABLETS --- */

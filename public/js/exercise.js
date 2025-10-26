@@ -1,68 +1,89 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const exerciseContentEl = document.querySelector('.exercise-content'); // Container principal
+    // --- Elementos ---
+    const exerciseContentEl = document.querySelector('.exercise-content'); 
     const questionTitleEl = document.getElementById('question-title');
     const optionsContainerEl = document.getElementById('options-container');
     const feedbackAreaEl = document.getElementById('feedback-area');
     const backButton = document.getElementById('back-to-lesson');
     const progressBar = document.querySelector('.progress-bar');
-    const imageContainerEl = document.getElementById('image-container'); // NOVO: Div para a imagem
+    const imageContainerEl = document.getElementById('image-container'); 
 
+    // --- Estado ---
     let currentQuestionIndex = 0;
     let score = 0;
     let questions = [];
     let lessonId = null;
     let chapterId = null;
 
+    // --- Iniciar ---
     async function startQuiz() {
         const urlParams = new URLSearchParams(window.location.search);
         lessonId = urlParams.get('lesson_id');
         chapterId = urlParams.get('chapter_id');
+        
+        if (!lessonId || !chapterId) {
+            questionTitleEl.textContent = "Erro: IDs de lição ou capítulo em falta.";
+            return;
+        }
+        
+        // Link de voltar para a lição
         backButton.href = `/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
-
-        if (!lessonId) { /* ... (tratamento de erro igual) ... */ return; }
 
         try {
             const response = await fetch(`/api/exercises?lesson_id=${lessonId}`);
             if (!response.ok) throw new Error('Falha ao carregar exercícios.');
+            
             questions = await response.json();
+            
+            // Filtra
+            questions = questions.filter(q => q.type === 'multiple_choice' && q.options);
 
-            // Filtrar apenas multiple_choice por agora
-            questions = questions.filter(q => q.type === 'multiple_choice');
-            if (!questions || questions.length === 0) { /* ... (tratamento de erro igual) ... */ return; }
+            if (questions.length === 0) {
+                questionTitleEl.textContent = "Nenhum exercício encontrado.";
+                optionsContainerEl.innerHTML = '';
+                return;
+            }
 
             loadQuestion(currentQuestionIndex);
 
-        } catch (error) { /* ... (tratamento de erro igual) ... */ }
+        } catch (error) {
+            console.error("Erro ao buscar exercícios:", error);
+            questionTitleEl.textContent = "Não foi possível carregar os exercícios.";
+        }
     }
 
+    // --- Carregar Pergunta ---
     function loadQuestion(questionIndex) {
+        if (questionIndex < 0 || questionIndex >= questions.length) return;
+
         optionsContainerEl.innerHTML = '';
-        imageContainerEl.innerHTML = ''; // Limpa a imagem anterior
+        imageContainerEl.innerHTML = ''; 
         feedbackAreaEl.classList.add('hidden');
         optionsContainerEl.classList.remove('options-disabled');
 
         const question = questions[questionIndex];
         questionTitleEl.innerHTML = question.text;
 
-        // --- MOSTRAR IMAGEM ---
+        // Imagem
         if (question.image_url) {
             const img = document.createElement('img');
             img.src = question.image_url;
             img.alt = "Imagem do exercício";
-            img.className = 'exercise-image'; // Classe para estilização
-            imageContainerEl.appendChild(img); // Adiciona a imagem ao seu container
+            img.className = 'exercise-image'; 
+            imageContainerEl.appendChild(img);
             imageContainerEl.classList.remove('hidden');
         } else {
-            imageContainerEl.classList.add('hidden'); // Esconde o container se não houver imagem
+            imageContainerEl.classList.add('hidden'); 
         }
-        // ----------------------
 
-        const progressPercentage = (questionIndex / questions.length) * 100;
+        // Progresso
+        const progressPercentage = ((questionIndex + 1) / questions.length) * 100; // Corrigido para +1
         progressBar.style.width = `${progressPercentage}%`;
 
+        // Opções
         let optionsArray = [];
         if (typeof question.options === 'string') {
-             try { optionsArray = JSON.parse(question.options); } catch (e) { /* ... */ return; }
+             try { optionsArray = JSON.parse(question.options); } catch (e) { console.error("Erro parse JSON options:", e); }
         } else if (Array.isArray(question.options)) {
              optionsArray = question.options;
         }
@@ -75,11 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 optionElement.addEventListener('click', () => selectAnswer(optionElement, index, question.correct_option_index));
                 optionsContainerEl.appendChild(optionElement);
             });
-        } else { /* ... */ }
+        }
     }
     
-    // ... (As funções handleNextQuestion, selectAnswer, endQuiz continuam iguais à versão anterior) ...
-     function handleNextQuestion() {
+    // --- Próxima Pergunta ---
+    function handleNextQuestion() {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
             loadQuestion(currentQuestionIndex);
@@ -88,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Selecionar Resposta ---
     function selectAnswer(selectedElement, selectedOptionIndex, correctOptionIndex) {
         optionsContainerEl.classList.add('options-disabled');
         const isCorrect = selectedOptionIndex === correctOptionIndex;
@@ -104,8 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
             score++;
         } else {
             selectedElement.classList.add('incorrect');
-            if (optionsContainerEl.children[correctOptionIndex]) {
-                 optionsContainerEl.children[correctOptionIndex].classList.add('correct');
+            const correctOption = optionsContainerEl.children[correctOptionIndex];
+            if (correctOption) {
+                 correctOption.classList.add('correct');
             }
             feedbackTitle.textContent = "Incorreto!";
             feedbackTitle.className = 'incorrect-feedback';
@@ -115,17 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackAreaEl.appendChild(feedbackTitle);
         const nextButton = document.createElement('button');
         nextButton.id = 'next-question-button';
-        nextButton.textContent = 'Continuar';
+        nextButton.textContent = (currentQuestionIndex === questions.length - 1) ? 'Ver Resultados' : 'Continuar'; // Muda texto do último botão
         nextButton.addEventListener('click', handleNextQuestion);
         feedbackAreaEl.appendChild(nextButton);
         feedbackAreaEl.classList.remove('hidden');
     }
 
+    // --- Fim do Quiz ---
     function endQuiz() {
         progressBar.style.width = `100%`;
-        imageContainerEl.classList.add('hidden'); // Esconde container da imagem no final
+        imageContainerEl.classList.add('hidden');
         questionTitleEl.textContent = `Exercícios Concluídos!`;
-        optionsContainerEl.innerHTML = `<div class="completion-box"><span class="completion-icon">🏆</span><h3>Resultado Final</h3><p>Você acertou ${score} de ${questions.length} perguntas.</p> <a href="/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}" class="back-button-link">Voltar à Lição</a></div>`;
+        // CORRIGIDO: Link de retorno com &show=completion
+        optionsContainerEl.innerHTML = `<div class="completion-box"><span class="completion-icon">🏆</span><h3>Resultado Final</h3><p>Você acertou ${score} de ${questions.length} perguntas.</p> <a href="/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}&show=completion" class="back-button-link">Voltar à Lição</a></div>`;
         feedbackAreaEl.classList.add('hidden');
     }
 

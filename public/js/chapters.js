@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // ALTERAÇÃO: A lógica de navegação foi removida daqui para usar o nav.js
     const chaptersList = document.getElementById('chapters-list');
+    if (!chaptersList) return;
 
     try {
         const response = await fetch('/api/chapters');
-        if (!response.ok) throw new Error('Falha na resposta da rede');
-        
+        if (!response.ok) throw new Error('Falha ao carregar capítulos');
         const chapters = await response.json();
 
         const titleElement = chaptersList.querySelector('.chapters-title');
@@ -16,14 +15,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             chaptersList.insertAdjacentHTML('beforeend', '<p>Nenhum capítulo encontrado.</p>');
         } else {
             chapters.forEach(chapter => {
-                const chapterItem = document.createElement('div');
+                const chapterItem = document.createElement('a');
                 chapterItem.className = 'chapter-item';
+                chapterItem.href = `/lessons.html?chapter_id=${chapter.id}`; 
                 chapterItem.innerHTML = `<span>${chapter.chapter_number} - ${chapter.title}</span><i class="fas fa-chevron-right"></i>`;
-                
-                chapterItem.addEventListener('click', () => {
-                    // Navega para a página de lições com o ID do capítulo
-                    window.location.href = `lessons.html?chapter_id=${chapter.id}`;
-                });
                 chaptersList.appendChild(chapterItem);
             });
         }
