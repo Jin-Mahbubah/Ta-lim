@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
     
-    backButton.href = '/chapters.html';
+    backButton.href = '/chapters.html'; // CAMINHO ABSOLUTO
 
     try {
         const [lessonsResponse, chaptersResponse] = await Promise.all([
@@ -40,9 +40,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             lessonsListEl.insertAdjacentHTML('beforeend', '<p>Nenhuma lição encontrada.</p>');
         } else {
             lessons.forEach(lesson => {
-                const lessonItem = document.createElement('a');
+                const lessonItem = document.createElement('a'); // USAR <a>
                 lessonItem.className = 'chapter-item';
-                lessonItem.href = `/lesson.html?lesson_id=${lesson.id}&chapter_id=${chapterId}`;
+                lessonItem.href = `/lesson.html?lesson_id=${lesson.id}&chapter_id=${chapterId}`; // CAMINHO ABSOLUTO
                 lessonItem.innerHTML = `<span>${lesson.lesson_number} - ${lesson.title}</span><i class="fas fa-chevron-right"></i>`;
                 lessonsListEl.appendChild(lessonItem);
             });

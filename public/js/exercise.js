@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Elementos ---
-    const exerciseContentEl = document.querySelector('.exercise-content'); 
     const questionTitleEl = document.getElementById('question-title');
     const optionsContainerEl = document.getElementById('options-container');
     const feedbackAreaEl = document.getElementById('feedback-area');
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Link de voltar para a lição
+        // CORRIGIDO: Link de voltar para a lição
         backButton.href = `/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
 
         try {
@@ -34,8 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error('Falha ao carregar exercícios.');
             
             questions = await response.json();
-            
-            // Filtra
             questions = questions.filter(q => q.type === 'multiple_choice' && q.options);
 
             if (questions.length === 0) {
@@ -64,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const question = questions[questionIndex];
         questionTitleEl.innerHTML = question.text;
 
-        // Imagem
         if (question.image_url) {
             const img = document.createElement('img');
             img.src = question.image_url;
@@ -76,11 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
             imageContainerEl.classList.add('hidden'); 
         }
 
-        // Progresso
-        const progressPercentage = ((questionIndex + 1) / questions.length) * 100; // Corrigido para +1
+        const progressPercentage = ((questionIndex + 1) / questions.length) * 100;
         progressBar.style.width = `${progressPercentage}%`;
 
-        // Opções
         let optionsArray = [];
         if (typeof question.options === 'string') {
              try { optionsArray = JSON.parse(question.options); } catch (e) { console.error("Erro parse JSON options:", e); }
@@ -99,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // --- Próxima Pergunta ---
     function handleNextQuestion() {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
@@ -109,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Selecionar Resposta ---
     function selectAnswer(selectedElement, selectedOptionIndex, correctOptionIndex) {
         optionsContainerEl.classList.add('options-disabled');
         const isCorrect = selectedOptionIndex === correctOptionIndex;
@@ -126,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             score++;
         } else {
             selectedElement.classList.add('incorrect');
-            const correctOption = optionsContainerEl.children[correctOptionIndex];
+            const correctOption = optionsContainerEl.querySelector(`.option-item:nth-child(${correctOptionIndex + 1})`);
             if (correctOption) {
                  correctOption.classList.add('correct');
             }
@@ -138,13 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackAreaEl.appendChild(feedbackTitle);
         const nextButton = document.createElement('button');
         nextButton.id = 'next-question-button';
-        nextButton.textContent = (currentQuestionIndex === questions.length - 1) ? 'Ver Resultados' : 'Continuar'; // Muda texto do último botão
+        nextButton.textContent = (currentQuestionIndex === questions.length - 1) ? 'Ver Resultados' : 'Continuar';
         nextButton.addEventListener('click', handleNextQuestion);
         feedbackAreaEl.appendChild(nextButton);
         feedbackAreaEl.classList.remove('hidden');
     }
 
-    // --- Fim do Quiz ---
     function endQuiz() {
         progressBar.style.width = `100%`;
         imageContainerEl.classList.add('hidden');

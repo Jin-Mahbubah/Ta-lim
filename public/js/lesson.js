@@ -136,7 +136,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         
         try {
-            // Usa a API /api/chapter/:id para o título (que o server.js agora tem)
             const [chapterRes, stepsRes] = await Promise.all([
                 fetch(`/api/chapter/${chapterId}`), 
                 fetch(`/api/lesson-steps/${lessonId}`)
@@ -144,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!chapterRes.ok) { const errorText = await chapterRes.text(); throw new Error(`Falha Cap: ${chapterRes.status} ${errorText}`); }
             if (!stepsRes.ok) { const errorText = await stepsRes.text(); throw new Error(`Falha Steps: ${stepsRes.status} ${errorText}`); }
             
-            await chapterRes.json(); // Pega os dados (mesmo sem usar)
+            await chapterRes.json(); 
             lessonSteps = await stepsRes.json();
             lessonSteps = Array.isArray(lessonSteps) ? lessonSteps : []; 
 
@@ -172,7 +171,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const interactiveOption = event.target.closest('.interactive-option'); 
         const audioIcon = event.target.closest('.audio-icon');
 
-        // Tradução (Botão Geral)
         if (translateButton) {
              const lessonText = translateButton.closest('#lesson-content').querySelector('.lesson-text'); 
              if (lessonText) {
@@ -181,13 +179,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                  translations.forEach(el => el.classList.toggle('hidden', !isActive)); 
              }
         } 
-        // Tradução (Clique na Linha)
         else if (interactiveLine && !audioIcon && !interactiveOption) { 
             const translationEl = interactiveLine.querySelector('.translation-text');
             if (translationEl) { translationEl.classList.toggle('hidden'); }
         }
 
-        // Respostas Interativas
         if (interactiveOption && !interactiveAnswered) { 
              interactiveAnswered = true; 
              const selectedIndex = parseInt(interactiveOption.dataset.index);
@@ -206,7 +202,6 @@ document.addEventListener('DOMContentLoaded', async () => {
              setTimeout(() => { if(nextBtn) { nextBtn.disabled = false; nextBtn.style.opacity = 1; } }, 600); 
         }
 
-        // Áudio
         if (audioIcon) {
             const audioUrl = audioIcon.dataset.audio;
             if (audioUrl && audioUrl !== 'NULL' && audioUrl.trim() !== '') {

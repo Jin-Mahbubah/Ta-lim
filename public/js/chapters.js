@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             chaptersList.insertAdjacentHTML('beforeend', '<p>Nenhum capítulo encontrado.</p>');
         } else {
             chapters.forEach(chapter => {
-                const chapterItem = document.createElement('a');
+                const chapterItem = document.createElement('a'); // USAR <a>
                 chapterItem.className = 'chapter-item';
-                chapterItem.href = `/lessons.html?chapter_id=${chapter.id}`; 
+                chapterItem.href = `/lessons.html?chapter_id=${chapter.id}`; // CAMINHO ABSOLUTO
                 chapterItem.innerHTML = `<span>${chapter.chapter_number} - ${chapter.title}</span><i class="fas fa-chevron-right"></i>`;
                 chaptersList.appendChild(chapterItem);
             });
