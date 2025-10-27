@@ -44,32 +44,124 @@
     max-height: 350px;  
     object-fit: contain; 
 }
-.intro-box, .grammar-box {
-    background-color: #eef7f4; 
-    border-left: 5px solid var(--primary-color);
+
+/* =================================================================== */
+/* --- ESTILOS MELHORADOS PARA CAIXAS DE GRAMÁTICA/INTRODUÇÃO --- */
+/* =================================================================== */
+#lesson-content.intro_box,
+#lesson-content.grammar_box {
+    background-color: var(--card-bg);
+    border: 1px solid #e2f5ee;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 15px;
     margin-bottom: 20px;
     font-size: 0.95rem;
     line-height: 1.6;
+    position: relative;
+    padding-top: 35px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.04);
 }
-.intro-box h3, .grammar-box h3 { margin-top: 0; color: var(--primary-color); }
-.grammar-box code { background-color: #e2e8e6; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
-.lesson-text { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-bottom: 15px; }
+#lesson-content.intro_box::before,
+#lesson-content.grammar_box::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    background-color: #eef7f4;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -18px;
+    left: 25px;
+    border: 5px solid var(--light-bg);
+}
+#lesson-content.intro_box::before { content: "\f05a"; }
+#lesson-content.grammar_box::before { content: "\f02d"; }
+#lesson-content.intro_box h3, 
+#lesson-content.grammar_box h3 { 
+    margin-top: 0; 
+    color: var(--primary-color); 
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    margin-bottom: 10px;
+}
+#lesson-content.grammar_box code { 
+    background-color: #eef7f4;
+    color: var(--dark-text);
+    padding: 3px 6px; 
+    border-radius: 5px; 
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* =================================================================== */
+/* --- ESTILOS DE DIÁLOGO E VOCABULÁRIO (CORRIGIDOS) --- */
+/* =================================================================== */
+
+/* [FIX 1] - Define o contentor como uma coluna flex */
+/* Isto força os balões a ficarem um debaixo do outro (corrige layout de colunas) */
+.lesson-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* [FIX 2] - Estilo base do balão de diálogo */
 .dialogue-line {
     padding: 12px 18px;
     border-radius: 20px; 
-    max-width: 85%; 
+    max-width: 85%; /* Limita a largura para parecer um balão */
     cursor: pointer; 
     background-color: #f1f3f5; 
     transition: background-color 0.2s ease;
 }
+
+/* [FIX 3] - Nova classe para centralizar o vocabulário */
+.vocabulary-line {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    width: 100%;
+    max-width: 100%; /* Ocupa a largura toda */
+    padding: 12px 18px;
+    border-radius: 12px;
+    background-color: #f1f3f5;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.vocabulary-line:hover {
+    background-color: #e9ecef;
+}
+.vocabulary-line p {
+    margin: 0;
+}
+
+/* O resto do seu código que estava em falta */
 .dialogue-line:hover { background-color: #e9ecef; }
 .dialogue-line p { margin: 0; }
 .dialogue-line .arabic-text { font-size: 1.2rem; line-height: 1.7; margin-bottom: 5px; }
 .dialogue-line .translation-text { font-size: 0.9rem; color: #555; }
-.speaker-1 { background-color: #e9ecef; align-self: flex-start; border-bottom-left-radius: 5px; }
-.speaker-2 { background-color: #e2f5ee; align-self: flex-end; border-bottom-right-radius: 5px; }
+
+/* [FIX 4] - Regras de alinhamento para os balões */
+.speaker-1 { 
+    background-color: #e9ecef; 
+    align-self: flex-start; /* Alinha à esquerda */
+    border-bottom-left-radius: 5px; 
+}
+.speaker-2 { 
+    background-color: #e2f5ee; 
+    align-self: flex-end; /* Alinha à direita */
+    border-bottom-right-radius: 5px; 
+}
+
 .translate-button-icon {
     background-color: #e9ecef;
     color: var(--dark-text);
@@ -147,6 +239,7 @@ button.interactive-option:disabled:not(.correct):not(.incorrect) { opacity: 0.6;
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
 
 /* --- Estilos para Diálogo com Imagem de Fundo --- */
+/* Esta regra garante que a imagem de fundo (controlada pelo JS) funcione */
 .dialogue-step .lesson-text.has-background-image { 
     position: relative; 
     background-size: cover; 

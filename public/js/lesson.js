@@ -68,7 +68,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 case 'vocabulary':
                     const [vocabArabic, vocabPortuguese] = (stepData.content_markdown || '|').split('|').map(s => s.trim());
                     const vocabImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Ilustração" class="lesson-image">` : ''; 
-                    htmlContent = `${vocabImage}<div class="lesson-text"><div class="dialogue-line speaker-1 interactive-line" style="align-self: center; max-width: 100%; cursor: pointer;"><p class="arabic-text">${vocabArabic} ${audioIconHtml}</p><p class="translation-text hidden">${vocabPortuguese}</p></div></div>`; 
+                    
+                    // [CORREÇÃO A]
+                    // Trocamos ".dialogue-line .speaker-1" e os estilos inline
+                    // pela nova classe ".vocabulary-line" que irá centrar o conteúdo.
+                    htmlContent = `${vocabImage}<div class="lesson-text"><div class="vocabulary-line interactive-line"><p class="arabic-text">${vocabArabic} ${audioIconHtml}</p><p class="translation-text hidden">${vocabPortuguese}</p></div></div>`; 
                     break;
                 
                 case 'dialogue':
@@ -77,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     lines.forEach((line, i) => { 
                         const [dialogueArabic, dialoguePortuguese] = (line || '|').split('|').map(s => s.trim()); 
                         const speakerClass = (i % 2 === 0) ? 'speaker-1' : 'speaker-2';
+                        // Esta parte está correta, o problema é o CSS em falta
                         dialogueHtml += `<div class="dialogue-line ${speakerClass} interactive-line" style="cursor: pointer;"><p class="arabic-text">${dialogueArabic} ${audioIconHtml}</p><p class="translation-text hidden">${dialoguePortuguese}</p></div>`; 
                     });
                     htmlContent = `<div class="lesson-text">${dialogueHtml}</div>${translateButtonHtml}`; 
