@@ -14,6 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let lessonId = null;
     let chapterId = null;
 
+    // --- [NOVO] FUNÇÃO PARA BARALHAR (Shuffle) ---
+    function shuffleArray(array) {
+        // Algoritmo Fisher-Yates
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     // --- Iniciar ---
     async function startQuiz() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -25,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // CORRIGIDO: Link de voltar para a lição
         backButton.href = `/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
 
         try {
@@ -40,6 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 optionsContainerEl.innerHTML = '';
                 return;
             }
+
+            // --- [NOVO] BARALHAR AS PERGUNTAS ---
+            shuffleArray(questions);
+            // ------------------------------------
 
             loadQuestion(currentQuestionIndex);
 
@@ -72,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             imageContainerEl.classList.add('hidden'); 
         }
 
-        const progressPercentage = ((questionIndex + 1) / questions.length) * 100;
+        const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
         progressBar.style.width = `${progressPercentage}%`;
 
         let optionsArray = [];
@@ -140,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.style.width = `100%`;
         imageContainerEl.classList.add('hidden');
         questionTitleEl.textContent = `Exercícios Concluídos!`;
-        // CORRIGIDO: Link de retorno com &show=completion
         optionsContainerEl.innerHTML = `<div class="completion-box"><span class="completion-icon">🏆</span><h3>Resultado Final</h3><p>Você acertou ${score} de ${questions.length} perguntas.</p> <a href="/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}&show=completion" class="back-button-link">Voltar à Lição</a></div>`;
         feedbackAreaEl.classList.add('hidden');
     }

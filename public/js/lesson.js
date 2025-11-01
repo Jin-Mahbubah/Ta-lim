@@ -1,3 +1,4 @@
+// ESTE É O SEU CÓDIGO ORIGINAL (QUE ESTAVA CORRETO)
 document.addEventListener('DOMContentLoaded', async () => {
     // --- Elementos da Interface ---
     const lessonTitleEl = document.getElementById('lesson-title');
@@ -48,18 +49,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         lessonContentEl.innerHTML = ''; 
         lessonContentEl.style.backgroundImage = ''; 
         interactiveAnswered = false; 
+        
+        // [CORREÇÃO] Ler o índice correto da base de dados
         currentCorrectIndex = stepData.correct_option_index; 
 
         let htmlContent = '';
-        const translateButtonHtml = stepData.content_type === 'dialogue' 
+        const translateButtonHtml = stepData.step_type === 'dialogue' // Usa step_type
             ? `<button class="translate-button-icon" title="Mostrar/Ocultar Traduções"><i class="fas fa-language"></i></button>` 
             : '';
         const audioIconHtml = `<i class="fas fa-volume-up audio-icon" data-audio="${stepData.audio_url || ''}" title="Ouvir pronúncia"></i>`; 
 
-        lessonContentEl.className = stepData.content_type; 
+        lessonContentEl.className = stepData.step_type; // Usa step_type
 
         try {
-            switch (stepData.content_type) {
+            switch (stepData.step_type) { // Usa step_type
                 case 'intro_box':
                 case 'grammar_box':
                     htmlContent = marked.parse(stepData.content_markdown || '');
@@ -69,9 +72,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const [vocabArabic, vocabPortuguese] = (stepData.content_markdown || '|').split('|').map(s => s.trim());
                     const vocabImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Ilustração" class="lesson-image">` : ''; 
                     
-                    // [CORREÇÃO A]
-                    // Trocamos ".dialogue-line .speaker-1" e os estilos inline
-                    // pela nova classe ".vocabulary-line" que irá centrar o conteúdo.
                     htmlContent = `${vocabImage}<div class="lesson-text"><div class="vocabulary-line interactive-line"><p class="arabic-text">${vocabArabic} ${audioIconHtml}</p><p class="translation-text hidden">${vocabPortuguese}</p></div></div>`; 
                     break;
                 
@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     lines.forEach((line, i) => { 
                         const [dialogueArabic, dialoguePortuguese] = (line || '|').split('|').map(s => s.trim()); 
                         const speakerClass = (i % 2 === 0) ? 'speaker-1' : 'speaker-2';
-                        // Esta parte está correta, o problema é o CSS em falta
                         dialogueHtml += `<div class="dialogue-line ${speakerClass} interactive-line" style="cursor: pointer;"><p class="arabic-text">${dialogueArabic} ${audioIconHtml}</p><p class="translation-text hidden">${dialoguePortuguese}</p></div>`; 
                     });
                     htmlContent = `<div class="lesson-text">${dialogueHtml}</div>${translateButtonHtml}`; 
@@ -99,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                      const ynQuestionText = (stepData.content_markdown || '|').split('|')[0].trim();
                      const ynImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Pergunta" class="lesson-image">` : '';
                      htmlContent = `${ynImage}<p class="question-text">${ynQuestionText} ${audioIconHtml}</p><div class="interactive-options yes-no-options"><button class="interactive-option" data-index="0">نَعَمْ</button><button class="interactive-option" data-index="1">لَا</button></div>`;
-                     currentCorrectIndex = stepData.correct_option_index;
+                     // currentCorrectIndex já foi definido no topo da função
                     break;
 
                 case 'interactive_multiple_choice':
@@ -110,10 +109,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let mcOptionsHtml = '';
                     optionsArray.forEach((option, index) => { mcOptionsHtml += `<button class="interactive-option mc-option" data-index="${index}">${option}</button>`; });
                     htmlContent = `${mcImage}<p class="question-text">${mcQuestionText} ${audioIconHtml}</p><div class="interactive-options mc-options">${mcOptionsHtml}</div>`;
+                     // currentCorrectIndex já foi definido no topo da função
                     break;
                     
                 default:
-                     htmlContent = `<p>Tipo de conteúdo desconhecido: ${stepData.content_type}</p>`;
+                     htmlContent = `<p>Tipo de conteúdo desconhecido: ${stepData.step_type}</p>`;
             }
             lessonContentEl.innerHTML = htmlContent; 
         } catch (renderError) {
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
          nextBtn.textContent = (index === lessonSteps.length - 1) ? 'Concluir Lição' : 'Continuar';
          prevBtn.style.display = (index === 0) ? 'none' : 'inline-block'; 
          const currentStep = lessonSteps[index];
-         const isInteractive = ['interactive_yes_no', 'interactive_multiple_choice'].includes(currentStep.content_type);
+         const isInteractive = ['interactive_yes_no', 'interactive_multiple_choice'].includes(currentStep.step_type);
          nextBtn.disabled = isInteractive && !interactiveAnswered; 
          nextBtn.style.opacity = nextBtn.disabled ? 0.5 : 1; 
     }

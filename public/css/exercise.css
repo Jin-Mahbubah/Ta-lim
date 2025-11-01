@@ -1,5 +1,4 @@
 /* Estilos para a página de exercícios */
-
 .progress-bar-container {
     flex-grow: 1;
     height: 15px;
@@ -9,7 +8,7 @@
 }
 
 .progress-bar {
-    width: 0%; /* Será atualizado via JS */
+    width: 0%;
     height: 100%;
     background-color: var(--primary-color);
     border-radius: 10px;
@@ -21,19 +20,28 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    /* Isto mantém os BLOCOS (pergunta, opções) centrados na página */
+    align-items: center; 
 }
 
 #question-title {
     font-size: 1.4rem;
     font-weight: 600;
-    text-align: left;
     margin-bottom: 30px;
+    width: 90%; 
+    
+    /* --- [CORREÇÃO] --- */
+    /* Texto da pergunta (árabe ou português) fica SEMPRE ao centro */
+    text-align: center; 
 }
+
+/* REMOVEMOS A REGRA :dir(rtl) */
 
 #options-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 90%;
 }
 
 .option-item {
@@ -46,17 +54,16 @@
     font-size: 1.1rem;
     font-weight: 500;
     transition: all 0.2s ease;
-    text-align: left;
+
+    /* --- [CORREÇÃO] --- */
+    /* Texto da resposta (árabe ou português) fica SEMPRE ao centro */
+    text-align: center; 
 }
+
+/* REMOVEMOS A REGRA :dir(rtl) */
 
 .option-item:hover {
     border-color: var(--primary-color);
-}
-
-/* Estilos para quando uma opção é selecionada */
-.option-item.selected {
-    border-color: #3498DB;
-    background-color: #EAF3FA;
 }
 
 .option-item.correct {
@@ -73,18 +80,18 @@
     font-weight: 600;
 }
 
-/* Desativa o clique depois da resposta */
 .options-disabled .option-item {
     pointer-events: none;
     opacity: 0.8;
 }
 
-/* Área de Feedback */
+/* A área de feedback (Correto/Incorreto) fica à esquerda */
 #feedback-area {
     padding: 20px;
     border-radius: 15px;
     margin-top: 30px;
     text-align: left;
+    width: 90%;
 }
 
 #feedback-area.correct-feedback {
@@ -115,24 +122,24 @@
     margin-top: 20px;
     transition: background-color 0.3s ease;
 }
-/* Estilos para a página de exercícios */
-/* ... (todo o seu código anterior) ... */
 
 #next-question-button:hover {
     background-color: #4db396;
 }
-/* ALTERAÇÃO: Removida uma chaveta '}' extra que estava no final do ficheiro. */
 
-/* Estilo para a imagem do exercício */
 #image-container {
     margin-bottom: 20px;
-    text-align: center; /* Centra a imagem */
+    text-align: center;
 }
 
 .exercise-image {
-    max-width: 80%; /* Limita a largura */
-    max-height: 200px; /* Limita a altura */
+    max-width: 80%; 
+    max-height: 200px; 
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.completion-box {
+    width: 90%;
 }
