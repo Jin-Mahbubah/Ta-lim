@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error('Falha ao carregar capítulos');
         const chapters = await response.json();
 
-        const titleElement = chaptersList.querySelector('.chapters-title');
+        const titleElement = chaptersList.querySelector('h2'); // Mudado para h2
         chaptersList.innerHTML = '';
         if (titleElement) chaptersList.appendChild(titleElement);
 
@@ -15,10 +15,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             chaptersList.insertAdjacentHTML('beforeend', '<p>Nenhum capítulo encontrado.</p>');
         } else {
             chapters.forEach(chapter => {
-                const chapterItem = document.createElement('a'); // USAR <a>
+                const chapterItem = document.createElement('a'); 
                 chapterItem.className = 'chapter-item';
-                chapterItem.href = `/lessons.html?chapter_id=${chapter.id}`; // CAMINHO ABSOLUTO
-                chapterItem.innerHTML = `<span>${chapter.chapter_number} - ${chapter.title}</span><i class="fas fa-chevron-right"></i>`;
+                chapterItem.href = `/lessons.html?chapter_id=${chapter.id}`;
+                
+                // [CORREÇÃO] Adicionadas as classes que o style.css espera
+                chapterItem.innerHTML = `
+                    <span class="chapter-number">${chapter.chapter_number}</span>
+                    <span class="chapter-title">${chapter.title}</span>
+                    <i class="fas fa-chevron-right chapter-icon"></i>
+                `;
+                
                 chaptersList.appendChild(chapterItem);
             });
         }

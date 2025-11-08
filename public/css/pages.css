@@ -1,39 +1,17 @@
-/* Estilos para páginas de Capítulos e Lições */
-.chapters-title, .lessons-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--dark-text);
-    margin-bottom: 20px;
-    text-align: left;
-}
-.chapter-item {
-    background-color: var(--card-bg); 
-    padding: 20px;
-    border-radius: 15px; 
-    margin-bottom: 15px; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    font-weight: 500;
-    color: var(--dark-text);
-    text-decoration: none; 
-}
-.chapter-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
-}
-.chapter-item span { flex-grow: 1; margin-right: 15px; }
-.chapter-item i { color: var(--light-text); font-size: 0.9rem; }
+/* =================================================================== */
+/* --- ESTILOS DA PÁGINA DA LIÇÃO (Início) --- */
+/* =================================================================== */
 
-/* =================================================================== */
-/* --- ESTILOS DA PÁGINA DA LIÇÃO --- */
-/* =================================================================== */
-#lesson-content-area { position: relative; min-height: 200px; }
+/* [CORRIGIDO] Adicionado flex-grow para que o ecrã de conclusão preencha o espaço */
+#lesson-content-area { 
+    position: relative; 
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Faz esta área crescer */
+}
 #lesson-content { margin-bottom: 20px; }
-.lesson-image {
+#lesson-content-area .lesson-image {
     max-width: 100%; 
     height: auto;    
     border-radius: 10px;
@@ -56,7 +34,7 @@
     border-radius: 15px;
     margin-bottom: 20px;
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.8;
     position: relative;
     padding-top: 35px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.04);
@@ -81,6 +59,7 @@
 }
 #lesson-content.intro_box::before { content: "\f05a"; }
 #lesson-content.grammar_box::before { content: "\f02d"; }
+
 #lesson-content.intro_box h3, 
 #lesson-content.grammar_box h3 { 
     margin-top: 0; 
@@ -99,12 +78,19 @@
 }
 
 /* =================================================================== */
-/* --- ESTILOS DE DIÁLOGO E VOCABULÁRIO (CORRIGIDOS) --- */
+/* --- ESTILOS DE DIÁLOGO E VOCABULÁRIO --- */
 /* =================================================================== */
+#lesson-content.vocabulary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    min-height: 300px;
+}
 
-/* [FIX 1] - Define o contentor como uma coluna flex */
-/* Isto força os balões a ficarem um debaixo do outro (corrige layout de colunas) */
-.lesson-text {
+#lesson-content .lesson-step-text {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -112,57 +98,93 @@
     margin-bottom: 15px;
 }
 
-/* [FIX 2] - Estilo base do balão de diálogo */
-.dialogue-line {
-    padding: 12px 18px;
-    border-radius: 20px; 
-    max-width: 85%; /* Limita a largura para parecer um balão */
-    cursor: pointer; 
-    background-color: #f1f3f5; 
-    transition: background-color 0.2s ease;
-}
-
-/* [FIX 3] - Nova classe para centralizar o vocabulário */
-.vocabulary-line {
+#lesson-content .vocabulary-line {
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
     width: 100%;
-    max-width: 100%; /* Ocupa a largura toda */
+    max-width: 100%; 
     padding: 12px 18px;
     border-radius: 12px;
-    background-color: #f1f3f5;
-    font-size: 1.2rem;
+    background-color: transparent;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
-.vocabulary-line:hover {
+#lesson-content .vocabulary-line p { margin: 0; }
+
+#lesson-content .vocabulary-line .arabic-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+#lesson-content .vocabulary-line .translation-text {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* =================================================================== */
+/* --- ESTILOS MELHORADOS PARA DIÁLOGO COM AVATAR --- */
+/* =================================================================== */
+#lesson-content .dialogue-line-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: 90%;
+}
+#lesson-content .speaker-avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+#lesson-content .dialogue-line {
+    padding: 12px 18px;
+    border-radius: 20px; 
+    cursor: pointer; 
+    background-color: var(--card-bg);
+    transition: background-color 0.2s ease;
+    width: 100%; 
+}
+#lesson-content .dialogue-line:hover,
+#lesson-content .dialogue-line:active { 
+    background-color: #f8f9fa; 
+}
+#lesson-content .dialogue-line p { margin: 0; }
+#lesson-content .dialogue-line .arabic-text { font-size: 1.2rem; line-height: 1.7; margin-bottom: 5px; }
+#lesson-content .dialogue-line .translation-text { font-size: 0.9rem; color: #555; }
+
+#lesson-content .dialogue-line-wrapper.speaker-1 { 
+    align-self: flex-start;
+}
+#lesson-content .dialogue-line-wrapper.speaker-1 .dialogue-line {
+    border-bottom-left-radius: 5px; 
     background-color: #e9ecef;
 }
-.vocabulary-line p {
-    margin: 0;
+#lesson-content .dialogue-line-wrapper.speaker-1 .speaker-avatar {
+     background-color: #e9ecef;
 }
-
-/* O resto do seu código que estava em falta */
-.dialogue-line:hover { background-color: #e9ecef; }
-.dialogue-line p { margin: 0; }
-.dialogue-line .arabic-text { font-size: 1.2rem; line-height: 1.7; margin-bottom: 5px; }
-.dialogue-line .translation-text { font-size: 0.9rem; color: #555; }
-
-/* [FIX 4] - Regras de alinhamento para os balões */
-.speaker-1 { 
-    background-color: #e9ecef; 
-    align-self: flex-start; /* Alinha à esquerda */
-    border-bottom-left-radius: 5px; 
+#lesson-content .dialogue-line-wrapper.speaker-2 { 
+    align-self: flex-end;
+    flex-direction: row-reverse;
 }
-.speaker-2 { 
-    background-color: #e2f5ee; 
-    align-self: flex-end; /* Alinha à direita */
+#lesson-content .dialogue-line-wrapper.speaker-2 .dialogue-line { 
+    background-color: #e2f5ee;
     border-bottom-right-radius: 5px; 
 }
+#lesson-content .dialogue-line-wrapper.speaker-2 .speaker-avatar {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
 
-.translate-button-icon {
+#lesson-content-area .translate-button-icon {
     background-color: #e9ecef;
     color: var(--dark-text);
     border: none;
@@ -178,18 +200,131 @@
     margin: 10px auto 0 auto; 
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-.translate-button-icon:hover { background-color: #dde2e7; transform: translateY(-2px); }
-.translate-button-icon.active { background-color: var(--primary-color); color: var(--white); box-shadow: 0 4px 8px rgba(97, 197, 168, 0.3); }
-.audio-icon { color: var(--primary-color); cursor: pointer; margin-left: 8px; transition: transform 0.2s ease; font-size: 1rem; }
-.audio-icon:hover { transform: scale(1.15); }
-.completion-box { text-align: center; padding: 40px 20px; background-color: var(--card-bg); border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.06); }
-.completion-box .completion-icon { font-size: 3rem; display: block; margin-bottom: 15px; }
-.completion-box h3 { color: var(--primary-color); font-size: 1.4rem; margin-bottom: 8px; }
-.completion-box p { color: var(--light-text); }
+#lesson-content-area .translate-button-icon:hover,
+#lesson-content-area .translate-button-icon:active { 
+    background-color: #dde2e7; 
+    transform: translateY(-2px); 
+}
+#lesson-content-area .translate-button-icon.active { background-color: var(--primary-color); color: var(--white); box-shadow: 0 4px 8px rgba(97, 197, 168, 0.3); }
+#lesson-content-area .audio-icon { color: var(--primary-color); cursor: pointer; margin-left: 8px; transition: transform 0.2s ease; font-size: 1rem; }
+#lesson-content-area .audio-icon:hover,
+#lesson-content-area .audio-icon:active { 
+    transform: scale(1.15); 
+}
+
+/* =================================================================== */
+/* --- [NOVO] CSS PARA CAIXA DE CONCLUSÃO DA LIÇÃO --- */
+/* =================================================================== */
+
+#lesson-content-area .completion-box { 
+    text-align: center; 
+    padding: 40px 20px; 
+    background-color: var(--card-bg); 
+    border-radius: 15px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1; /* <-- FAZ A CAIXA CRESCER */
+    justify-content: center; /* <-- CENTRALIZA O CONTEÚDO */
+}
+#lesson-content-area .completion-box .completion-icon { 
+    font-size: 3rem; 
+    display: block; 
+    margin-bottom: 15px; 
+    color: var(--primary-color);
+    animation: bounceIn 0.8s ease-out;
+}
+#lesson-content-area .completion-box h3 { 
+    color: var(--primary-color); 
+    font-size: 1.6rem; 
+    font-weight: 700;
+    margin-bottom: 8px; 
+}
+#lesson-content-area .completion-box p { 
+    color: var(--light-text); 
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Animação para ícones */
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+/* Botões de Ação */
+#lesson-content-area .completion-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 280px;
+}
+.completion-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+.completion-button i {
+    margin-right: 10px;
+}
+.primary-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(97, 197, 168, 0.3);
+}
+.primary-button:hover,
+.primary-button:active {
+    background-color: #4db396;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(97, 197, 168, 0.4);
+}
+.secondary-button {
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+    border: 1px solid #e0e0e0;
+}
+.secondary-button:hover,
+.secondary-button:active {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* [NOVO] Botão de Destaque (Laranja) */
+.accent-button {
+    background-color: var(--accent-color);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(255, 140, 102, 0.3);
+}
+.accent-button:hover,
+.accent-button:active {
+    background-color: #e67e5c; /* Laranja mais escuro */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 140, 102, 0.4);
+}
+
+
+/* [REMOVIDO] Removemos a regra antiga que não funcionava */
+/* #lesson-content-area #start-exercises-button { ... } */
+
+/* [CORRIGIDO] Esta é a regra para o botão antigo, caso ele apareça */
 #start-exercises-button {
     display: block;
     width: 100%;
-    background-color: var(--primary-color);
+    background-color: var(--accent-color);
     color: var(--white);
     border: none;
     padding: 18px;
@@ -197,23 +332,40 @@
     font-weight: 600;
     border-radius: 15px;
     cursor: pointer;
-    margin-top: 30px; 
-    transition: background-color 0.3s ease;
+    margin-top: 20px; 
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 140, 102, 0.3);
 }
-#start-exercises-button:hover { background-color: #4db396; }
+#start-exercises-button:hover,
+#start-exercises-button:active { 
+    background-color: #e67e5c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 140, 102, 0.4);
+}
+/* =================================================================== */
+/* --- Fim da Caixa de Conclusão --- */
+/* =================================================================== */
+
+
 .lesson-navigation { padding-top: 20px; margin-top: auto; border-top: 1px solid #eee; }
-#progress-indicator { text-align: center; color: var(--light-text); font-size: 0.9rem; margin-bottom: 15px; }
-.nav-buttons { display: flex; gap: 15px; }
-.nav-buttons button { flex-grow: 1; background-color: var(--primary-color); color: var(--white); border: none; padding: 15px; font-size: 1rem; font-weight: 600; border-radius: 12px; cursor: pointer; transition: background-color 0.3s ease; }
-.nav-buttons button:hover { background-color: #4db396; }
-#prev-step-button { background-color: #eaf0ee; color: var(--dark-text); }
-#prev-step-button:hover { background-color: #dde5e2; }
+.lesson-navigation #progress-indicator { text-align: center; color: var(--light-text); font-size: 0.9rem; margin-bottom: 15px; }
+.lesson-navigation .nav-buttons { display: flex; gap: 15px; }
+.lesson-navigation .nav-buttons button { flex-grow: 1; background-color: var(--primary-color); color: var(--white); border: none; padding: 15px; font-size: 1rem; font-weight: 600; border-radius: 12px; cursor: pointer; transition: background-color 0.3s ease; }
+.lesson-navigation .nav-buttons button:hover,
+.lesson-navigation .nav-buttons button:active { 
+    background-color: #4db396; 
+}
+.lesson-navigation #prev-step-button { background-color: #eaf0ee; color: var(--dark-text); }
+.lesson-navigation #prev-step-button:hover,
+.lesson-navigation #prev-step-button:active { 
+    background-color: #dde5e2; 
+}
 
 /* --- Estilos para Passos Interativos na Lição --- */
-.question-text { font-size: 1.2rem; font-weight: 500; margin-bottom: 20px; text-align: center; }
-.interactive-options { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; align-items: center; }
-.yes-no-options button.interactive-option { padding: 12px 30px; font-size: 1.1rem; min-width: 100px; }
-.mc-options button.interactive-option {
+#lesson-content .question-text { font-size: 1.2rem; font-weight: 500; margin-bottom: 20px; text-align: center; }
+#lesson-content .interactive-options { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; align-items: center; }
+#lesson-content .yes-no-options button.interactive-option { padding: 12px 30px; font-size: 1.1rem; min-width: 100px; }
+#lesson-content .mc-options button.interactive-option {
     background-color: var(--card-bg);
     padding: 15px 20px; 
     border-radius: 12px;
@@ -226,21 +378,21 @@
     width: 80%; 
     cursor: pointer;
 }
-.mc-options button.interactive-option:hover { border-color: var(--primary-color); transform: translateY(-2px); }
-button.interactive-option.correct { background-color: #d1f7e8; color: #1a6a4a; border-color: #28a745; font-weight: 600; }
-button.interactive-option.incorrect { background-color: #fde2e4; color: #8f2a2f; border-color: #dc3545; font-weight: 600; }
-button.interactive-option:disabled { cursor: default; }
-button.interactive-option:disabled:not(.correct):not(.incorrect) { opacity: 0.6; }
-
-/* --- Estilos para Feedback de Áudio --- */
-.audio-icon.playing { color: #FF8C66; animation: pulse 0.5s infinite alternate; }
-.audio-icon.no-audio { color: #dc3545; animation: shake 0.3s; }
+#lesson-content .mc-options button.interactive-option:hover,
+#lesson-content .mc-options button.interactive-option:active { 
+    border-color: var(--primary-color); 
+    transform: translateY(-2px); 
+}
+#lesson-content button.interactive-option.correct { background-color: #d1f7e8; color: #1a6a4a; border-color: #28a745; font-weight: 600; }
+#lesson-content button.interactive-option.incorrect { background-color: #fde2e4; color: #8f2a2f; border-color: #dc3545; font-weight: 600; }
+#lesson-content button.interactive-option:disabled { cursor: default; }
+#lesson-content button.interactive-option:disabled:not(.correct):not(.incorrect) { opacity: 0.6; }
+#lesson-content-area .audio-icon.playing { color: #FF8C66; animation: pulse 0.5s infinite alternate; }
+#lesson-content-area .audio-icon.no-audio { color: #dc3545; animation: shake 0.3s; }
 @keyframes pulse { from { transform: scale(1.1); } to { transform: scale(1.3); } }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
 
-/* --- Estilos para Diálogo com Imagem de Fundo --- */
-/* Esta regra garante que a imagem de fundo (controlada pelo JS) funcione */
-.dialogue-step .lesson-text.has-background-image { 
+#lesson-content.dialogue .lesson-step-text.has-background-image { 
     position: relative; 
     background-size: cover; 
     background-position: center; 
@@ -255,5 +407,59 @@ button.interactive-option:disabled:not(.correct):not(.incorrect) { opacity: 0.6;
     margin-bottom: 15px; 
     overflow: hidden; 
 }
-.dialogue-step .lesson-text.has-background-image .dialogue-line { margin: 0; }
-.dialogue-step .translate-button-icon { margin-top: 15px; }
+#lesson-content.dialogue .lesson-step-text.has-background-image .dialogue-line { margin: 0; }
+#lesson-content.dialogue .translate-button-icon { margin-top: 15px; }
+
+/* --- ESTILOS PARA BANDEJA DE PALAVRAS --- */
+#lesson-content .word-bank-question {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 25px;
+    text-align: center;
+    line-height: 1.8;
+    direction: rtl;
+}
+#lesson-content .word-bank-question .blank-space {
+    display: inline-block;
+    width: 100px;
+    border-bottom: 2px dashed var(--light-text);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+#lesson-content .word-bank-options {
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 12px;
+    margin-top: 20px;
+}
+#lesson-content button.interactive-option.word-bank-chip {
+    background-color: var(--card-bg);
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    font-size: 1.2rem;
+    font-weight: 500;
+    width: auto; 
+    padding: 12px 25px;
+    border-radius: 30px; 
+    transition: all 0.2s ease;
+}
+#lesson-content button.interactive-option.word-bank-chip:hover,
+#lesson-content button.interactive-option.word-bank-chip:active {
+    border-color: var(--primary-color); 
+    transform: translateY(-2px); 
+}
+#lesson-content button.interactive-option.word-bank-chip.correct {
+    background-color: #d1f7e8; 
+    color: #1a6a4a; 
+    border-color: #28a745; 
+}
+#lesson-content button.interactive-option.word-bank-chip.incorrect {
+    background-color: #fde2e4; 
+    color: #8f2a2f; 
+    border-color: #dc3545;
+}
+/* =================================================================== */
+/* --- ESTILOS DA PÁGINA DA LIÇÃO (Fim) --- */
+/* =================================================================== */

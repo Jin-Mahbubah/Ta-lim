@@ -52,6 +52,19 @@ body {
     flex-shrink: 0; 
 }
 
+/* Estilo para o botão de voltar */
+.back-button {
+    color: var(--dark-text);
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.back-button:hover,
+.back-button:active {
+    color: var(--primary-color);
+}
+
+
 .content-wrapper {
     flex-grow: 1;
     padding: 20px 25px;
@@ -85,7 +98,16 @@ body {
     transition: color 0.3s ease;
 }
 
-.nav-item.active { color: var(--primary-color); }
+.nav-item:hover {
+    color: var(--dark-text); /* Feedback no desktop */
+}
+.nav-item:active {
+    color: var(--primary-color); /* Feedback no telemóvel */
+}
+.nav-item.active { 
+    color: var(--primary-color); 
+}
+
 .hidden { display: none !important; }
 
 .body-no-nav .bottom-nav { display: none; }
@@ -98,43 +120,128 @@ body {
     .main-content-area { padding: 30px 40px; }
     .app-header { padding: 0 0 30px 0; }
     .content-wrapper { padding: 0; width: 100%; flex-grow: 1; }
-
-    /* --- REGRAS CORRIGIDAS PARA MOVER A BARRA PARA A ESQUERDA --- */
     .bottom-nav {
         order: 1;
     }
-
     .main-content-area {
         order: 2;
     }
-    /* ----------------------------------------------------------- */
 }
 
- /* --- ESTILOS PARA TABLETS E ECRÃS INTERMÉDIOS (FULL WIDTH) --- */
 @media (min-width: 376px) and (max-width: 1023px) { 
-    /* Esta regra aplica-se a ecrãs maiores que 375px até 1023px */
-
     .app-container {
-        max-width: none;  /* Remove o limite de 375px */
-        width: 100%;     /* Garante largura total */
-        margin: 0;       /* Remove a margem automática (não centra mais) */
-        min-height: 100vh;/* Ocupa a altura toda */
-        border-radius: 0; /* Remove cantos arredondados (opcional) */
-        box-shadow: none; /* Remove sombra (opcional) */
-        /* padding-bottom: 80px; continua herdado, correto */
+        max-width: none;
+        width: 100%;
+        margin: 0;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
     }
-
     .bottom-nav {
-        max-width: none; /* Permite que a nav ocupe a largura total */
-        border-radius: 0;/* Remove cantos arredondados */
-        left: 0; /* Garante alinhamento à esquerda */
-        right: 0; /* Garante alinhamento à direita */
-        margin: 0; /* Remove margem automática */
-        /* position: fixed; continua herdado, correto */
+        max-width: none;
+        border-radius: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
     }
+}
 
-    /* Opcional: Aumentar um pouco o padding interno se necessário */
-    /* .main-content-area { padding: 25px 30px; } */
-    /* .content-wrapper { padding: 20px 30px; } */
+/* =================================================================== */
+/* --- CSS PARA LISTAS (CAPÍTULOS E LIÇÕES) --- */
+/* =================================================================== */
 
-/* --- FIM DOS ESTILOS PARA TABLETS --- */
+.page-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--dark-text);
+}
+
+/* --- Estilo para a Lista de Capítulos (chapters.html) --- */
+.chapter-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+.chapter-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    padding: 25px 20px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--dark-text);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+    border: 1px solid var(--card-bg);
+}
+
+/* [CORRIGIDO] Adicionado :active */
+.chapter-item:hover,
+.chapter-item:active {
+    transform: translateY(-3px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 20px var(--shadow-color);
+}
+.chapter-item .chapter-number {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-right: 15px;
+}
+.chapter-item .chapter-title {
+    flex-grow: 1;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.chapter-item .chapter-icon {
+    font-size: 1rem;
+    color: var(--light-text);
+    transition: transform 0.3s ease;
+    margin-left: 15px;
+}
+/* [CORRIGIDO] Adicionado :active */
+.chapter-item:hover .chapter-icon,
+.chapter-item:active .chapter-icon {
+    transform: translateX(5px);
+    color: var(--primary-color);
+}
+
+
+/* --- Estilo para a Lista de Lições (lessons.html) --- */
+.lesson-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+.lesson-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--dark-text);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+    border: 1px solid var(--card-bg);
+}
+/* [CORRIGIDO] Adicionado :active */
+.lesson-item:hover,
+.lesson-item:active {
+    transform: translateY(-3px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 20px var(--shadow-color);
+}
+.lesson-item .lesson-text {
+    flex-grow: 1;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    direction: rtl; /* Alinha o texto árabe à direita */
+    text-align: right;
+    padding: 0 10px; /* Adiciona algum espaço */
+}

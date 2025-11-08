@@ -1,10 +1,9 @@
-// ESTE É O SEU CÓDIGO ORIGINAL (QUE ESTAVA CORRETO)
 document.addEventListener('DOMContentLoaded', async () => {
     // --- Elementos da Interface ---
     const lessonTitleEl = document.getElementById('lesson-title');
     const lessonContentArea = document.getElementById('lesson-content-area'); 
     const lessonContentEl = document.getElementById('lesson-content'); 
-    const startExercisesButton = document.getElementById('start-exercises-button');
+    const startExercisesButton = document.getElementById('start-exercises-button'); // Este é o botão antigo
     const backButton = document.getElementById('back-to-lessons');
     const lessonNavEl = document.querySelector('.lesson-navigation');
     const prevBtn = document.getElementById('prev-step-button'); 
@@ -31,14 +30,63 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (backButton) { backButton.href = `/lessons.html?chapter_id=${chapterId}`; }
 
     // --- Funções Auxiliares ---
-    function showCompletionScreen() {
+    async function showCompletionScreen() {
         if(lessonTitleEl) lessonTitleEl.textContent = ''; 
-        if(lessonContentArea) lessonContentArea.innerHTML = `<div class="completion-box"><span class="completion-icon">🎉</span><h3>Lição Concluída!</h3><p>Excelente trabalho!</p></div>`;
+
+        // Buscar informações da próxima lição
+        let nextLessonId = null;
+        try {
+            const lessonsResponse = await fetch(`/api/lessons?chapter_id=${chapterId}`);
+            if (lessonsResponse.ok) {
+                const lessonsInChapter = await lessonsResponse.json();
+                const currentLessonIndexInArray = lessonsInChapter.findIndex(l => l.id == lessonId);
+                
+                if (currentLessonIndexInArray !== -1 && currentLessonIndexInArray < lessonsInChapter.length - 1) {
+                    nextLessonId = lessonsInChapter[currentLessonIndexInArray + 1].id;
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao buscar próxima lição:", error);
+        }
+        
+        // [HTML CORRIGIDO] Adicionado o botão "Fazer/Refazer Exercícios" dentro das actions
+        lessonContentArea.innerHTML = `
+            <div class="completion-box">
+                <span class="completion-icon">🎉</span>
+                <h3>Lição Concluída!</h3>
+                <p>Excelente trabalho! Você completou todos os passos da lição.</p>
+                <div class="completion-actions">
+                    ${nextLessonId ? `
+                        <a href="/lesson.html?lesson_id=${nextLessonId}&chapter_id=${chapterId}" class="completion-button primary-button">
+                            <i class="fas fa-arrow-right"></i> Próxima Lição
+                        </a>
+                    ` : `
+                         <a href="/lessons.html?chapter_id=${chapterId}" class="completion-button primary-button">
+                             <i class="fas fa-book"></i> Voltar às Lições
+                         </a>
+                    `}
+                    
+                    <button id="redo-lesson-exercises" class="completion-button accent-button">
+                        <i class="fas fa-pencil-alt"></i> Fazer/Refazer Exercícios
+                    </button>
+                    
+                    <a href="/chapters.html" class="completion-button secondary-button">
+                        <i class="fas fa-layer-group"></i> Voltar aos Capítulos
+                    </a>
+                </div>
+            </div>
+        `;
+        
+        // [CORRIGIDO] Esconde o botão de navegação E o botão antigo
         if(lessonNavEl) lessonNavEl.classList.add('hidden'); 
         if(startExercisesButton) {
-            startExercisesButton.classList.remove('hidden'); 
-            startExercisesButton.textContent = 'Fazer/Refazer Exercícios'; 
+            startExercisesButton.classList.add('hidden'); // Esconde o botão antigo
         }
+
+        // [NOVO] Adiciona o listener para o novo botão
+        document.getElementById('redo-lesson-exercises').addEventListener('click', () => {
+            window.location.href = `/exercise.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
+        });
     }
 
     function renderStep(stepIndex) {
@@ -50,19 +98,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         lessonContentEl.style.backgroundImage = ''; 
         interactiveAnswered = false; 
         
-        // [CORREÇÃO] Ler o índice correto da base de dados
         currentCorrectIndex = stepData.correct_option_index; 
 
         let htmlContent = '';
-        const translateButtonHtml = stepData.step_type === 'dialogue' // Usa step_type
+        const translateButtonHtml = stepData.step_type === 'dialogue'
             ? `<button class="translate-button-icon" title="Mostrar/Ocultar Traduções"><i class="fas fa-language"></i></button>` 
             : '';
         const audioIconHtml = `<i class="fas fa-volume-up audio-icon" data-audio="${stepData.audio_url || ''}" title="Ouvir pronúncia"></i>`; 
 
-        lessonContentEl.className = stepData.step_type; // Usa step_type
+        lessonContentEl.className = stepData.step_type; 
 
         try {
-            switch (stepData.step_type) { // Usa step_type
+            switch (stepData.step_type) {
                 case 'intro_box':
                 case 'grammar_box':
                     htmlContent = marked.parse(stepData.content_markdown || '');
@@ -72,21 +119,45 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const [vocabArabic, vocabPortuguese] = (stepData.content_markdown || '|').split('|').map(s => s.trim());
                     const vocabImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Ilustração" class="lesson-image">` : ''; 
                     
-                    htmlContent = `${vocabImage}<div class="lesson-text"><div class="vocabulary-line interactive-line"><p class="arabic-text">${vocabArabic} ${audioIconHtml}</p><p class="translation-text hidden">${vocabPortuguese}</p></div></div>`; 
+                    htmlContent = `${vocabImage}<div class="lesson-step-text"><div class="vocabulary-line interactive-line"><p class="arabic-text">${vocabArabic} ${audioIconHtml}</p><p class="translation-text hidden">${vocabPortuguese}</p></div></div>`; 
                     break;
                 
                 case 'dialogue':
                     const lines = (stepData.content_markdown || '').split('---');
                     let dialogueHtml = '';
+
+                    const speaker1_icon = '<i class="fas fa-user-tie"></i>'; // Ex: Professor
+                    const speaker2_icon = '<i class="fas fa-user-graduate"></i>'; // Ex: Aluno
+
                     lines.forEach((line, i) => { 
                         const [dialogueArabic, dialoguePortuguese] = (line || '|').split('|').map(s => s.trim()); 
-                        const speakerClass = (i % 2 === 0) ? 'speaker-1' : 'speaker-2';
-                        dialogueHtml += `<div class="dialogue-line ${speakerClass} interactive-line" style="cursor: pointer;"><p class="arabic-text">${dialogueArabic} ${audioIconHtml}</p><p class="translation-text hidden">${dialoguePortuguese}</p></div>`; 
+                        
+                        let speakerClass = '';
+                        let speakerIcon = '';
+
+                        if (i % 2 === 0) {
+                            speakerClass = 'speaker-1';
+                            speakerIcon = speaker1_icon;
+                        } else {
+                            speakerClass = 'speaker-2';
+                            speakerIcon = speaker2_icon;
+                        }
+
+                        dialogueHtml += `
+                            <div class="dialogue-line-wrapper ${speakerClass}">
+                                <div class="speaker-avatar">${speakerIcon}</div>
+                                <div class="dialogue-line interactive-line">
+                                    <p class="arabic-text">${dialogueArabic} ${audioIconHtml}</p>
+                                    <p class="translation-text hidden">${dialoguePortuguese}</p>
+                                </div>
+                            </div>
+                        `; 
                     });
-                    htmlContent = `<div class="lesson-text">${dialogueHtml}</div>${translateButtonHtml}`; 
+                    
+                    htmlContent = `<div class="lesson-step-text">${dialogueHtml}</div>${translateButtonHtml}`; 
                     
                     setTimeout(() => {
-                         const dialogueTextContainer = lessonContentEl.querySelector('.lesson-text');
+                         const dialogueTextContainer = lessonContentEl.querySelector('.lesson-step-text');
                          if (dialogueTextContainer && stepData.image_url) {
                             dialogueTextContainer.style.backgroundImage = `url('${stepData.image_url}')`;
                             dialogueTextContainer.classList.add('has-background-image'); 
@@ -98,19 +169,44 @@ document.addEventListener('DOMContentLoaded', async () => {
                      const ynQuestionText = (stepData.content_markdown || '|').split('|')[0].trim();
                      const ynImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Pergunta" class="lesson-image">` : '';
                      htmlContent = `${ynImage}<p class="question-text">${ynQuestionText} ${audioIconHtml}</p><div class="interactive-options yes-no-options"><button class="interactive-option" data-index="0">نَعَمْ</button><button class="interactive-option" data-index="1">لَا</button></div>`;
-                     // currentCorrectIndex já foi definido no topo da função
                     break;
 
                 case 'interactive_multiple_choice':
                     const mcQuestionText = (stepData.content_markdown || '|').split('|')[0].trim();
                      const mcImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Pergunta" class="lesson-image">` : '';
-                    let optionsArray = [];
-                    try { optionsArray = JSON.parse(stepData.options || '[]'); } catch(e) { console.error("Erro parsing opções MC:", e); }
+                    let mcOptionsArray = [];
+                    try { mcOptionsArray = JSON.parse(stepData.options || '[]'); } catch(e) { console.error("Erro parsing opções MC:", e); }
                     let mcOptionsHtml = '';
-                    optionsArray.forEach((option, index) => { mcOptionsHtml += `<button class="interactive-option mc-option" data-index="${index}">${option}</button>`; });
+                    mcOptionsArray.forEach((option, index) => { mcOptionsHtml += `<button class="interactive-option mc-option" data-index="${index}">${option}</button>`; });
                     htmlContent = `${mcImage}<p class="question-text">${mcQuestionText} ${audioIconHtml}</p><div class="interactive-options mc-options">${mcOptionsHtml}</div>`;
-                     // currentCorrectIndex já foi definido no topo da função
                     break;
+                
+                case 'interactive_word_bank': {
+                    const wbQuestionText = (stepData.content_markdown || '____').replace('____', '<span class="blank-space"></span>');
+                    const wbImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Pergunta" class="lesson-image">` : '';
+                    
+                    let optionsData = [];
+                    try { 
+                        const parsedOptions = JSON.parse(stepData.options || '[]');
+                        optionsData = parsedOptions.map((optionText, index) => ({
+                            text: optionText,
+                            originalIndex: index 
+                        }));
+                    } catch(e) { console.error("Erro parsing opções WB:", e); }
+
+                    for (let i = optionsData.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [optionsData[i], optionsData[j]] = [optionsData[j], optionsData[i]];
+                    }
+                    
+                    let wbOptionsHtml = '';
+                    optionsData.forEach(option => {
+                        wbOptionsHtml += `<button class="interactive-option word-bank-chip" data-index="${option.originalIndex}">${option.text}</button>`;
+                    });
+
+                    htmlContent = `${wbImage}<p class="word-bank-question">${wbQuestionText} ${audioIconHtml}</p><div class="interactive-options word-bank-options">${wbOptionsHtml}</div>`;
+                    break;
+                }
                     
                 default:
                      htmlContent = `<p>Tipo de conteúdo desconhecido: ${stepData.step_type}</p>`;
@@ -129,7 +225,8 @@ document.addEventListener('DOMContentLoaded', async () => {
          nextBtn.textContent = (index === lessonSteps.length - 1) ? 'Concluir Lição' : 'Continuar';
          prevBtn.style.display = (index === 0) ? 'none' : 'inline-block'; 
          const currentStep = lessonSteps[index];
-         const isInteractive = ['interactive_yes_no', 'interactive_multiple_choice'].includes(currentStep.step_type);
+         const isInteractive = ['interactive_yes_no', 'interactive_multiple_choice', 'interactive_word_bank'].includes(currentStep.step_type);
+         
          nextBtn.disabled = isInteractive && !interactiveAnswered; 
          nextBtn.style.opacity = nextBtn.disabled ? 0.5 : 1; 
     }
@@ -177,7 +274,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const audioIcon = event.target.closest('.audio-icon');
 
         if (translateButton) {
-             const lessonText = translateButton.closest('#lesson-content').querySelector('.lesson-text'); 
+             const lessonText = translateButton.closest('#lesson-content').querySelector('.lesson-step-text'); 
              if (lessonText) {
                  const translations = lessonText.querySelectorAll('.translation-text');
                  const isActive = translateButton.classList.toggle('active'); 
@@ -193,12 +290,20 @@ document.addEventListener('DOMContentLoaded', async () => {
              interactiveAnswered = true; 
              const selectedIndex = parseInt(interactiveOption.dataset.index);
              const isCorrect = selectedIndex === currentCorrectIndex;
+             
              lessonContentEl.querySelectorAll('.interactive-option').forEach(btn => {
                  btn.disabled = true;
                  if (btn.dataset.index != currentCorrectIndex && btn !== interactiveOption) { btn.style.opacity = 0.6; } else { btn.style.opacity = 1; }
              });
+             
              interactiveOption.style.opacity = 1; 
-             if (isCorrect) { interactiveOption.classList.add('correct'); } 
+             if (isCorrect) { 
+                 interactiveOption.classList.add('correct');
+                 const blankSpace = lessonContentEl.querySelector('.blank-space');
+                 if (blankSpace) {
+                     blankSpace.textContent = interactiveOption.textContent;
+                 }
+             } 
              else {
                  interactiveOption.classList.add('incorrect');
                  const correctOption = lessonContentEl.querySelector(`.interactive-option[data-index="${currentCorrectIndex}"]`);
@@ -248,7 +353,9 @@ document.addEventListener('DOMContentLoaded', async () => {
      }
 
      if (startExercisesButton) {
+         // [CORRIGIDO] Este botão só deve funcionar se NÃO estivermos no ecrã de conclusão
          startExercisesButton.addEventListener('click', () => { 
+            if (showCompletion) return; // Não faz nada se o ecrã de conclusão estiver visível
              if (lessonId && chapterId) {
                  window.location.href = `/exercise.html?lesson_id=${lessonId}&chapter_id=${chapterId}`; 
              } else { console.error("IDs em falta para exercícios."); }

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
     
-    backButton.href = '/chapters.html'; // CAMINHO ABSOLUTO
+    backButton.href = '/chapters.html'; 
 
     try {
         const [lessonsResponse, chaptersResponse] = await Promise.all([
@@ -40,10 +40,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             lessonsListEl.insertAdjacentHTML('beforeend', '<p>Nenhuma lição encontrada.</p>');
         } else {
             lessons.forEach(lesson => {
-                const lessonItem = document.createElement('a'); // USAR <a>
-                lessonItem.className = 'chapter-item';
-                lessonItem.href = `/lesson.html?lesson_id=${lesson.id}&chapter_id=${chapterId}`; // CAMINHO ABSOLUTO
-                lessonItem.innerHTML = `<span>${lesson.lesson_number} - ${lesson.title}</span><i class="fas fa-chevron-right"></i>`;
+                const lessonItem = document.createElement('a');
+                lessonItem.className = 'lesson-item'; // <-- [CORREÇÃO]
+                lessonItem.href = `/lesson.html?lesson_id=${lesson.id}&chapter_id=${chapterId}`;
+                
+                // [CORREÇÃO] Seta removida e classe "lesson-text" adicionada
+                lessonItem.innerHTML = `<span class="lesson-text">${lesson.lesson_number} - ${lesson.title}</span>`;
+                
                 lessonsListEl.appendChild(lessonItem);
             });
         }

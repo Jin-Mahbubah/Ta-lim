@@ -20,7 +20,6 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    /* Isto mantém os BLOCOS (pergunta, opções) centrados na página */
     align-items: center; 
 }
 
@@ -29,21 +28,22 @@
     font-weight: 600;
     margin-bottom: 30px;
     width: 90%; 
-    
-    /* --- [CORREÇÃO] --- */
-    /* Texto da pergunta (árabe ou português) fica SEMPRE ao centro */
     text-align: center; 
+    direction: rtl; /* <-- [CORREÇÃO] Adicionado DE VOLTA */
 }
 
-/* REMOVEMOS A REGRA :dir(rtl) */
+/* [REMOVIDO] A regra para #question-title strong foi removida, já não é necessária */
+
 
 #options-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 90%;
+    align-items: center;
 }
 
+/* --- Estilos de Escolha Múltipla --- */
 .option-item {
     background-color: var(--card-bg);
     padding: 20px;
@@ -54,15 +54,12 @@
     font-size: 1.1rem;
     font-weight: 500;
     transition: all 0.2s ease;
-
-    /* --- [CORREÇÃO] --- */
-    /* Texto da resposta (árabe ou português) fica SEMPRE ao centro */
     text-align: center; 
+    width: 100%;
 }
 
-/* REMOVEMOS A REGRA :dir(rtl) */
-
-.option-item:hover {
+.option-item:hover,
+.option-item:active {
     border-color: var(--primary-color);
 }
 
@@ -85,7 +82,7 @@
     opacity: 0.8;
 }
 
-/* A área de feedback (Correto/Incorreto) fica à esquerda */
+/* --- Área de Feedback (Comum) --- */
 #feedback-area {
     padding: 20px;
     border-radius: 15px;
@@ -123,7 +120,8 @@
     transition: background-color 0.3s ease;
 }
 
-#next-question-button:hover {
+#next-question-button:hover,
+#next-question-button:active {
     background-color: #4db396;
 }
 
@@ -140,6 +138,193 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+/* =================================================================== */
+/* --- CSS PARA CAIXA DE CONCLUSÃO DOS EXERCÍCIOS --- */
+/* =================================================================== */
+
 .completion-box {
-    width: 90%;
+    width: 100%; /* Ocupa a largura do #options-container (90%) */
+    max-width: 400px;
+    text-align: center; 
+    padding: 40px 20px; 
+    background-color: var(--card-bg); 
+    border-radius: 15px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.completion-box .completion-icon { 
+    font-size: 3rem; 
+    display: block; 
+    margin-bottom: 15px; 
+    animation: bounceIn 0.8s ease-out;
+}
+.completion-box h3 { 
+    color: var(--primary-color); 
+    font-size: 1.6rem; 
+    font-weight: 700;
+    margin-bottom: 8px; 
+}
+.completion-box p { 
+    color: var(--light-text);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Ícones dinâmicos */
+.completion-box.completion-perfect .completion-icon { color: #FFD700; } /* Dourado */
+.completion-box.completion-good .completion-icon { color: var(--primary-color); } /* Verde */
+.completion-box.completion-needs-work .completion-icon { color: var(--accent-color); } /* Laranja */
+
+.completion-box.completion-perfect h3 { color: #FFD700; }
+.completion-box.completion-good h3 { color: var(--primary-color); }
+.completion-box.completion-needs-work h3 { color: var(--accent-color); }
+
+
+/* Animação para ícones */
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+/* Botões de Ação */
+.completion-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 280px;
+}
+.completion-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+.completion-button i {
+    margin-right: 10px;
+}
+.primary-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(97, 197, 168, 0.3);
+}
+.primary-button:hover,
+.primary-button:active {
+    background-color: #4db396;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(97, 197, 168, 0.4);
+}
+.secondary-button {
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+    border: 1px solid #e0e0e0;
+}
+.secondary-button:hover,
+.secondary-button:active {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+/* =================================================================== */
+/* --- Fim da Caixa de Conclusão --- */
+/* =================================================================== */
+
+
+/* =================================================================== */
+/* --- ESTILOS PARA BANDEJA DE LETRAS --- */
+/* =================================================================== */
+.letter-scramble-question {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dark-text);
+    margin-bottom: 20px;
+    text-align: center;
+}
+.letter-scramble-question strong {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+.letter-slots-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    min-height: 60px;
+}
+.letter-slot {
+    width: 50px;
+    height: 60px;
+    background-color: var(--card-bg);
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.letter-slot.empty {
+    border-style: dashed;
+    border-color: var(--light-text);
+    background-color: transparent;
+}
+.letter-slot.correct {
+    background-color: #d1f7e8;
+    color: #1a6a4a;
+    border-color: #28a745;
+}
+.letter-slot.incorrect {
+    background-color: #fde2e4;
+    color: #8f2a2f;
+    border-color: #dc3545;
+}
+.letter-bank-container {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    width: 100%;
+}
+.letter-bank-chip {
+    width: 50px;
+    height: 50px;
+    background-color: var(--card-bg);
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    font-size: 1.3rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.letter-bank-chip:hover,
+.letter-bank-chip:active {
+    border-color: var(--primary-color); 
+    transform: translateY(-2px); 
+}
+.letter-bank-chip.disabled {
+    opacity: 0.3;
+    pointer-events: none;
 }
