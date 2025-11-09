@@ -155,6 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Escolha Múltipla ---
     function loadMultipleChoice(question) {
+        // [CORREÇÃO] Detecta se o texto é árabe (começa com letra árabe ou ____)
+        const isRTL = /[\u0600-\u06FF]/.test(question.text.charAt(0)) || question.text.startsWith('____');
+        questionTitleEl.dir = isRTL ? 'rtl' : 'ltr'; // Define a direção do H2
         questionTitleEl.innerHTML = question.text; 
 
         let optionsArray = [];
@@ -196,8 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const answerLength = correctAnswerLetters.length;
         
-        // [CORRIGIDO] Adicionado <span dir="ltr"> para forçar o alinhamento LTR
-        questionTitleEl.innerHTML = `<span dir="ltr">Forme a palavra: <strong>${fullAnswer}</strong></span>`;
+        // [CORREÇÃO] Força a direção LTR para "Forme a palavra"
+        questionTitleEl.dir = 'ltr'; 
+        questionTitleEl.innerHTML = `Forme a palavra: <strong dir="rtl">${fullAnswer}</strong>`;
 
         const slotsContainer = document.createElement('div');
         slotsContainer.className = 'letter-slots-container';
@@ -394,11 +398,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Fim do Quiz (com Visuais Melhorados) ---
+    // --- [CORRIGIDO] Fim do Quiz (com Visuais Melhorados) ---
     function endQuiz() {
         progressBar.style.width = `100%`;
         imageContainerEl.classList.add('hidden');
         questionTitleEl.textContent = `Exercícios Concluídos!`;
+        questionTitleEl.dir = 'ltr'; // Garante que o título final esteja LTR
         
         // --- Lógica de Feedback Dinâmico ---
         let completionIcon = '🏆';
@@ -418,6 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // --- Fim da Lógica de Feedback ---
         
+        // --- [HTML CORRIGIDO] Adiciona os 3 botões ---
         optionsContainerEl.innerHTML = `
             <div class="completion-box ${completionClass}">
                 <span class="completion-icon">${completionIcon}</span>
@@ -425,11 +431,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>Você acertou ${score} de ${questions.length} perguntas.</p> 
                 <div class="completion-actions">
                     <a href="/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}&show=completion" class="completion-button primary-button">
-                        <i class="fas fa-check"></i> Concluir
+                        <i class="fas fa-check"></i> Ir para Conclusão
                     </a>
-                    <button id="redo-exercises-button" class="completion-button secondary-button">
+                    <button id="redo-exercises-button" class="completion-button accent-button">
                         <i class="fas fa-sync-alt"></i> Refazer Exercícios
                     </button>
+                    <a href="/chapters.html" class="completion-button secondary-button">
+                        <i class="fas fa-layer-group"></i> Voltar aos Capítulos
+                    </a>
                 </div>
             </div>
         `;
