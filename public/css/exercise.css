@@ -18,11 +18,9 @@
 .exercise-content {
     display: flex;
     flex-direction: column;
-    /* [CORRIGIDO] Alterado para 'flex-start' para alinhar ao topo */
-    justify-content: flex-start; 
+    justify-content: space-between;
     height: 100%;
     align-items: center; 
-    flex-grow: 1; /* Permite que o conteúdo cresça */
 }
 
 #question-title {
@@ -31,11 +29,13 @@
     margin-bottom: 30px;
     width: 90%; 
     text-align: center; 
+    /* [CORREÇÃO IMPORTANTE] Garante que o árabe fica alinhado corretamente */
+    direction: rtl; 
 }
 
-/* [CORRIGIDO] Título "Forme a palavra" */
-#question-title strong {
-    direction: rtl;
+/* [CORREÇÃO] Garante que partes LTR (como "Forme a palavra") ficam corretas */
+#question-title span[dir="ltr"] {
+    direction: ltr;
     display: inline-block;
 }
 
@@ -45,8 +45,6 @@
     gap: 15px;
     width: 90%;
     align-items: center;
-    /* [CORRIGIDO] Permite que o container da caixa cresça */
-    flex-grow: 1; 
 }
 
 /* --- Estilos de Escolha Múltipla --- */
@@ -145,21 +143,21 @@
 }
 
 /* =================================================================== */
-/* --- [CORRIGIDO] CSS PARA CAIXA DE CONCLUSÃO DOS EXERCÍCIOS --- */
+/* --- CSS PARA CAIXA DE CONCLUSÃO DOS EXERCÍCIOS --- */
 /* =================================================================== */
 
 .completion-box {
-    width: 100%; /* Ocupa a largura do #options-container */
+    width: 100%;
+    max-width: 400px;
     text-align: center; 
     padding: 40px 20px; 
     background-color: var(--card-bg); 
     border-radius: 15px; 
     box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    margin: 40px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-grow: 1; /* <-- FAZ A CAIXA CRESCER */
-    justify-content: center; /* <-- CENTRALIZA O CONTEÚDO */
 }
 .completion-box .completion-icon { 
     font-size: 3rem; 
@@ -181,9 +179,9 @@
 }
 
 /* Ícones dinâmicos */
-.completion-box.completion-perfect .completion-icon { color: #FFD700; } /* Dourado */
-.completion-box.completion-good .completion-icon { color: var(--primary-color); } /* Verde */
-.completion-box.completion-needs-work .completion-icon { color: var(--accent-color); } /* Laranja */
+.completion-box.completion-perfect .completion-icon { color: #FFD700; }
+.completion-box.completion-good .completion-icon { color: var(--primary-color); }
+.completion-box.completion-needs-work .completion-icon { color: var(--accent-color); }
 
 .completion-box.completion-perfect h3 { color: #FFD700; }
 .completion-box.completion-good h3 { color: var(--primary-color); }
@@ -231,7 +229,6 @@
 .primary-button:active {
     background-color: #4db396;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(97, 197, 168, 0.4);
 }
 .secondary-button {
     background-color: var(--light-bg);
@@ -242,10 +239,8 @@
 .secondary-button:active {
     background-color: #e0e0e0;
     transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-
-/* [NOVO] Botão de Destaque (Laranja) */
+/* Botão de Destaque (Laranja) */
 .accent-button {
     background-color: var(--accent-color);
     color: var(--white);
@@ -253,14 +248,9 @@
 }
 .accent-button:hover,
 .accent-button:active {
-    background-color: #e67e5c; /* Laranja mais escuro */
+    background-color: #e67e5c;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(255, 140, 102, 0.4);
 }
-/* =================================================================== */
-/* --- Fim da Caixa de Conclusão --- */
-/* =================================================================== */
-
 
 /* =================================================================== */
 /* --- ESTILOS PARA BANDEJA DE LETRAS --- */

@@ -52,7 +52,7 @@ body {
     flex-shrink: 0; 
 }
 
-/* Estilo para o botão de voltar */
+/* Adicionei um estilo para o botão de voltar */
 .back-button {
     color: var(--dark-text);
     font-size: 1.2rem;

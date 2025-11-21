@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const lessonTitleEl = document.getElementById('lesson-title');
     const lessonContentArea = document.getElementById('lesson-content-area'); 
     const lessonContentEl = document.getElementById('lesson-content'); 
-    const startExercisesButton = document.getElementById('start-exercises-button'); // Este é o botão antigo
+    const startExercisesButton = document.getElementById('start-exercises-button');
     const backButton = document.getElementById('back-to-lessons');
     const lessonNavEl = document.querySelector('.lesson-navigation');
     const prevBtn = document.getElementById('prev-step-button'); 
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const lessonId = urlParams.get('lesson_id');
     const chapterId = urlParams.get('chapter_id');
+    // Verifica se deve mostrar a conclusão diretamente (ao voltar dos exercícios)
     const showCompletion = urlParams.get('show') === 'completion'; 
 
     // --- Configuração Inicial ---
@@ -33,12 +34,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function showCompletionScreen() {
         if(lessonTitleEl) lessonTitleEl.textContent = ''; 
 
-        // Buscar informações da próxima lição
+        // Buscar informações da próxima lição para o botão
         let nextLessonId = null;
         try {
             const lessonsResponse = await fetch(`/api/lessons?chapter_id=${chapterId}`);
             if (lessonsResponse.ok) {
                 const lessonsInChapter = await lessonsResponse.json();
+                // Ordenar para garantir que encontramos a próxima correta
+                lessonsInChapter.sort((a, b) => a.lesson_number - b.lesson_number);
+                
                 const currentLessonIndexInArray = lessonsInChapter.findIndex(l => l.id == lessonId);
                 
                 if (currentLessonIndexInArray !== -1 && currentLessonIndexInArray < lessonsInChapter.length - 1) {
@@ -49,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error("Erro ao buscar próxima lição:", error);
         }
         
-        // [HTML CORRIGIDO] Adicionado o botão "Fazer/Refazer Exercícios" dentro das actions
+        // [HTML FINAL DA CONCLUSÃO DA LIÇÃO]
         lessonContentArea.innerHTML = `
             <div class="completion-box">
                 <span class="completion-icon">🎉</span>
@@ -77,16 +81,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
         `;
         
-        // [CORRIGIDO] Esconde o botão de navegação E o botão antigo
+        // Esconde a navegação de passos
         if(lessonNavEl) lessonNavEl.classList.add('hidden'); 
+        // Esconde o botão antigo se ele existir
         if(startExercisesButton) {
-            startExercisesButton.classList.add('hidden'); // Esconde o botão antigo
+            startExercisesButton.classList.add('hidden'); 
         }
 
-        // [NOVO] Adiciona o listener para o novo botão
-        document.getElementById('redo-lesson-exercises').addEventListener('click', () => {
-            window.location.href = `/exercise.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
-        });
+        // Adiciona o listener para o botão de exercícios
+        const redoBtn = document.getElementById('redo-lesson-exercises');
+        if (redoBtn) {
+            redoBtn.addEventListener('click', () => {
+                window.location.href = `/exercise.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
+            });
+        }
     }
 
     function renderStep(stepIndex) {
@@ -119,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const [vocabArabic, vocabPortuguese] = (stepData.content_markdown || '|').split('|').map(s => s.trim());
                     const vocabImage = stepData.image_url ? `<img src="${stepData.image_url}" alt="Ilustração" class="lesson-image">` : ''; 
                     
+                    // [CORREÇÃO] Usando .lesson-step-text
                     htmlContent = `${vocabImage}<div class="lesson-step-text"><div class="vocabulary-line interactive-line"><p class="arabic-text">${vocabArabic} ${audioIconHtml}</p><p class="translation-text hidden">${vocabPortuguese}</p></div></div>`; 
                     break;
                 
@@ -154,6 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         `; 
                     });
                     
+                    // [CORREÇÃO] Usando .lesson-step-text
                     htmlContent = `<div class="lesson-step-text">${dialogueHtml}</div>${translateButtonHtml}`; 
                     
                     setTimeout(() => {
@@ -232,6 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function startLesson() {
+        // Verifica se o URL pede para mostrar a conclusão diretamente
         if (showCompletion) {
             showCompletionScreen(); 
             return; 
@@ -274,6 +285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const audioIcon = event.target.closest('.audio-icon');
 
         if (translateButton) {
+             // [CORREÇÃO] Usando .lesson-step-text
              const lessonText = translateButton.closest('#lesson-content').querySelector('.lesson-step-text'); 
              if (lessonText) {
                  const translations = lessonText.querySelectorAll('.translation-text');
@@ -353,9 +365,9 @@ document.addEventListener('DOMContentLoaded', async () => {
      }
 
      if (startExercisesButton) {
-         // [CORRIGIDO] Este botão só deve funcionar se NÃO estivermos no ecrã de conclusão
          startExercisesButton.addEventListener('click', () => { 
-            if (showCompletion) return; // Não faz nada se o ecrã de conclusão estiver visível
+             // Garante que não faz nada se já estiver no ecrã de conclusão
+             if (showCompletion) return; 
              if (lessonId && chapterId) {
                  window.location.href = `/exercise.html?lesson_id=${lessonId}&chapter_id=${chapterId}`; 
              } else { console.error("IDs em falta para exercícios."); }

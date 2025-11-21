@@ -19,56 +19,49 @@ document.addEventListener('DOMContentLoaded', () => {
     let letterBank = []; 
     let correctAnswerLetters = []; 
 
-    // --- [VERSÃO FINAL E COMPLETA] Normalização de texto árabe ---
+    // --- Normalização de texto árabe ---
     const tashkilRegex = /[\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E8\u06EA-\u06ED]/g;
     const tatweelRegex = /\u0640/g;
     const arabicSpaceRegex = /[\u200C\u200D\u200E\u200F]/g;
     
     function normalizeArabic(text) {
         if (!text) return '';
-        
         return text
-            .replace(tashkilRegex, '')  // remove harakat (vogais curtas)
-            .replace(tatweelRegex, '')  // remove tatweel (ـ)
-            .replace(arabicSpaceRegex, '') // remove espaços invisíveis
-            
-            // --- Unifica todas as formas de apresentação (U+FExx) e variantes ---
-            .replace(/أ|إ|آ|ا|ﻯ|ﺍ/g, 'ا') // Alif
-            .replace(/ب|ﺏ/g, 'ب') // Ba
-            .replace(/ت|ﺕ/g, 'ت') // Ta
-            .replace(/ث|ﺙ/g, 'ث') // Tha
-            .replace(/ج|ﺝ/g, 'ج') // Jiim
-            .replace(/ح|ﺡ/g, 'ح') // Haa
-            .replace(/خ|ﺥ/g, 'خ') // Kha
-            .replace(/د|ﺩ/g, 'د') // Dal
-            .replace(/ذ|ﺫ/g, 'ذ') // Dhal
-            .replace(/ر|ﺭ/g, 'ر') // Raa
-            .replace(/ز|ﺯ/g, 'ز') // Za
-            .replace(/س|ﺱ/g, 'س') // Sin
-            .replace(/ش|ﺵ/g, 'ش') // Shin
-            .replace(/ص|ﺹ/g, 'ص') // Sad
-            .replace(/ض|ﺽ/g, 'ض') // Dad
-            .replace(/ط|ﻁ/g, 'ط') // Ta
-            .replace(/ظ|ﻅ/g, 'ظ') // Dha
-            .replace(/ع|ﻉ/g, 'ع') // Ayn
-            .replace(/غ|ﻍ/g, 'غ') // Ghayn
-            .replace(/ف|ﻑ/g, 'ف') // Fa
-            .replace(/ق|ﻕ/g, 'ق') // Qaf
-            .replace(/ك|ک|ﻙ/g, 'ك') // Kaf
-            .replace(/ل|ﻝ/g, 'ل') // Lam
-            .replace(/م|ﻡ/g, 'م') // Mim
-            .replace(/ن|ﻥ/g, 'ن') // Nuun
-            .replace(/ه|ہ|ﻩ/g, 'ه') // Heh
-            .replace(/ة/g, 'ه') // Taa Marbuta
-            .replace(/و|ؤ|ﻭ/g, 'و') // Waw
-            .replace(/ي|ی|ئ|ى|ﻱ/g, 'ي') // Yeh
-            
+            .replace(tashkilRegex, '')
+            .replace(tatweelRegex, '')
+            .replace(arabicSpaceRegex, '')
+            .replace(/أ|إ|آ|ا|ﻯ|ﺍ/g, 'ا')
+            .replace(/ب|ﺏ/g, 'ب')
+            .replace(/ت|ﺕ/g, 'ت')
+            .replace(/ث|ﺙ/g, 'ث')
+            .replace(/ج|ﺝ/g, 'ج')
+            .replace(/ح|ﺡ/g, 'ح')
+            .replace(/خ|ﺥ/g, 'خ')
+            .replace(/د|ﺩ/g, 'د')
+            .replace(/ذ|ﺫ/g, 'ذ')
+            .replace(/ر|ﺭ/g, 'ر')
+            .replace(/ز|ﺯ/g, 'ز')
+            .replace(/س|ﺱ/g, 'س')
+            .replace(/ش|ﺵ/g, 'ش')
+            .replace(/ص|ﺹ/g, 'ص')
+            .replace(/ض|ﺽ/g, 'ض')
+            .replace(/ط|ﻁ/g, 'ط')
+            .replace(/ظ|ﻅ/g, 'ظ')
+            .replace(/ع|ﻉ/g, 'ع')
+            .replace(/غ|ﻍ/g, 'غ')
+            .replace(/ف|ﻑ/g, 'ف')
+            .replace(/ق|ﻕ/g, 'ق')
+            .replace(/ك|ک|ﻙ/g, 'ك')
+            .replace(/ل|ﻝ/g, 'ل')
+            .replace(/م|ﻡ/g, 'م')
+            .replace(/ن|ﻥ/g, 'ن')
+            .replace(/ه|ہ|ﻩ/g, 'ه')
+            .replace(/ة/g, 'ه')
+            .replace(/و|ؤ|ﻭ/g, 'و')
+            .replace(/ي|ی|ئ|ى|ﻱ/g, 'ي')
             .trim();
     }
-    // --- Fim da Normalização ---
 
-
-    // --- Função para baralhar ---
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -77,24 +70,25 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
 
-    // --- Iniciar ---
     async function startQuiz() {
         const urlParams = new URLSearchParams(window.location.search);
         lessonId = urlParams.get('lesson_id');
         chapterId = urlParams.get('chapter_id');
         
         if (!lessonId || !chapterId) {
-            questionTitleEl.textContent = "Erro: IDs de lição ou capítulo em falta.";
+            questionTitleEl.textContent = "Erro: IDs em falta.";
             return;
         }
         
         backButton.href = `/lesson.html?lesson_id=${lessonId}&chapter_id=${chapterId}`;
 
         try {
+            // Adiciona um parâmetro aleatório para evitar cache
             const response = await fetch(`/api/exercises?lesson_id=${lessonId}&v=${Math.random()}`);
             if (!response.ok) throw new Error('Falha ao carregar exercícios.');
             
             questions = await response.json();
+            // Filtra apenas tipos suportados
             questions = questions.filter(q => 
                 (q.type === 'multiple_choice' || q.type === 'letter_scramble') && 
                 q.options
@@ -106,22 +100,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // [CORRIGIDO] A função de embaralhar está ativa
-            shuffleArray(questions); 
-            
+            // IMPORTANTE: Embaralhar as perguntas no início
+            shuffleArray(questions);
             loadQuestion(currentQuestionIndex);
 
         } catch (error) {
-            console.error("Erro ao buscar exercícios:", error);
-            questionTitleEl.textContent = "Não foi possível carregar os exercícios.";
+            console.error("Erro:", error);
+            questionTitleEl.textContent = "Erro ao carregar.";
         }
     }
 
-    // --- Carregar Pergunta ---
     function loadQuestion(questionIndex) {
         if (questionIndex < 0 || questionIndex >= questions.length) return;
 
-        // Limpa tudo
         optionsContainerEl.innerHTML = '';
         imageContainerEl.innerHTML = ''; 
         feedbackAreaEl.classList.add('hidden');
@@ -135,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (question.image_url) {
             const img = document.createElement('img');
             img.src = question.image_url;
-            img.alt = "Imagem do exercício";
+            img.alt = "Imagem";
             img.className = 'exercise-image'; 
             imageContainerEl.appendChild(img);
             imageContainerEl.classList.remove('hidden');
@@ -153,11 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Escolha Múltipla ---
     function loadMultipleChoice(question) {
-        // [CORREÇÃO] Detecta se o texto é árabe (começa com letra árabe ou ____)
+        // Se começar com letra árabe ou sublinhado, assume RTL
         const isRTL = /[\u0600-\u06FF]/.test(question.text.charAt(0)) || question.text.startsWith('____');
-        questionTitleEl.dir = isRTL ? 'rtl' : 'ltr'; // Define a direção do H2
+        questionTitleEl.dir = isRTL ? 'rtl' : 'ltr';
         questionTitleEl.innerHTML = question.text; 
 
         let optionsArray = [];
@@ -167,12 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (Array.isArray(question.options)) {
                 optionsArray = question.options;
             }
-        } catch (e) { console.error("Erro ao fazer parse das opções:", e); }
+        } catch (e) { console.error("Erro parse opções:", e); }
 
-        if (!Array.isArray(optionsArray)) {
-             console.error("Opções não são um array:", optionsArray);
-             return;
-        }
+        if (!Array.isArray(optionsArray)) return;
 
         optionsArray.forEach((optionText, index) => {
             const optionElement = document.createElement('div');
@@ -183,23 +170,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Bandeja de Letras ---
     function loadLetterScramble(question) {
         const fullAnswer = question.text; 
-        
-        if (!fullAnswer || fullAnswer.trim() === '') {
-            console.error("Erro: 'text' (resposta) está vazio para esta pergunta:", question);
-            questionTitleEl.innerHTML = "Erro no Exercício";
-            optionsContainerEl.innerHTML = `<p style="text-align: center; color: #D9534F;"><b>Falha ao carregar:</b> Os dados desta pergunta estão em falta.<br>A resposta (campo 'text') não foi definida no banco de dados.</p>`;
-            return;
-        }
-        
         const normalizedAnswer = normalizeArabic(fullAnswer); 
         correctAnswerLetters = normalizedAnswer.split('');
-
         const answerLength = correctAnswerLetters.length;
         
-        // [CORREÇÃO] Força a direção LTR para "Forme a palavra"
+        // Força LTR no container, mas RTL na palavra árabe
         questionTitleEl.dir = 'ltr'; 
         questionTitleEl.innerHTML = `Forme a palavra: <strong dir="rtl">${fullAnswer}</strong>`;
 
@@ -224,33 +201,26 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (Array.isArray(question.options)) {
                 letterOptions = question.options;
             }
-        } catch (e) {
-             console.error("Erro ao fazer parse das opções da bandeja de letras:", e);
-        }
+        } catch (e) {}
         
-        if (!Array.isArray(letterOptions)) {
-            console.error("Opções da bandeja de letras não são um array:", letterOptions);
-            return;
+        if (Array.isArray(letterOptions)) {
+            shuffleArray(letterOptions).forEach((letter, index) => {
+                const chip = document.createElement('button');
+                chip.className = 'letter-bank-chip';
+                chip.textContent = letter;
+                chip.dataset.id = index; 
+                chip.addEventListener('click', () => moveLetterToSlot(chip));
+                bankContainer.appendChild(chip);
+                letterBank.push(chip); 
+            });
         }
-        
-        shuffleArray(letterOptions).forEach((letter, index) => {
-            const chip = document.createElement('button');
-            chip.className = 'letter-bank-chip';
-            chip.textContent = letter;
-            chip.dataset.id = index; 
-            chip.addEventListener('click', () => moveLetterToSlot(chip));
-            bankContainer.appendChild(chip);
-            letterBank.push(chip); 
-        });
 
         optionsContainerEl.appendChild(slotsContainer);
         optionsContainerEl.appendChild(bankContainer);
     }
 
-    // --- Ações da Bandeja ---
     function moveLetterToSlot(chip) {
         if (chip.classList.contains('disabled')) return;
-
         const firstEmptySlot = letterSlots.find(slot => slot.classList.contains('empty'));
         if (firstEmptySlot) {
             firstEmptySlot.textContent = chip.textContent;
@@ -259,20 +229,15 @@ document.addEventListener('DOMContentLoaded', () => {
             chip.classList.add('disabled'); 
 
             const allFilled = letterSlots.every(slot => !slot.classList.contains('empty'));
-            if (allFilled) {
-                showLetterScrambleCheckButton();
-            }
+            if (allFilled) showLetterScrambleCheckButton();
         }
     }
 
     function returnLetterToBank(slot) {
         if (slot.classList.contains('empty') || feedbackAreaEl.classList.contains('showing-feedback')) return;
-
         const chipId = slot.dataset.chipId;
         const chip = letterBank.find(c => c.dataset.id === chipId);
-        
         if (chip) chip.classList.remove('disabled'); 
-        
         slot.textContent = '';
         slot.classList.add('empty');
         slot.dataset.chipId = '';
@@ -297,14 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkLetterScrambleAnswer() {
         let userAnswer = [];
         letterSlots.forEach(slot => userAnswer.push(slot.textContent));
-
         let allCorrect = true;
-        const answerLength = correctAnswerLetters.length;
-
-        for (let i = 0; i < answerLength; i++) {
+        
+        for (let i = 0; i < correctAnswerLetters.length; i++) {
             if (letterSlots[i]) {
                 letterSlots[i].classList.remove('correct', 'incorrect'); 
-                
                 const userLetter = normalizeArabic(userAnswer[i]);
                 const correctLetter = normalizeArabic(correctAnswerLetters[i]);
                 
@@ -314,9 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     letterSlots[i].classList.add('incorrect');
                     allCorrect = false;
                 }
-            } else {
-                allCorrect = false;
-            }
+            } else { allCorrect = false; }
         }
         
         feedbackAreaEl.classList.add('showing-feedback'); 
@@ -336,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
             nextButton.textContent = (currentQuestionIndex === questions.length - 1) ? 'Ver Resultados' : 'Continuar';
             nextButton.addEventListener('click', handleNextQuestion);
             feedbackAreaEl.appendChild(nextButton);
-            
             feedbackAreaEl.classList.remove('hidden');
             
             letterSlots.forEach(slot => slot.style.pointerEvents = 'none');
@@ -344,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const checkButton = document.getElementById('next-question-button');
             if (checkButton) checkButton.disabled = true;
-
             setTimeout(() => {
                 feedbackAreaEl.classList.remove('showing-feedback');
                 if (checkButton) checkButton.disabled = false;
@@ -353,11 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Escolha Múltipla ---
     function selectAnswer(selectedElement, selectedOptionIndex, correctOptionIndex) {
         optionsContainerEl.classList.add('options-disabled'); 
         const isCorrect = selectedOptionIndex === correctOptionIndex;
-
         feedbackAreaEl.innerHTML = ''; 
         const feedbackTitle = document.createElement('h3');
         feedbackTitle.id = 'feedback-title';
@@ -377,9 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
             feedbackTitle.className = 'incorrect-feedback';
             feedbackAreaEl.className = 'feedback-area incorrect-feedback';
         }
-
         feedbackAreaEl.appendChild(feedbackTitle);
-        
         const nextButton = document.createElement('button');
         nextButton.id = 'next-question-button';
         nextButton.textContent = (currentQuestionIndex === questions.length - 1) ? 'Ver Resultados' : 'Continuar';
@@ -388,7 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackAreaEl.classList.remove('hidden');
     }
 
-    // --- Próxima Pergunta ---
     function handleNextQuestion() {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
@@ -398,32 +351,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- [CORRIGIDO] Fim do Quiz (com Visuais Melhorados) ---
     function endQuiz() {
         progressBar.style.width = `100%`;
         imageContainerEl.classList.add('hidden');
         questionTitleEl.textContent = `Exercícios Concluídos!`;
-        questionTitleEl.dir = 'ltr'; // Garante que o título final esteja LTR
+        questionTitleEl.dir = 'ltr'; 
         
-        // --- Lógica de Feedback Dinâmico ---
         let completionIcon = '🏆';
         let completionClass = 'completion-good';
         let completionTitle = 'Bom Trabalho!';
-        
         const percentage = (questions.length > 0) ? (score / questions.length) * 100 : 0;
         
         if (percentage === 100) {
-            completionIcon = '🏅'; // Medalha
-            completionClass = 'completion-perfect';
-            completionTitle = 'Perfeito!';
+            completionIcon = '🏅'; completionClass = 'completion-perfect'; completionTitle = 'Perfeito!';
         } else if (percentage < 50) {
-            completionIcon = '💪'; // Força
-            completionClass = 'completion-needs-work';
-            completionTitle = 'Continue Tentando!';
+            completionIcon = '💪'; completionClass = 'completion-needs-work'; completionTitle = 'Continue Tentando!';
         }
-        // --- Fim da Lógica de Feedback ---
         
-        // --- [HTML CORRIGIDO] Adiciona os 3 botões ---
         optionsContainerEl.innerHTML = `
             <div class="completion-box ${completionClass}">
                 <span class="completion-icon">${completionIcon}</span>
@@ -440,21 +384,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="fas fa-layer-group"></i> Voltar aos Capítulos
                     </a>
                 </div>
-            </div>
-        `;
+            </div>`;
         
         feedbackAreaEl.classList.add('hidden');
-        
-        // Adiciona o listener para o novo botão "Refazer"
         document.getElementById('redo-exercises-button').addEventListener('click', () => {
-             // Resetar e recomeçar
              currentQuestionIndex = 0;
              score = 0;
-             questions = shuffleArray(questions);
+             questions = shuffleArray(questions); // Embaralha de novo
              loadQuestion(currentQuestionIndex);
         });
     }
-
-    // --- Iniciar ---
     startQuiz();
 });

@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
     
+    // Garante que o botão voltar vai para a lista de capítulos
     backButton.href = '/chapters.html'; 
 
     try {
@@ -35,16 +36,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         lessonsListEl.innerHTML = '';
         if(lessonsTitle) lessonsListEl.appendChild(lessonsTitle);
 
-
         if (lessons.length === 0) {
             lessonsListEl.insertAdjacentHTML('beforeend', '<p>Nenhuma lição encontrada.</p>');
         } else {
+            // Ordenar lições pelo número para garantir a ordem correta
+            lessons.sort((a, b) => a.lesson_number - b.lesson_number);
+
             lessons.forEach(lesson => {
                 const lessonItem = document.createElement('a');
-                lessonItem.className = 'lesson-item'; // <-- [CORREÇÃO]
+                lessonItem.className = 'lesson-item'; 
                 lessonItem.href = `/lesson.html?lesson_id=${lesson.id}&chapter_id=${chapterId}`;
                 
-                // [CORREÇÃO] Seta removida e classe "lesson-text" adicionada
+                // [CORREÇÃO FINAL] Apenas o texto, sem ícone de seta
                 lessonItem.innerHTML = `<span class="lesson-text">${lesson.lesson_number} - ${lesson.title}</span>`;
                 
                 lessonsListEl.appendChild(lessonItem);
