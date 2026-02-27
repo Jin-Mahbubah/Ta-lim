@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ta-lim - Dashboard</title>
+    <title>Ta-lim - Dashboard</title> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -33,13 +33,18 @@
                    </section>
 
                    <section class="icon-grid">
-                        <a href="/chapters.html" class="grid-item">
+                        <a href="/chapters.html" class="grid-item" style="text-decoration: none; color: inherit;">
                             <div class="icon-background color-green"><i class="fas fa-language"></i></div>
                             <span>Árabe</span>
                         </a>
                         <div class="grid-item"><div class="icon-background color-blue"><i class="fas fa-book-quran"></i></div><span>Al-Quran</span></div>
                         <div class="grid-item"><div class="icon-background color-purple"><i class="fas fa-mosque"></i></div><span>Orações</span></div>
                         <div class="grid-item"><div class="icon-background color-orange"><i class="fas fa-book-open"></i></div><span>Hadith</span></div>
+                        
+                        <a href="cod.html" class="grid-item" style="text-decoration: none; color: inherit;">
+                            <div class="icon-background color-green"><i class="fas fa-users"></i></div>
+                            <span>Contatos</span>
+                        </a>
                    </section>
                </div> 
 
@@ -49,13 +54,11 @@
                        <div class="lesson-icon"><i class="fas fa-pen-nib"></i></div>
                        <div class="lesson-info"><h4>As Letras Solares e Lunares</h4><p>Gramática Essencial</p></div>
                        <div class="play-button"><i class="fas fa-play"></i></div>
-                       <a href="cod.html">O texto que a pessoa vai clicar</a>
                    </div>
                </section>
             </div>
         </div>
 
-        <a href="cod.html">O texto que a pessoa vai clicar</a>
         <nav class="bottom-nav">
              <a href="/index.html" class="nav-item"><i class="fas fa-home"></i></a>
              <a href="/chapters.html" class="nav-item"><i class="fas fa-book-open"></i></a>
@@ -63,11 +66,10 @@
              <a href="cod.html" class="nav-item"><i class="far fa-user-circle"></i></a>
         </nav>
     </div>
+    
     <script src="/js/client.js" defer></script>
     <script src="/js/nav.js" defer></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/js/auth-guard.js"></script> <script src="/js/client.js" defer></script>
-<script src="/js/nav.js" defer></script>
+    <script src="/js/auth-guard.js"></script> 
 </body>
 </html>
