@@ -67,7 +67,8 @@
         p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 15px; line-height: 1.4; }
 
         .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group { margin-bottom: 10px; }
+        .form-group { margin-bottom: 5px; }
+        .full-width { grid-column: span 2; }
         
         .filtro-destaque input {
             border-color: #34b7f1;
@@ -85,7 +86,8 @@
         
         input[type="text"]:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.1); }
         
-        textarea { height: 180px; resize: none; }
+        textarea { height: 140px; resize: none; }
+        #texto_geral { height: 160px; border-color: #34b7f1; } /* Caixa principal destacada */
 
         .button-group { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
 
@@ -94,6 +96,7 @@
             font-weight: 600; border-radius: 12px; width: 100%; transition: transform 0.2s;
             display: flex; justify-content: center; align-items: center; gap: 8px;
         }
+        .btn-magic { background: linear-gradient(135deg, #8e44ad, #9b59b6); box-shadow: 0 6px 15px rgba(142, 68, 173, 0.3); grid-column: span 2; margin-top: 5px; margin-bottom: 15px;}
         .btn-csv { background: linear-gradient(135deg, #34b7f1, #2980b9); box-shadow: 0 6px 15px rgba(52, 183, 241, 0.3); }
         .btn-vcf { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
         button.btn-action:hover { transform: translateY(-3px); }
@@ -109,9 +112,11 @@
         @media (max-width: 768px) {
             .container { padding: 25px 20px; }
             .grid-layout, .button-group { grid-template-columns: 1fr; gap: 15px; }
+            .full-width { grid-column: span 1; }
+            .btn-magic { grid-column: span 1; }
             .header-top { flex-direction: column; }
             #theme-toggle { position: relative; margin-top: 10px; }
-            textarea { height: 130px; }
+            textarea { height: 120px; }
         }
     </style>
 </head>
@@ -122,7 +127,7 @@
             <h2>Extrator de Contatos</h2>
             <button id="theme-toggle" onclick="toggleTheme()" title="Mudar tema">🌙</button>
         </div>
-        <p class="subtitle">Cole nas caixas separadas. O sistema filtra e ignora as mensagens dos seus amigos automaticamente.</p>
+        <p class="subtitle">Cole o chat inteiro. O sistema separa e organiza para você!</p>
         
         <div class="grid-layout">
             <div class="form-group">
@@ -135,24 +140,31 @@
                 <input type="text" id="codigo_dae" value="Por-2">
             </div>
 
+            <div class="form-group full-width">
+                <label for="texto_geral">📋 1. Cole TUDO misturado aqui dentro:</label>
+                <textarea id="texto_geral" placeholder="Cole o chat inteiro do WhatsApp aqui..."></textarea>
+            </div>
+
+            <button class="btn-action btn-magic" onclick="separarContatos()">🪄 2. Filtrar e Separar Homens e Mulheres</button>
+
             <div class="form-group">
-                <label for="numeros_masc">👨 Textos dos Homens</label>
-                <textarea id="numeros_masc" placeholder="Cole todo o chat com as fichas dos homens aqui..."></textarea>
+                <label for="res_masc">👨 Homens Encontrados</label>
+                <textarea id="res_masc" placeholder="Os números vão aparecer aqui automaticamente..."></textarea>
             </div>
             
             <div class="form-group">
-                <label for="numeros_fem">👩 Textos das Mulheres</label>
-                <textarea id="numeros_fem" placeholder="Cole todo o chat com as fichas das mulheres aqui..."></textarea>
+                <label for="res_fem">👩 Mulheres Encontradas</label>
+                <textarea id="res_fem" placeholder="Os números vão aparecer aqui automaticamente..."></textarea>
             </div>
             
             <div class="button-group">
-                <button class="btn-action btn-csv" onclick="processarContatos('csv')">📊 Baixar Planilha (CSV)</button>
-                <button class="btn-action btn-vcf" onclick="processarContatos('vcf')">📇 Baixar Agenda (VCF)</button>
+                <button class="btn-action btn-csv" onclick="processarExportacao('csv')">📊 3. Baixar Planilha (CSV)</button>
+                <button class="btn-action btn-vcf" onclick="processarExportacao('vcf')">📇 3. Baixar Agenda (VCF)</button>
             </div>
         </div>
 
         <div class="credit-footer">
-            Este software foi criado por: <strong>Beirense</strong>
+            Este software foi criado por: <strong>Beirensse</strong>
         </div>
     </div>
 
@@ -163,13 +175,11 @@
             const inputNomeGrupo = document.getElementById('nome_grupo');
             const inputCodigo = document.getElementById('codigo_dae');
             
-            // Carrega os últimos nomes digitados
             inputNomeGrupo.value = localStorage.getItem('memoria_nome_grupo') || '';
             if (localStorage.getItem('memoria_codigo')) {
                 inputCodigo.value = localStorage.getItem('memoria_codigo');
             }
             
-            // Salva o que você digita para não precisar digitar de novo amanhã
             inputNomeGrupo.addEventListener('input', (e) => localStorage.setItem('memoria_nome_grupo', e.target.value));
             inputCodigo.addEventListener('input', (e) => localStorage.setItem('memoria_codigo', e.target.value));
             
@@ -197,23 +207,26 @@
             setTimeout(() => { toast.className = toast.className.replace(`show ${tipo}`, ""); }, 4000);
         }
 
-        // Função Inteligente: Lê o texto e extrai APENAS as suas fichas
-        function filtrarExtrair(texto, codigoDae) {
-            if (!texto.trim()) return [];
-            let telefones = [];
+        // FUNÇÃO DO BOTÃO MÁGICO (Separa e preenche as caixas de baixo)
+        function separarContatos() {
+            const codigoDae = document.getElementById('codigo_dae').value.trim().toLowerCase();
+            const texto = document.getElementById('texto_geral').value;
 
-            // Separa cada ficha
+            if (!texto.trim()) {
+                mostrarNotificacao('⚠️ Cole as mensagens no quadro misturado primeiro!', 'error');
+                return;
+            }
+
+            let telefonesMasc = [];
+            let telefonesFem = [];
+
             const blocosDeFichas = texto.split(/(?=✅|\*الله)/);
 
             blocosDeFichas.forEach(bloco => {
                 const blocoMinusculo = bloco.toLowerCase();
 
-                // 1. Ignora se não for a sua ficha (se não tiver o código Por-2)
-                if (codigoDae && !blocoMinusculo.includes(codigoDae)) {
-                    return; 
-                }
+                if (codigoDae && !blocoMinusculo.includes(codigoDae)) return; 
 
-                // 2. Extrai o Telefone da sua ficha
                 const regexPhone = /\+?[\d][\d\s\-\(\)]{7,20}\d/;
                 const match = bloco.match(regexPhone);
                 
@@ -222,35 +235,45 @@
                     if (match[0].startsWith('+')) numero = '+' + numero;
                     
                     if (numero.length >= 8) {
-                        telefones.push(numero);
+                        if (blocoMinusculo.includes('masculino')) {
+                            telefonesMasc.push(numero);
+                        } else if (blocoMinusculo.includes('femenino') || blocoMinusculo.includes('feminino') || blocoMinusculo.includes('fem')) {
+                            telefonesFem.push(numero);
+                        }
                     }
                 }
             });
 
-            // Apaga duplicados
-            return [...new Set(telefones)];
+            // Remove duplicados e exibe nas caixas na tela
+            telefonesMasc = [...new Set(telefonesMasc)];
+            telefonesFem = [...new Set(telefonesFem)];
+
+            document.getElementById('res_masc').value = telefonesMasc.join('\n');
+            document.getElementById('res_fem').value = telefonesFem.join('\n');
+
+            mostrarNotificacao(`✅ Organizado: ${telefonesMasc.length} Homens e ${telefonesFem.length} Mulheres encontrados!`, 'success');
         }
 
-        function processarContatos(tipoExportacao) {
+        // Função que lê as caixas separadas para gerar o arquivo
+        function pegarNumeros(id) {
+            return document.getElementById(id).value.split('\n').map(n => n.trim()).filter(n => n.length >= 8);
+        }
+
+        function processarExportacao(tipoExportacao) {
             let nomeGrupo = document.getElementById('nome_grupo').value.trim() || "Contato"; 
-            const codigoDae = document.getElementById('codigo_dae').value.trim().toLowerCase();
             
-            const textoMasc = document.getElementById('numeros_masc').value;
-            const textoFem = document.getElementById('numeros_fem').value;
-            
-            // Aplica a inteligência em cada caixa separadamente
-            const telMasc = filtrarExtrair(textoMasc, codigoDae);
-            const telFem = filtrarExtrair(textoFem, codigoDae);
+            const telMasc = pegarNumeros('res_masc');
+            const telFem = pegarNumeros('res_fem');
 
             if (telMasc.length === 0 && telFem.length === 0) {
-                mostrarNotificacao(`⚠️ Nenhuma ficha válida encontrada com o código "${codigoDae}".`, 'error');
+                mostrarNotificacao('⚠️ Não há contatos. Clique em "Filtrar e Separar" primeiro.', 'error');
                 return;
             }
 
             if (tipoExportacao === 'csv') gerarCSV(telMasc, telFem, nomeGrupo);
             else gerarVCF(telMasc, telFem, nomeGrupo);
 
-            mostrarNotificacao(`✅ Sucesso! ${telMasc.length} homens e ${telFem.length} mulheres salvos.`, 'success');
+            mostrarNotificacao(`✅ Download Concluído!`, 'success');
         }
 
         function gerarCSV(telMasc, telFem, nomeGrupo) {
