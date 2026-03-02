@@ -216,7 +216,7 @@
         }
 
         /* =========================================
-           SISTEMA DE IDIOMAS (MULTILÍNGUE COM NÚMEROS)
+           SISTEMA DE IDIOMAS (MULTILÍNGUE COM PLACEHOLDERS)
            ========================================= */
         const traducoes = {
             pt: {
@@ -224,28 +224,36 @@
                 lbl_filtro: "🔍 1. Seu Código (Filtro) - Opcional:", lbl_grupo: "📁 2. Nome do Grupo (Para a Agenda):",
                 lbl_texto: "📋 3. Cole TUDO misturado aqui...", btn_filtrar: "🪄 4. Filtrar e Separar",
                 lbl_homens: "👨 Homens", lbl_mulheres: "👩 Mulheres", btn_baixar: "📇 5. Baixar Agenda", 
-                btn_limpar: "🗑️ Limpar Tudo", lbl_total: "📊 Total Extraído:", dir: "ltr"
+                btn_limpar: "🗑️ Limpar Tudo", lbl_total: "📊 Total Extraído:", 
+                ph_filtro: "Ex: Por-2 (Deixe em branco para extrair tudo)", ph_grupo: "Ex: Novos Muçulmanos", ph_texto: "Cole as mensagens do WhatsApp aqui...",
+                dir: "ltr"
             },
             en: {
                 titulo: "🏷️ Contact Extractor", sub: "Developed with ❤️ by <strong>Beirensse</strong>",
                 lbl_filtro: "🔍 1. Your Code (Filter) - Optional:", lbl_grupo: "📁 2. Group Name (For Contacts):",
                 lbl_texto: "📋 3. Paste EVERYTHING mixed here...", btn_filtrar: "🪄 4. Filter and Separate",
                 lbl_homens: "👨 Men", lbl_mulheres: "👩 Women", btn_baixar: "📇 5. Download Contacts", 
-                btn_limpar: "🗑️ Clear All", lbl_total: "📊 Total Extracted:", dir: "ltr"
+                btn_limpar: "🗑️ Clear All", lbl_total: "📊 Total Extracted:", 
+                ph_filtro: "Ex: Por-2 (Leave blank to extract all)", ph_grupo: "Ex: New Muslims", ph_texto: "Paste WhatsApp messages here...",
+                dir: "ltr"
             },
             fr: {
                 titulo: "🏷️ Extracteur de Contacts", sub: "Développé avec ❤️ par <strong>Beirensse</strong>",
                 lbl_filtro: "🔍 1. Votre Code (Filtre) - Optionnel:", lbl_grupo: "📁 2. Nom du Groupe (Pour l'Agenda):",
                 lbl_texto: "📋 3. Collez TOUT mélangé ici...", btn_filtrar: "🪄 4. Filtrer et Séparer",
                 lbl_homens: "👨 Hommes", lbl_mulheres: "👩 Femmes", btn_baixar: "📇 5. Télécharger Contacts", 
-                btn_limpar: "🗑️ Tout Effacer", lbl_total: "📊 Total Extrait:", dir: "ltr"
+                btn_limpar: "🗑️ Tout Effacer", lbl_total: "📊 Total Extrait:", 
+                ph_filtro: "Ex: Por-2 (Laissez vide pour tout extraire)", ph_grupo: "Ex: Nouveaux Musulmans", ph_texto: "Collez les messages WhatsApp ici...",
+                dir: "ltr"
             },
             ar: {
                 titulo: "🏷️ مستخرج جهات الاتصال", sub: "تم التطوير بـ ❤️ بواسطة <strong>Beirensse</strong>",
                 lbl_filtro: ":رمزك (عامل التصفية) - اختياري .1 🔍", lbl_grupo: ":اسم المجموعة (لجهات الاتصال) .2 📁",
                 lbl_texto: "...قم بلصق كل شيء مختلط هنا .3 📋", btn_filtrar: "تصفية وفصل .4 🪄",
                 lbl_homens: "رجال 👨", lbl_mulheres: "نساء 👩", btn_baixar: "تنزيل جهات الاتصال .5 📇", 
-                btn_limpar: "مسح الكل 🗑️", lbl_total: ":إجمالي المستخرج 📊", dir: "rtl"
+                btn_limpar: "مسح الكل 🗑️", lbl_total: ":إجمالي المستخرج 📊", 
+                ph_filtro: "مثال: Por-2 (اتركه فارغاً لاستخراج الكل)", ph_grupo: "مثال: المسلمون الجدد", ph_texto: "...قم بلصق رسائل الواتساب هنا",
+                dir: "rtl"
             }
         };
 
@@ -253,6 +261,7 @@
             const idioma = document.getElementById('idioma_select').value;
             const t = traducoes[idioma];
 
+            // Textos visíveis
             document.getElementById('titulo_app').innerHTML = t.titulo;
             document.getElementById('sub_app').innerHTML = t.sub;
             document.getElementById('lbl_filtro').innerText = t.lbl_filtro;
@@ -264,6 +273,11 @@
             document.getElementById('btn_baixar').innerText = t.btn_baixar;
             document.getElementById('btn_limpar').innerText = t.btn_limpar;
             document.getElementById('lbl_total').innerText = t.lbl_total;
+
+            // Placeholders (Dicas invisíveis dentro das caixas)
+            document.getElementById('codigo_dae').placeholder = t.ph_filtro;
+            document.getElementById('nome_grupo').placeholder = t.ph_grupo;
+            document.getElementById('texto_geral').placeholder = t.ph_texto;
 
             if (t.dir === "rtl") {
                 document.body.classList.add('rtl');
