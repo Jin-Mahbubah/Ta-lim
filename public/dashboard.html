@@ -6,195 +6,286 @@
     <title>Extrator de Contatos Beirensse</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    
     <link rel="manifest" href="manifest.json">
 
     <style>
         /* =========================================
-           DESIGN PREMIUM (GLASSMORPHISM)
+           ESTILO BASE (MODO CLARO)
            ========================================= */
-        * {
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        * { box-sizing: border-box; }
         body {
-            margin: 0;
-            padding: 20px;
-            /* Fundo com gradiente suave (Azul, Verde e Roxo claro) */
+            margin: 0; padding: 20px;
             background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
             background-attachment: fixed;
             min-height: 100vh;
             color: #333;
-            display: flex;
-            justify-content: center;
+            display: flex; justify-content: center; align-items: flex-start;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.4s ease;
         }
 
-        /* O "Vidro" principal da App */
         .glass-panel {
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 24px;
-            padding: 25px;
-            width: 100%;
-            max-width: 500px;
+            padding: 25px; width: 100%; max-width: 500px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            transition: all 0.4s ease;
         }
 
-        .header-app {
-            text-align: center;
-            margin-bottom: 20px;
+        .header-app { text-align: center; margin-bottom: 20px; transition: 0.4s; }
+        h1 { font-size: 24px; margin: 0 0 5px 0; color: #1a1a1a; transition: 0.4s; }
+        .subtitle { font-size: 13px; color: #444; margin-bottom: 5px; transition: 0.4s; }
+        
+        .top-controls {
+            display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-bottom: 15px;
+        }
+        
+        select {
+            background: rgba(255, 255, 255, 0.8); color: #333;
+            border: 1px solid #ccc; border-radius: 8px;
+            padding: 6px 10px; font-family: 'Poppins', sans-serif; outline: none; cursor: pointer;
+            transition: 0.4s;
         }
 
-        h1 {
-            font-size: 24px;
-            margin: 0 0 5px 0;
-            color: #1a1a1a;
+        /* Botão Tema (Lua/Sol) */
+        .btn-tema {
+            background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 50%; width: 35px; height: 35px; font-size: 16px;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            transition: 0.4s; padding: 0; margin: 0;
         }
+        .btn-tema:hover { transform: scale(1.1); }
 
-        .subtitle {
-            font-size: 13px;
-            color: #444;
-            margin-bottom: 5px;
-        }
-
-        .data-criacao {
-            font-size: 11px;
-            color: #666;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        /* Caixas de Texto (Inputs) */
         textarea, input[type="text"] {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            outline: none;
-            transition: 0.3s;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            width: 100%; background: rgba(255, 255, 255, 0.7); color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 12px;
+            padding: 15px; font-size: 14px; margin-bottom: 15px;
+            outline: none; transition: 0.4s;
         }
-
         textarea:focus, input[type="text"]:focus {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #9b59b6;
-            box-shadow: 0 0 8px rgba(155, 89, 182, 0.3);
+            background: rgba(255, 255, 255, 0.9); border-color: #9b59b6;
         }
+        textarea { height: 120px; resize: vertical; margin-bottom: 5px; }
 
-        textarea {
-            height: 150px;
-            resize: vertical;
+        label { font-weight: 600; font-size: 13px; margin-bottom: 5px; display: block; color: #2c3e50; transition: 0.4s; }
+
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .btn-limpar {
+            background: rgba(231, 76, 60, 0.8); color: white; border: none;
+            padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: 0.2s;
         }
+        .btn-limpar:hover { background: rgba(231, 76, 60, 1); }
 
-        label {
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 5px;
-            display: block;
-            color: #2c3e50;
+        button.acao-principal {
+            width: 100%; padding: 15px; border: none; border-radius: 12px;
+            font-size: 16px; font-weight: 600; cursor: pointer; color: white;
+            transition: transform 0.2s; margin-bottom: 15px;
         }
+        button.acao-principal:active { transform: scale(0.98); }
+        .btn-filtrar { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .btn-baixar { background: linear-gradient(135deg, #1abc9c, #16a085); }
 
-        /* Botões Mágicos */
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            color: white;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-bottom: 15px;
+        .box-total {
+            background: rgba(255, 255, 255, 0.6); border-radius: 12px;
+            padding: 10px; text-align: center; margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            font-weight: 600; color: #2c3e50; font-size: 14px; transition: 0.4s;
         }
+        .box-total span { color: #2980b9; font-size: 18px; font-weight: 700; margin-left: 5px; transition: 0.4s; }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
-        .btn-filtrar {
-            /* Roxo brilhante */
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
-        }
-
-        .btn-baixar {
-            /* Verde-azulado */
-            background: linear-gradient(135deg, #1abc9c, #16a085);
-            box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
-        }
-
-        /* Caixas de Resultados */
-        .resultados-grid {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
+        .resultados-grid { display: flex; gap: 15px; margin-bottom: 15px; }
         .box-resultado {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            text-align: center;
+            flex: 1; background: rgba(255, 255, 255, 0.5); border-radius: 16px;
+            padding: 15px; border: 1px solid rgba(255, 255, 255, 0.6); text-align: center; transition: 0.4s;
         }
+        .box-resultado h3 { margin: 0 0 10px 0; font-size: 14px; color: #2c3e50; transition: 0.4s; }
+        .contador { font-size: 24px; font-weight: 700; color: #27ae60; transition: 0.4s; }
 
-        .box-resultado h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            color: #2c3e50;
+        /* Estilo para Árabe */
+        body.rtl { direction: rtl; font-family: 'Tajawal', sans-serif; }
+        body.rtl .top-controls { justify-content: flex-start; }
+        body.rtl .toolbar { justify-content: flex-start; }
+
+        /* =========================================
+           MODO NOTURNO (DARK MODE)
+           ========================================= */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
         }
-
-        .contador {
-            font-size: 24px;
-            font-weight: 700;
-            color: #27ae60;
+        body.dark-mode .glass-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
         }
-
+        body.dark-mode h1, body.dark-mode label, body.dark-mode .box-resultado h3, body.dark-mode .box-total {
+            color: #ecf0f1;
+        }
+        body.dark-mode .subtitle { color: #bdc3c7; }
+        body.dark-mode select {
+            background: rgba(0, 0, 0, 0.6); color: white; border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        body.dark-mode .btn-tema {
+            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white;
+        }
+        body.dark-mode textarea, body.dark-mode input[type="text"] {
+            background: rgba(0, 0, 0, 0.4); color: white; border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        body.dark-mode textarea:focus, body.dark-mode input[type="text"]:focus {
+            background: rgba(0, 0, 0, 0.6); border-color: #9b59b6;
+        }
+        body.dark-mode textarea::placeholder, body.dark-mode input[type="text"]::placeholder {
+            color: #888;
+        }
+        body.dark-mode .box-total {
+            background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode .box-total span { color: #64b5f6; }
+        body.dark-mode .box-resultado {
+            background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode .contador { color: #2ecc71; }
     </style>
 </head>
 <body>
 
     <div class="glass-panel">
-        <div class="header-app">
-            <h1>🏷️ Extrator de Contatos</h1>
-            <div class="subtitle">Desenvolvido com ❤️ por <strong>Beirensse</strong></div>
-            <span class="data-criacao">📅 Criado em: 28 de Fevereiro de 2026</span>
+        <div class="top-controls">
+            <select id="idioma_select" onchange="mudarIdioma()">
+                <option value="pt">🇵🇹 PT</option>
+                <option value="en">🇬🇧 EN</option>
+                <option value="fr">🇫🇷 FR</option>
+                <option value="ar">🇸🇦 AR</option>
+            </select>
+            <button class="btn-tema" id="btn_tema" onclick="alternarTema()">🌙</button>
         </div>
 
-        <label for="texto_geral">📋 1. Cole TUDO misturado aqui...</label>
-        <textarea id="texto_geral" placeholder="Cole as mensagens do WhatsApp aqui..."></textarea>
+        <div class="header-app">
+            <h1 id="titulo_app">🏷️ Extrator de Contatos</h1>
+            <div class="subtitle" id="sub_app">Desenvolvido com ❤️ por <strong>Beirensse</strong></div>
+        </div>
 
-        <label for="codigo_dae">🔍 Seu Código (Filtro) - Opcional:</label>
+        <label for="texto_geral" id="lbl_texto">📋 1. Cole TUDO misturado aqui...</label>
+        <textarea id="texto_geral" placeholder="Cole as mensagens do WhatsApp aqui..."></textarea>
+        
+        <div class="toolbar">
+            <button class="btn-limpar" id="btn_limpar" onclick="limparTudo()">🗑️ Limpar Tudo</button>
+        </div>
+
+        <label for="codigo_dae" id="lbl_filtro">🔍 Seu Código (Filtro) - Opcional:</label>
         <input type="text" id="codigo_dae" value="" placeholder="Ex: Por-2 (Deixe em branco para extrair tudo)">
 
-        <button class="btn-filtrar" onclick="filtrarContatos()">🪄 2. Filtrar e Separar</button>
+        <label for="nome_grupo" id="lbl_grupo">📁 Nome do Grupo (Para a Agenda):</label>
+        <input type="text" id="nome_grupo" placeholder="Ex: Clientes VIP, Angola, etc.">
+
+        <button class="acao-principal btn-filtrar" id="btn_filtrar" onclick="filtrarContatos()">🪄 2. Filtrar e Separar</button>
+
+        <div class="box-total">
+            <span id="lbl_total">📊 Total Extraído:</span> <span id="count_total">0</span>
+        </div>
 
         <div class="resultados-grid">
             <div class="box-resultado">
-                <h3>👨 Homens</h3>
+                <h3 id="lbl_homens">👨 Homens</h3>
                 <div class="contador" id="count_masc">0</div>
             </div>
             <div class="box-resultado">
-                <h3>👩 Mulheres</h3>
+                <h3 id="lbl_mulheres">👩 Mulheres</h3>
                 <div class="contador" id="count_fem">0</div>
             </div>
         </div>
 
-        <br>
-        <button class="btn-baixar" onclick="baixarVCF()">📇 3. Baixar Agenda</button>
+        <button class="acao-principal btn-baixar" id="btn_baixar" onclick="baixarVCF()">📇 3. Baixar Agenda</button>
     </div>
 
     <script>
         /* =========================================
-           O "CÉREBRO" DO EXTRATOR BEIRENSSE
+           SISTEMA DE MODO NOTURNO
+           ========================================= */
+        function alternarTema() {
+            document.body.classList.toggle('dark-mode');
+            const btnTema = document.getElementById('btn_tema');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                btnTema.innerText = '☀️'; // Muda para Sol quando está escuro
+            } else {
+                btnTema.innerText = '🌙'; // Muda para Lua quando está claro
+            }
+        }
+
+        /* =========================================
+           SISTEMA DE IDIOMAS (MULTILÍNGUE)
+           ========================================= */
+        const traducoes = {
+            pt: {
+                titulo: "🏷️ Extrator de Contatos", sub: "Desenvolvido com ❤️ por <strong>Beirensse</strong>",
+                lbl_texto: "📋 1. Cole TUDO misturado aqui...", lbl_filtro: "🔍 Seu Código (Filtro) - Opcional:",
+                lbl_grupo: "📁 Nome do Grupo (Para a Agenda):", btn_filtrar: "🪄 2. Filtrar e Separar",
+                lbl_homens: "👨 Homens", lbl_mulheres: "👩 Mulheres", btn_baixar: "📇 3. Baixar Agenda", 
+                btn_limpar: "🗑️ Limpar Tudo", lbl_total: "📊 Total Extraído:", dir: "ltr"
+            },
+            en: {
+                titulo: "🏷️ Contact Extractor", sub: "Developed with ❤️ by <strong>Beirensse</strong>",
+                lbl_texto: "📋 1. Paste EVERYTHING mixed here...", lbl_filtro: "🔍 Your Code (Filter) - Optional:",
+                lbl_grupo: "📁 Group Name (For Contacts):", btn_filtrar: "🪄 2. Filter and Separate",
+                lbl_homens: "👨 Men", lbl_mulheres: "👩 Women", btn_baixar: "📇 3. Download Contacts", 
+                btn_limpar: "🗑️ Clear All", lbl_total: "📊 Total Extracted:", dir: "ltr"
+            },
+            fr: {
+                titulo: "🏷️ Extracteur de Contacts", sub: "Développé avec ❤️ par <strong>Beirensse</strong>",
+                lbl_texto: "📋 1. Collez TOUT mélangé ici...", lbl_filtro: "🔍 Votre Code (Filtre) - Optionnel:",
+                lbl_grupo: "📁 Nom du Groupe (Pour l'Agenda):", btn_filtrar: "🪄 2. Filtrer et Séparer",
+                lbl_homens: "👨 Hommes", lbl_mulheres: "👩 Femmes", btn_baixar: "📇 3. Télécharger Contacts", 
+                btn_limpar: "🗑️ Tout Effacer", lbl_total: "📊 Total Extrait:", dir: "ltr"
+            },
+            ar: {
+                titulo: "🏷️ مستخرج جهات الاتصال", sub: "تم التطوير بـ ❤️ بواسطة <strong>Beirensse</strong>",
+                lbl_texto: "...قم بلصق كل شيء مختلط هنا .1 📋", lbl_filtro: ":رمزك (عامل التصفية) - اختياري 🔍",
+                lbl_grupo: ":اسم المجموعة (لجهات الاتصال) 📁", btn_filtrar: "تصفية وفصل .2 🪄",
+                lbl_homens: "رجال 👨", lbl_mulheres: "نساء 👩", btn_baixar: "تنزيل جهات الاتصال .3 📇", 
+                btn_limpar: "مسح الكل 🗑️", lbl_total: ":إجمالي المستخرج 📊", dir: "rtl"
+            }
+        };
+
+        function mudarIdioma() {
+            const idioma = document.getElementById('idioma_select').value;
+            const t = traducoes[idioma];
+
+            document.getElementById('titulo_app').innerHTML = t.titulo;
+            document.getElementById('sub_app').innerHTML = t.sub;
+            document.getElementById('lbl_texto').innerText = t.lbl_texto;
+            document.getElementById('lbl_filtro').innerText = t.lbl_filtro;
+            document.getElementById('lbl_grupo').innerText = t.lbl_grupo;
+            document.getElementById('btn_filtrar').innerText = t.btn_filtrar;
+            document.getElementById('lbl_homens').innerText = t.lbl_homens;
+            document.getElementById('lbl_mulheres').innerText = t.lbl_mulheres;
+            document.getElementById('btn_baixar').innerText = t.btn_baixar;
+            document.getElementById('btn_limpar').innerText = t.btn_limpar;
+            document.getElementById('lbl_total').innerText = t.lbl_total;
+
+            if (t.dir === "rtl") {
+                document.body.classList.add('rtl');
+            } else {
+                document.body.classList.remove('rtl');
+            }
+        }
+
+        /* =========================================
+           FUNÇÃO: LIMPAR TUDO
+           ========================================= */
+        function limparTudo() {
+            document.getElementById('texto_geral').value = '';
+            listaHomens = [];
+            listaMulheres = [];
+            document.getElementById('count_masc').innerText = "0";
+            document.getElementById('count_fem').innerText = "0";
+            document.getElementById('count_total').innerText = "0";
+        }
+
+        /* =========================================
+           O "CÉREBRO" DO EXTRATOR
            ========================================= */
         let listaHomens = [];
         let listaMulheres = [];
@@ -203,87 +294,65 @@
             const textoOriginal = document.getElementById('texto_geral').value;
             const filtroTexto = document.getElementById('codigo_dae').value.trim();
             
-            // Limpar listas anteriores
-            listaHomens = [];
-            listaMulheres = [];
-
-            // Divide o texto grande em blocos a cada linha vazia ou quebra de linha dupla
+            listaHomens = []; listaMulheres = [];
             const blocos = textoOriginal.split(/\n\s*\n/);
 
             blocos.forEach(bloco => {
-                // SE O FILTRO ESTIVER PREENCHIDO E NÃO ESTIVER NESTE BLOCO, IGNORA E PULA PARA O PRÓXIMO
-                if (filtroTexto !== "" && !bloco.toLowerCase().includes(filtroTexto.toLowerCase())) {
-                    return; 
-                }
-
-                // Procura um número de telefone com o sinal + (ex: +244975835646)
+                if (filtroTexto !== "" && !bloco.toLowerCase().includes(filtroTexto.toLowerCase())) return; 
+                
                 const telefoneMatch = bloco.match(/\+\d{10,15}/);
-                if (!telefoneMatch) return; // Se não tem telefone, não é contacto
+                if (!telefoneMatch) return; 
                 
                 const telefone = telefoneMatch[0];
                 let nome = "Contato Extraído";
 
-                // Tenta puxar o nome (procura a palavra Nome: ou الإسم:)
                 const nomeMatch = bloco.match(/(?:Nome|الإسم|Name)\s*:\s*([^\n,]+)/i);
-                if (nomeMatch) {
-                    nome = nomeMatch[1].trim();
-                }
+                if (nomeMatch) nome = nomeMatch[1].trim();
 
-                // Verifica o género lendo os emojis ou palavras
-                const isFeminino = /feminino|mulher|♀️/i.test(bloco);
+                const isFeminino = /feminino|mulher|femme|female|أنثى|♀️/i.test(bloco);
                 
-                // Separação Final
-                if (isFeminino) {
-                    listaMulheres.push({ nome: nome, telefone: telefone });
-                } else {
-                    listaHomens.push({ nome: nome, telefone: telefone });
-                }
+                if (isFeminino) listaMulheres.push({ nome: nome, telefone: telefone });
+                else listaHomens.push({ nome: nome, telefone: telefone });
             });
 
-            // Atualiza os números no ecrã
             document.getElementById('count_masc').innerText = listaHomens.length;
             document.getElementById('count_fem').innerText = listaMulheres.length;
-
-            if(listaHomens.length === 0 && listaMulheres.length === 0) {
-                alert("Nenhum contacto encontrado. Verifique se o seu filtro está correto ou deixe-o em branco.");
-            }
+            document.getElementById('count_total').innerText = listaHomens.length + listaMulheres.length;
         }
 
+        /* =========================================
+           BAIXAR FICHEIRO .VCF
+           ========================================= */
         function baixarVCF() {
-            if (listaHomens.length === 0 && listaMulheres.length === 0) {
-                alert("⚠️ Primeiro cole o texto e clique em 'Filtrar e Separar'!");
-                return;
-            }
+            if (listaHomens.length === 0 && listaMulheres.length === 0) return;
+
+            let nomeGrupo = document.getElementById('nome_grupo').value.trim();
+            let sufixoGrupo = nomeGrupo !== "" ? ` - ${nomeGrupo}` : "";
 
             let vcfContent = "";
 
-            // Monta o ficheiro VCF (Agenda) para Homens
             listaHomens.forEach(c => {
-                vcfContent += "BEGIN:VCARD\nVERSION:3.0\nFN:" + c.nome + " (H)\nTEL;TYPE=CELL:" + c.telefone + "\nEND:VCARD\n";
+                vcfContent += "BEGIN:VCARD\nVERSION:3.0\nFN:" + c.nome + sufixoGrupo + " (H)\nTEL;TYPE=CELL:" + c.telefone + "\nEND:VCARD\n";
             });
 
-            // Monta o ficheiro VCF (Agenda) para Mulheres
             listaMulheres.forEach(c => {
-                vcfContent += "BEGIN:VCARD\nVERSION:3.0\nFN:" + c.nome + " (M)\nTEL;TYPE=CELL:" + c.telefone + "\nEND:VCARD\n";
+                vcfContent += "BEGIN:VCARD\nVERSION:3.0\nFN:" + c.nome + sufixoGrupo + " (M)\nTEL;TYPE=CELL:" + c.telefone + "\nEND:VCARD\n";
             });
 
-            // Cria e faz o download mágico
             const blob = new Blob([vcfContent], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'Contatos_Organizados_Beirensse.vcf';
+            a.download = nomeGrupo !== "" ? `Contatos_${nomeGrupo}.vcf` : 'Contatos_Organizados.vcf';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
         }
 
         /* =========================================
            SISTEMA DE SEGURANÇA MÁXIMA (OFFLINE / PWA)
            ========================================= */
         if ('serviceWorker' in navigator) {
-            // Verifica se você acedeu usando o link secreto com "?admin=beirensse"
             if (window.location.href.includes('?admin=beirensse')) {
                 window.addEventListener('load', () => {
                     navigator.serviceWorker.register('sw.js')
@@ -291,7 +360,6 @@
                     .catch(err => console.log('Erro ao instalar PWA:', err));
                 });
             } else {
-                // Se o link for o normal (sem a chave), ele destrói qualquer instalação offline anterior
                 navigator.serviceWorker.getRegistrations().then(function(registrations) {
                     for(let registration of registrations) {
                         registration.unregister();
