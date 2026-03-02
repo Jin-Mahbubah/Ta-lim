@@ -2,306 +2,303 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Extrator Inteligente de Contatos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrator de Contatos Beirensse</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="manifest" href="manifest.json">
+
     <style>
-        :root {
-            --primary: #25D366;
-            --primary-dark: #128C7E;
-            --bg-grad-1: #ece5dd;
-            --bg-grad-2: #dcf8c6;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-muted: #666666;
-            --input-bg: #fcfcfc;
-            --input-border: #e8e8e8;
+        /* =========================================
+           DESIGN PREMIUM (GLASSMORPHISM)
+           ========================================= */
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
-        body.dark-mode {
-            --bg-grad-1: #1a1a2e;
-            --bg-grad-2: #16213e;
-            --card-bg: #242424;
-            --text-main: #f5f5f5;
-            --text-muted: #aaaaaa;
-            --input-bg: #2d2d2d;
-            --input-border: #404040;
-        }
-
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
-            min-height: 100vh;
+        body {
             margin: 0;
+            padding: 20px;
+            /* Fundo com gradiente suave (Azul, Verde e Roxo claro) */
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #333;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            color: var(--text-main);
-            transition: background 0.4s ease;
         }
 
-        .container {
-            background-color: var(--card-bg);
-            width: 100%;
-            max-width: 800px;
-            padding: 40px;
+        /* O "Vidro" principal da App */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            animation: slideUp 0.6s ease-out;
-            position: relative;
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .header-app {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .header-top { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 5px; }
-        h2 { color: var(--primary-dark); margin: 0; font-size: 32px; font-weight: 600; text-align: center; }
+        h1 {
+            font-size: 24px;
+            margin: 0 0 5px 0;
+            color: #1a1a1a;
+        }
 
-        #theme-toggle { position: absolute; right: 0; background: none; border: none; font-size: 24px; cursor: pointer; padding: 5px; margin: 0; transition: transform 0.2s; }
-        #theme-toggle:hover { transform: scale(1.1); }
+        .subtitle {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 5px;
+        }
 
-        p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 15px; line-height: 1.4; }
+        .data-criacao {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 20px;
+            display: block;
+        }
 
-        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group { margin-bottom: 5px; }
-        .full-width { grid-column: span 2; }
-        
-        .filtro-destaque input {
-            border-color: #34b7f1;
-            background-color: rgba(52, 183, 241, 0.05);
+        /* Caixas de Texto (Inputs) */
+        textarea, input[type="text"] {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #9b59b6;
+            box-shadow: 0 0 8px rgba(155, 89, 182, 0.3);
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        label {
             font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: block;
+            color: #2c3e50;
         }
 
-        label { display: block; color: var(--primary-dark); font-weight: 500; margin-bottom: 8px; font-size: 14px; }
-
-        input[type="text"], textarea { 
-            width: 100%; padding: 16px; border: 2px solid var(--input-border); border-radius: 12px;
-            box-sizing: border-box; font-family: 'Poppins', sans-serif; font-size: 14px;
-            background-color: var(--input-bg); color: var(--text-main); transition: all 0.3s ease;
+        /* Botões Mágicos */
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
         }
-        
-        input[type="text"]:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.1); }
-        
-        textarea { height: 140px; resize: none; }
-        #texto_geral { height: 160px; border-color: #34b7f1; } /* Caixa principal destacada */
 
-        .button-group { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-
-        button.btn-action { 
-            padding: 16px 20px; color: white; border: none; cursor: pointer; font-size: 15px; 
-            font-weight: 600; border-radius: 12px; width: 100%; transition: transform 0.2s;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
+        button:active {
+            transform: scale(0.98);
         }
-        .btn-magic { background: linear-gradient(135deg, #8e44ad, #9b59b6); box-shadow: 0 6px 15px rgba(142, 68, 173, 0.3); grid-column: span 2; margin-top: 5px; margin-bottom: 15px;}
-        .btn-csv { background: linear-gradient(135deg, #34b7f1, #2980b9); box-shadow: 0 6px 15px rgba(52, 183, 241, 0.3); }
-        .btn-vcf { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
-        button.btn-action:hover { transform: translateY(-3px); }
 
-        .credit-footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-muted); border-top: 1px solid var(--input-border); padding-top: 15px; }
-        .credit-footer strong { color: var(--primary-dark); font-weight: 600; }
-
-        #toast { visibility: hidden; min-width: 280px; max-width: 90%; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px 20px; position: fixed; z-index: 1000; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); font-size: 14px; opacity: 0; transition: opacity 0.3s, transform 0.3s; }
-        #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
-        #toast.success { background-color: var(--primary-dark); }
-        #toast.error { background-color: #e74c3c; }
-
-        @media (max-width: 768px) {
-            .container { padding: 25px 20px; }
-            .grid-layout, .button-group { grid-template-columns: 1fr; gap: 15px; }
-            .full-width { grid-column: span 1; }
-            .btn-magic { grid-column: span 1; }
-            .header-top { flex-direction: column; }
-            #theme-toggle { position: relative; margin-top: 10px; }
-            textarea { height: 120px; }
+        .btn-filtrar {
+            /* Roxo brilhante */
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
         }
+
+        .btn-baixar {
+            /* Verde-azulado */
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+        }
+
+        /* Caixas de Resultados */
+        .resultados-grid {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .box-resultado {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        .box-resultado h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .contador {
+            font-size: 24px;
+            font-weight: 700;
+            color: #27ae60;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header-top">
-            <h2>Extrator de Contatos</h2>
-            <button id="theme-toggle" onclick="toggleTheme()" title="Mudar tema">🌙</button>
+    <div class="glass-panel">
+        <div class="header-app">
+            <h1>🏷️ Extrator de Contatos</h1>
+            <div class="subtitle">Desenvolvido com ❤️ por <strong>Beirensse</strong></div>
+            <span class="data-criacao">📅 Criado em: 28 de Fevereiro de 2026</span>
         </div>
-        <p class="subtitle">Cole o chat inteiro. O sistema separa e organiza para você!</p>
-        
-        <div class="grid-layout">
-            <div class="form-group">
-                <label for="nome_grupo">🏷️ Nome do Grupo</label>
-                <input type="text" id="nome_grupo" placeholder="Ex: Novos Muçulmanos">
-            </div>
 
-            <div class="form-group filtro-destaque">
-                <label for="codigo_dae">🔑 Seu Código (Filtro)</label>
-                <input type="text" id="codigo_dae" value="Por-2">
-            </div>
+        <label for="texto_geral">📋 1. Cole TUDO misturado aqui...</label>
+        <textarea id="texto_geral" placeholder="Cole as mensagens do WhatsApp aqui..."></textarea>
 
-            <div class="form-group full-width">
-                <label for="texto_geral">📋 1. Cole TUDO misturado aqui dentro:</label>
-                <textarea id="texto_geral" placeholder="Cole o chat inteiro do WhatsApp aqui..."></textarea>
-            </div>
+        <label for="codigo_dae">🔍 Seu Código (Filtro) - Opcional:</label>
+        <input type="text" id="codigo_dae" value="" placeholder="Ex: Por-2 (Deixe em branco para extrair tudo)">
 
-            <button class="btn-action btn-magic" onclick="separarContatos()">🪄 2. Filtrar e Separar Homens e Mulheres</button>
+        <button class="btn-filtrar" onclick="filtrarContatos()">🪄 2. Filtrar e Separar</button>
 
-            <div class="form-group">
-                <label for="res_masc">👨 Homens Encontrados</label>
-                <textarea id="res_masc" placeholder="Os números vão aparecer aqui automaticamente..."></textarea>
+        <div class="resultados-grid">
+            <div class="box-resultado">
+                <h3>👨 Homens</h3>
+                <div class="contador" id="count_masc">0</div>
             </div>
-            
-            <div class="form-group">
-                <label for="res_fem">👩 Mulheres Encontradas</label>
-                <textarea id="res_fem" placeholder="Os números vão aparecer aqui automaticamente..."></textarea>
-            </div>
-            
-            <div class="button-group">
-                <button class="btn-action btn-csv" onclick="processarExportacao('csv')">📊 3. Baixar Planilha (CSV)</button>
-                <button class="btn-action btn-vcf" onclick="processarExportacao('vcf')">📇 3. Baixar Agenda (VCF)</button>
+            <div class="box-resultado">
+                <h3>👩 Mulheres</h3>
+                <div class="contador" id="count_fem">0</div>
             </div>
         </div>
 
-        <div class="credit-footer">
-            Este software foi criado por: <strong>Beirensse</strong>
-        </div>
+        <br>
+        <button class="btn-baixar" onclick="baixarVCF()">📇 3. Baixar Agenda</button>
     </div>
 
-    <div id="toast"></div>
-
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const inputNomeGrupo = document.getElementById('nome_grupo');
-            const inputCodigo = document.getElementById('codigo_dae');
+        /* =========================================
+           O "CÉREBRO" DO EXTRATOR BEIRENSSE
+           ========================================= */
+        let listaHomens = [];
+        let listaMulheres = [];
+
+        function filtrarContatos() {
+            const textoOriginal = document.getElementById('texto_geral').value;
+            const filtroTexto = document.getElementById('codigo_dae').value.trim();
             
-            inputNomeGrupo.value = localStorage.getItem('memoria_nome_grupo') || '';
-            if (localStorage.getItem('memoria_codigo')) {
-                inputCodigo.value = localStorage.getItem('memoria_codigo');
-            }
-            
-            inputNomeGrupo.addEventListener('input', (e) => localStorage.setItem('memoria_nome_grupo', e.target.value));
-            inputCodigo.addEventListener('input', (e) => localStorage.setItem('memoria_codigo', e.target.value));
-            
-            if(localStorage.getItem('tema_escuro') === 'sim') toggleTheme();
-        });
+            // Limpar listas anteriores
+            listaHomens = [];
+            listaMulheres = [];
 
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById("theme-toggle");
-            body.classList.toggle("dark-mode");
-            
-            if (body.classList.contains("dark-mode")) {
-                btn.textContent = "☀️";
-                localStorage.setItem('tema_escuro', 'sim');
-            } else {
-                btn.textContent = "🌙";
-                localStorage.setItem('tema_escuro', 'nao');
-            }
-        }
+            // Divide o texto grande em blocos a cada linha vazia ou quebra de linha dupla
+            const blocos = textoOriginal.split(/\n\s*\n/);
 
-        function mostrarNotificacao(mensagem, tipo) {
-            const toast = document.getElementById("toast");
-            toast.textContent = mensagem;
-            toast.className = `show ${tipo}`;
-            setTimeout(() => { toast.className = toast.className.replace(`show ${tipo}`, ""); }, 4000);
-        }
+            blocos.forEach(bloco => {
+                // SE O FILTRO ESTIVER PREENCHIDO E NÃO ESTIVER NESTE BLOCO, IGNORA E PULA PARA O PRÓXIMO
+                if (filtroTexto !== "" && !bloco.toLowerCase().includes(filtroTexto.toLowerCase())) {
+                    return; 
+                }
 
-        // FUNÇÃO DO BOTÃO MÁGICO (Separa e preenche as caixas de baixo)
-        function separarContatos() {
-            const codigoDae = document.getElementById('codigo_dae').value.trim().toLowerCase();
-            const texto = document.getElementById('texto_geral').value;
-
-            if (!texto.trim()) {
-                mostrarNotificacao('⚠️ Cole as mensagens no quadro misturado primeiro!', 'error');
-                return;
-            }
-
-            let telefonesMasc = [];
-            let telefonesFem = [];
-
-            const blocosDeFichas = texto.split(/(?=✅|\*الله)/);
-
-            blocosDeFichas.forEach(bloco => {
-                const blocoMinusculo = bloco.toLowerCase();
-
-                if (codigoDae && !blocoMinusculo.includes(codigoDae)) return; 
-
-                const regexPhone = /\+?[\d][\d\s\-\(\)]{7,20}\d/;
-                const match = bloco.match(regexPhone);
+                // Procura um número de telefone com o sinal + (ex: +244975835646)
+                const telefoneMatch = bloco.match(/\+\d{10,15}/);
+                if (!telefoneMatch) return; // Se não tem telefone, não é contacto
                 
-                if (match) {
-                    let numero = match[0].replace(/\D/g, '');
-                    if (match[0].startsWith('+')) numero = '+' + numero;
-                    
-                    if (numero.length >= 8) {
-                        if (blocoMinusculo.includes('masculino')) {
-                            telefonesMasc.push(numero);
-                        } else if (blocoMinusculo.includes('femenino') || blocoMinusculo.includes('feminino') || blocoMinusculo.includes('fem')) {
-                            telefonesFem.push(numero);
-                        }
-                    }
+                const telefone = telefoneMatch[0];
+                let nome = "Contato Extraído";
+
+                // Tenta puxar o nome (procura a palavra Nome: ou الإسم:)
+                const nomeMatch = bloco.match(/(?:Nome|الإسم|Name)\s*:\s*([^\n,]+)/i);
+                if (nomeMatch) {
+                    nome = nomeMatch[1].trim();
+                }
+
+                // Verifica o género lendo os emojis ou palavras
+                const isFeminino = /feminino|mulher|♀️/i.test(bloco);
+                
+                // Separação Final
+                if (isFeminino) {
+                    listaMulheres.push({ nome: nome, telefone: telefone });
+                } else {
+                    listaHomens.push({ nome: nome, telefone: telefone });
                 }
             });
 
-            // Remove duplicados e exibe nas caixas na tela
-            telefonesMasc = [...new Set(telefonesMasc)];
-            telefonesFem = [...new Set(telefonesFem)];
+            // Atualiza os números no ecrã
+            document.getElementById('count_masc').innerText = listaHomens.length;
+            document.getElementById('count_fem').innerText = listaMulheres.length;
 
-            document.getElementById('res_masc').value = telefonesMasc.join('\n');
-            document.getElementById('res_fem').value = telefonesFem.join('\n');
-
-            mostrarNotificacao(`✅ Organizado: ${telefonesMasc.length} Homens e ${telefonesFem.length} Mulheres encontrados!`, 'success');
+            if(listaHomens.length === 0 && listaMulheres.length === 0) {
+                alert("Nenhum contacto encontrado. Verifique se o seu filtro está correto ou deixe-o em branco.");
+            }
         }
 
-        // Função que lê as caixas separadas para gerar o arquivo
-        function pegarNumeros(id) {
-            return document.getElementById(id).value.split('\n').map(n => n.trim()).filter(n => n.length >= 8);
-        }
-
-        function processarExportacao(tipoExportacao) {
-            let nomeGrupo = document.getElementById('nome_grupo').value.trim() || "Contato"; 
-            
-            const telMasc = pegarNumeros('res_masc');
-            const telFem = pegarNumeros('res_fem');
-
-            if (telMasc.length === 0 && telFem.length === 0) {
-                mostrarNotificacao('⚠️ Não há contatos. Clique em "Filtrar e Separar" primeiro.', 'error');
+        function baixarVCF() {
+            if (listaHomens.length === 0 && listaMulheres.length === 0) {
+                alert("⚠️ Primeiro cole o texto e clique em 'Filtrar e Separar'!");
                 return;
             }
 
-            if (tipoExportacao === 'csv') gerarCSV(telMasc, telFem, nomeGrupo);
-            else gerarVCF(telMasc, telFem, nomeGrupo);
+            let vcfContent = "";
 
-            mostrarNotificacao(`✅ Download Concluído!`, 'success');
-        }
-
-        function gerarCSV(telMasc, telFem, nomeGrupo) {
-            let conteudo = "Name,Phone 1 - Value\n";
-            telMasc.forEach((num, i) => conteudo += `${nomeGrupo} - Masc ${i + 1},${num}\n`);
-            telFem.forEach((num, i) => conteudo += `${nomeGrupo} - Fem ${i + 1},${num}\n`);
-            baixarArquivo(conteudo, `${nomeGrupo}_planilha.csv`, 'text/csv');
-        }
-
-        function gerarVCF(telMasc, telFem, nomeGrupo) {
-            let conteudo = "";
-            telMasc.forEach((num, i) => {
-                conteudo += `BEGIN:VCARD\nVERSION:3.0\nFN:${nomeGrupo} - Masc ${i + 1}\nTEL;TYPE=CELL:${num}\nEND:VCARD\n`;
+            // Monta o ficheiro VCF (Agenda) para Homens
+            listaHomens.forEach(c => {
+                vcfContent += "BEGIN:VCARD\nVERSION:3.0\nFN:" + c.nome + " (H)\nTEL;TYPE=CELL:" + c.telefone + "\nEND:VCARD\n";
             });
-            telFem.forEach((num, i) => {
-                conteudo += `BEGIN:VCARD\nVERSION:3.0\nFN:${nomeGrupo} - Fem ${i + 1}\nTEL;TYPE=CELL:${num}\nEND:VCARD\n`;
+
+            // Monta o ficheiro VCF (Agenda) para Mulheres
+            listaMulheres.forEach(c => {
+                vcfContent += "BEGIN:VCARD\nVERSION:3.0\nFN:" + c.nome + " (M)\nTEL;TYPE=CELL:" + c.telefone + "\nEND:VCARD\n";
             });
-            baixarArquivo(conteudo, `${nomeGrupo}_agenda.vcf`, 'text/vcard');
+
+            // Cria e faz o download mágico
+            const blob = new Blob([vcfContent], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Contatos_Organizados_Beirensse.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
         }
 
-        function baixarArquivo(conteudo, nomeArquivo, tipoMime) {
-            const blob = new Blob([conteudo], { type: `${tipoMime};charset=utf-8;` });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = nomeArquivo;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        /* =========================================
+           SISTEMA DE SEGURANÇA MÁXIMA (OFFLINE / PWA)
+           ========================================= */
+        if ('serviceWorker' in navigator) {
+            // Verifica se você acedeu usando o link secreto com "?admin=beirensse"
+            if (window.location.href.includes('?admin=beirensse')) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('✅ Modo Offline Ativado para Administrador'))
+                    .catch(err => console.log('Erro ao instalar PWA:', err));
+                });
+            } else {
+                // Se o link for o normal (sem a chave), ele destrói qualquer instalação offline anterior
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                        console.log('⛔ Acesso Offline Bloqueado/Removido do Utilizador.');
+                    }
+                });
+            }
         }
     </script>
 </body>
