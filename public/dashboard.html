@@ -6,8 +6,7 @@
     <title>Extrator de Contatos Beirensse</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
-
+    
     <style>
         /* =========================================
            ESTILO BASE (MODO CLARO)
@@ -50,7 +49,6 @@
             transition: 0.4s;
         }
 
-        /* Botão Tema (Lua/Sol) */
         .btn-tema {
             background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255,255,255,0.8);
             border-radius: 50%; width: 35px; height: 35px; font-size: 16px;
@@ -104,7 +102,6 @@
         .box-resultado h3 { margin: 0 0 10px 0; font-size: 14px; color: #2c3e50; transition: 0.4s; }
         .contador { font-size: 24px; font-weight: 700; color: #27ae60; transition: 0.4s; }
 
-        /* Estilo para Árabe */
         body.rtl { direction: rtl; font-family: 'Tajawal', sans-serif; }
         body.rtl .top-controls { justify-content: flex-start; }
         body.rtl .toolbar { justify-content: flex-start; }
@@ -112,40 +109,18 @@
         /* =========================================
            MODO NOTURNO (DARK MODE)
            ========================================= */
-        body.dark-mode {
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-        }
-        body.dark-mode .glass-panel {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
-        }
-        body.dark-mode h1, body.dark-mode label, body.dark-mode .box-resultado h3, body.dark-mode .box-total {
-            color: #ecf0f1;
-        }
+        body.dark-mode { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+        body.dark-mode .glass-panel { background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6); }
+        body.dark-mode h1, body.dark-mode label, body.dark-mode .box-resultado h3, body.dark-mode .box-total { color: #ecf0f1; }
         body.dark-mode .subtitle { color: #bdc3c7; }
-        body.dark-mode select {
-            background: rgba(0, 0, 0, 0.6); color: white; border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        body.dark-mode .btn-tema {
-            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white;
-        }
-        body.dark-mode textarea, body.dark-mode input[type="text"] {
-            background: rgba(0, 0, 0, 0.4); color: white; border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        body.dark-mode textarea:focus, body.dark-mode input[type="text"]:focus {
-            background: rgba(0, 0, 0, 0.6); border-color: #9b59b6;
-        }
-        body.dark-mode textarea::placeholder, body.dark-mode input[type="text"]::placeholder {
-            color: #888;
-        }
-        body.dark-mode .box-total {
-            background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        body.dark-mode select { background: rgba(0, 0, 0, 0.6); color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
+        body.dark-mode .btn-tema { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; }
+        body.dark-mode textarea, body.dark-mode input[type="text"] { background: rgba(0, 0, 0, 0.4); color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
+        body.dark-mode textarea:focus, body.dark-mode input[type="text"]:focus { background: rgba(0, 0, 0, 0.6); border-color: #9b59b6; }
+        body.dark-mode textarea::placeholder, body.dark-mode input[type="text"]::placeholder { color: #888; }
+        body.dark-mode .box-total { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); }
         body.dark-mode .box-total span { color: #64b5f6; }
-        body.dark-mode .box-resultado {
-            background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        body.dark-mode .box-resultado { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); }
         body.dark-mode .contador { color: #2ecc71; }
     </style>
 </head>
@@ -201,13 +176,9 @@
     </div>
 
     <script>
-        /* =========================================
-           SISTEMA DE MODO NOTURNO
-           ========================================= */
         function alternarTema() {
             document.body.classList.toggle('dark-mode');
             const btnTema = document.getElementById('btn_tema');
-            
             if (document.body.classList.contains('dark-mode')) {
                 btnTema.innerText = '☀️'; 
             } else {
@@ -215,9 +186,6 @@
             }
         }
 
-        /* =========================================
-           SISTEMA DE IDIOMAS (MULTILÍNGUE COM PLACEHOLDERS)
-           ========================================= */
         const traducoes = {
             pt: {
                 titulo: "🏷️ Extrator de Contatos", sub: "Desenvolvido com ❤️ por <strong>Beirensse</strong>",
@@ -261,7 +229,6 @@
             const idioma = document.getElementById('idioma_select').value;
             const t = traducoes[idioma];
 
-            // Textos visíveis
             document.getElementById('titulo_app').innerHTML = t.titulo;
             document.getElementById('sub_app').innerHTML = t.sub;
             document.getElementById('lbl_filtro').innerText = t.lbl_filtro;
@@ -274,7 +241,6 @@
             document.getElementById('btn_limpar').innerText = t.btn_limpar;
             document.getElementById('lbl_total').innerText = t.lbl_total;
 
-            // Placeholders (Dicas invisíveis dentro das caixas)
             document.getElementById('codigo_dae').placeholder = t.ph_filtro;
             document.getElementById('nome_grupo').placeholder = t.ph_grupo;
             document.getElementById('texto_geral').placeholder = t.ph_texto;
@@ -286,9 +252,6 @@
             }
         }
 
-        /* =========================================
-           FUNÇÃO: LIMPAR TUDO
-           ========================================= */
         function limparTudo() {
             document.getElementById('texto_geral').value = '';
             listaHomens = [];
@@ -298,9 +261,6 @@
             document.getElementById('count_total').innerText = "0";
         }
 
-        /* =========================================
-           O "CÉREBRO" DO EXTRATOR
-           ========================================= */
         let listaHomens = [];
         let listaMulheres = [];
 
@@ -334,9 +294,6 @@
             document.getElementById('count_total').innerText = listaHomens.length + listaMulheres.length;
         }
 
-        /* =========================================
-           BAIXAR FICHEIRO .VCF
-           ========================================= */
         function baixarVCF() {
             if (listaHomens.length === 0 && listaMulheres.length === 0) return;
 
@@ -364,23 +321,15 @@
         }
 
         /* =========================================
-           SISTEMA DE SEGURANÇA MÁXIMA (OFFLINE / PWA)
+           O "MATA-OFFLINE" (Remove a Cache Antiga)
            ========================================= */
         if ('serviceWorker' in navigator) {
-            if (window.location.href.includes('?admin=beirensse')) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('✅ Modo Offline Ativado para Administrador'))
-                    .catch(err => console.log('Erro ao instalar PWA:', err));
-                });
-            } else {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    for(let registration of registrations) {
-                        registration.unregister();
-                        console.log('⛔ Acesso Offline Bloqueado/Removido do Utilizador.');
-                    }
-                });
-            }
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                    console.log('✅ Sistema Offline Removido e Limpo.');
+                }
+            });
         }
     </script>
 </body>
