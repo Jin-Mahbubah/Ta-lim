@@ -167,20 +167,20 @@
             <div class="subtitle" id="sub_app">Desenvolvido com ❤️ por <strong>Beirensse</strong></div>
         </div>
 
-        <label for="texto_geral" id="lbl_texto">📋 1. Cole TUDO misturado aqui...</label>
+        <label for="codigo_dae" id="lbl_filtro">🔍 1. Seu Código (Filtro) - Opcional:</label>
+        <input type="text" id="codigo_dae" value="" placeholder="Ex: Por-2 (Deixe em branco para extrair tudo)">
+
+        <label for="nome_grupo" id="lbl_grupo">📁 2. Nome do Grupo (Para a Agenda):</label>
+        <input type="text" id="nome_grupo" placeholder="Ex: Novos Muçulmanos">
+
+        <label for="texto_geral" id="lbl_texto">📋 3. Cole TUDO misturado aqui...</label>
         <textarea id="texto_geral" placeholder="Cole as mensagens do WhatsApp aqui..."></textarea>
         
         <div class="toolbar">
             <button class="btn-limpar" id="btn_limpar" onclick="limparTudo()">🗑️ Limpar Tudo</button>
         </div>
 
-        <label for="codigo_dae" id="lbl_filtro">🔍 Seu Código (Filtro) - Opcional:</label>
-        <input type="text" id="codigo_dae" value="" placeholder="Ex: Por-2 (Deixe em branco para extrair tudo)">
-
-        <label for="nome_grupo" id="lbl_grupo">📁 Nome do Grupo (Para a Agenda):</label>
-        <input type="text" id="nome_grupo" placeholder="Ex: Clientes VIP, Angola, etc.">
-
-        <button class="acao-principal btn-filtrar" id="btn_filtrar" onclick="filtrarContatos()">🪄 2. Filtrar e Separar</button>
+        <button class="acao-principal btn-filtrar" id="btn_filtrar" onclick="filtrarContatos()">🪄 4. Filtrar e Separar</button>
 
         <div class="box-total">
             <span id="lbl_total">📊 Total Extraído:</span> <span id="count_total">0</span>
@@ -197,7 +197,7 @@
             </div>
         </div>
 
-        <button class="acao-principal btn-baixar" id="btn_baixar" onclick="baixarVCF()">📇 3. Baixar Agenda</button>
+        <button class="acao-principal btn-baixar" id="btn_baixar" onclick="baixarVCF()">📇 5. Baixar Agenda</button>
     </div>
 
     <script>
@@ -209,42 +209,42 @@
             const btnTema = document.getElementById('btn_tema');
             
             if (document.body.classList.contains('dark-mode')) {
-                btnTema.innerText = '☀️'; // Muda para Sol quando está escuro
+                btnTema.innerText = '☀️'; 
             } else {
-                btnTema.innerText = '🌙'; // Muda para Lua quando está claro
+                btnTema.innerText = '🌙'; 
             }
         }
 
         /* =========================================
-           SISTEMA DE IDIOMAS (MULTILÍNGUE)
+           SISTEMA DE IDIOMAS (MULTILÍNGUE COM NÚMEROS)
            ========================================= */
         const traducoes = {
             pt: {
                 titulo: "🏷️ Extrator de Contatos", sub: "Desenvolvido com ❤️ por <strong>Beirensse</strong>",
-                lbl_texto: "📋 1. Cole TUDO misturado aqui...", lbl_filtro: "🔍 Seu Código (Filtro) - Opcional:",
-                lbl_grupo: "📁 Nome do Grupo (Para a Agenda):", btn_filtrar: "🪄 2. Filtrar e Separar",
-                lbl_homens: "👨 Homens", lbl_mulheres: "👩 Mulheres", btn_baixar: "📇 3. Baixar Agenda", 
+                lbl_filtro: "🔍 1. Seu Código (Filtro) - Opcional:", lbl_grupo: "📁 2. Nome do Grupo (Para a Agenda):",
+                lbl_texto: "📋 3. Cole TUDO misturado aqui...", btn_filtrar: "🪄 4. Filtrar e Separar",
+                lbl_homens: "👨 Homens", lbl_mulheres: "👩 Mulheres", btn_baixar: "📇 5. Baixar Agenda", 
                 btn_limpar: "🗑️ Limpar Tudo", lbl_total: "📊 Total Extraído:", dir: "ltr"
             },
             en: {
                 titulo: "🏷️ Contact Extractor", sub: "Developed with ❤️ by <strong>Beirensse</strong>",
-                lbl_texto: "📋 1. Paste EVERYTHING mixed here...", lbl_filtro: "🔍 Your Code (Filter) - Optional:",
-                lbl_grupo: "📁 Group Name (For Contacts):", btn_filtrar: "🪄 2. Filter and Separate",
-                lbl_homens: "👨 Men", lbl_mulheres: "👩 Women", btn_baixar: "📇 3. Download Contacts", 
+                lbl_filtro: "🔍 1. Your Code (Filter) - Optional:", lbl_grupo: "📁 2. Group Name (For Contacts):",
+                lbl_texto: "📋 3. Paste EVERYTHING mixed here...", btn_filtrar: "🪄 4. Filter and Separate",
+                lbl_homens: "👨 Men", lbl_mulheres: "👩 Women", btn_baixar: "📇 5. Download Contacts", 
                 btn_limpar: "🗑️ Clear All", lbl_total: "📊 Total Extracted:", dir: "ltr"
             },
             fr: {
                 titulo: "🏷️ Extracteur de Contacts", sub: "Développé avec ❤️ par <strong>Beirensse</strong>",
-                lbl_texto: "📋 1. Collez TOUT mélangé ici...", lbl_filtro: "🔍 Votre Code (Filtre) - Optionnel:",
-                lbl_grupo: "📁 Nom du Groupe (Pour l'Agenda):", btn_filtrar: "🪄 2. Filtrer et Séparer",
-                lbl_homens: "👨 Hommes", lbl_mulheres: "👩 Femmes", btn_baixar: "📇 3. Télécharger Contacts", 
+                lbl_filtro: "🔍 1. Votre Code (Filtre) - Optionnel:", lbl_grupo: "📁 2. Nom du Groupe (Pour l'Agenda):",
+                lbl_texto: "📋 3. Collez TOUT mélangé ici...", btn_filtrar: "🪄 4. Filtrer et Séparer",
+                lbl_homens: "👨 Hommes", lbl_mulheres: "👩 Femmes", btn_baixar: "📇 5. Télécharger Contacts", 
                 btn_limpar: "🗑️ Tout Effacer", lbl_total: "📊 Total Extrait:", dir: "ltr"
             },
             ar: {
                 titulo: "🏷️ مستخرج جهات الاتصال", sub: "تم التطوير بـ ❤️ بواسطة <strong>Beirensse</strong>",
-                lbl_texto: "...قم بلصق كل شيء مختلط هنا .1 📋", lbl_filtro: ":رمزك (عامل التصفية) - اختياري 🔍",
-                lbl_grupo: ":اسم المجموعة (لجهات الاتصال) 📁", btn_filtrar: "تصفية وفصل .2 🪄",
-                lbl_homens: "رجال 👨", lbl_mulheres: "نساء 👩", btn_baixar: "تنزيل جهات الاتصال .3 📇", 
+                lbl_filtro: ":رمزك (عامل التصفية) - اختياري .1 🔍", lbl_grupo: ":اسم المجموعة (لجهات الاتصال) .2 📁",
+                lbl_texto: "...قم بلصق كل شيء مختلط هنا .3 📋", btn_filtrar: "تصفية وفصل .4 🪄",
+                lbl_homens: "رجال 👨", lbl_mulheres: "نساء 👩", btn_baixar: "تنزيل جهات الاتصال .5 📇", 
                 btn_limpar: "مسح الكل 🗑️", lbl_total: ":إجمالي المستخرج 📊", dir: "rtl"
             }
         };
@@ -255,9 +255,9 @@
 
             document.getElementById('titulo_app').innerHTML = t.titulo;
             document.getElementById('sub_app').innerHTML = t.sub;
-            document.getElementById('lbl_texto').innerText = t.lbl_texto;
             document.getElementById('lbl_filtro').innerText = t.lbl_filtro;
             document.getElementById('lbl_grupo').innerText = t.lbl_grupo;
+            document.getElementById('lbl_texto').innerText = t.lbl_texto;
             document.getElementById('btn_filtrar').innerText = t.btn_filtrar;
             document.getElementById('lbl_homens').innerText = t.lbl_homens;
             document.getElementById('lbl_mulheres').innerText = t.lbl_mulheres;
